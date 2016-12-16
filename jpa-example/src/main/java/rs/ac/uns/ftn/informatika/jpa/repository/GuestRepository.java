@@ -12,6 +12,9 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 public interface GuestRepository extends PagingAndSortingRepository<Guest, Long>{
 
+	
 	public ArrayList<Guest> findAll();
+	
+	
 
 }

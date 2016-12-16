@@ -42,7 +42,7 @@ public class GuestController {
 		
 		return guestUsernames;
 	}
-	//@RequestMapping(value="/schedule", method = RequestMethod.POST)
+	/*//@RequestMapping(value="/schedule", method = RequestMethod.POST)
 	//public void action(@RequestParam(value = "param[]") String[] paramValues){...}
 	@RequestMapping(
 			value = "/log/{id}/{id2}",
@@ -64,5 +64,5 @@ public class GuestController {
 			
 		}
 		return null;
-	}
+	}*/
 }

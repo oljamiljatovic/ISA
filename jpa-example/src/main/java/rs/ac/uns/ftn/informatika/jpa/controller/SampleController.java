@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import rs.ac.uns.ftn.informatika.jpa.domain.Hotel;
 import rs.ac.uns.ftn.informatika.jpa.service.CityService;
 import rs.ac.uns.ftn.informatika.jpa.service.HotelService;
-import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 
 @Controller
 public class SampleController {
@@ -17,9 +16,7 @@ public class SampleController {
 	@Autowired
 	private CityService cityService;
 	
-	@Autowired
-	private UserService userService;
-	
+
 	@Autowired
 	private HotelService hotelService;
 
@@ -30,13 +27,13 @@ public class SampleController {
 		return this.cityService.getCity("Bath", "UK").getName();
 	}
 	
-	@GetMapping("/user")
+/*	@GetMapping("/user")
 	@ResponseBody
 	@Transactional(readOnly = true)
 	public String getUserName() {
 		System.out.println("Pogodio je metodu getUserName");
 		return this.userService.getUser("Olja", "Oljka").getName();
-	}
+	}*/
 	
 	
 	@GetMapping("/hotel")

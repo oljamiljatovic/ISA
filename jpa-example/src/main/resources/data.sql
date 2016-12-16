@@ -8,7 +8,8 @@ INSERT INTO guest(username,password) VALUES ('Vladica','vladicavladica')
 INSERT INTO guest(username,password) VALUES ('Desa','desadesa')
 INSERT INTO guest(username,password) VALUES ('Mica','micamica')
 
-
+INSERT INTO employee(username,password,name) VALUES ('Mikica','mikimiki','mikica')
+INSERT INTO employee(username,password,name) VALUES ('Sanja','sanjasanja','sanja')
 -- AUSTRALIA
 
 -- Brisbane

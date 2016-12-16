@@ -6,24 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
+import rs.ac.uns.ftn.informatika.jpa.repository.EmployeeRepository;
 import rs.ac.uns.ftn.informatika.jpa.repository.GuestRepository;
 
 @Service
 @Transactional
-public class GuestServiceImpl implements GuestService {
+public class EmployeeServiceImpl implements EmployeeService{
 
 	@Autowired
-	private GuestRepository guestRepository;
+	private EmployeeRepository employeeRepository;
 	
 	@Override
-	public ArrayList<Guest> getGuests() {
+	public ArrayList<Employee> getEmployees() {
 		
-		return this.guestRepository.findAll();
-		//guestRepository.findOne(id);
+		return this.employeeRepository.findAll();
 	}
 
 
 	
-
 }
