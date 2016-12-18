@@ -1,9 +1,7 @@
-var roleURL = "../WebProjekat/rest/users/role";
-
 window.onload = function() {
     document.getElementById('dugmeLogovanje').onclick = function() {
-    	var username = document.getElementById('username').value;
-    	var password = document.getElementById('password').value;
+    	var username = $("#username").val();
+    	var password = $("#password").val();
     	if(username == ""){
     		toastr.error("Username is empty");
     	}
@@ -15,8 +13,13 @@ window.onload = function() {
     			type : 'POST',
     			url :  '/loginController/login',
     			contentType : 'application/json',
-    			data : formToJSON(username, password),
-    			success : function(){
+    			dataType :'json',
+    			data : JSON.stringify({
+    				"username" : username,
+    				"password" : password
+    			}),
+    			success : function(data){
+    				alert(data);
     			/*	if(roleOfUser == "false"){
     					alert("Wrong username or password");
     					window.location.href= "LogIn.html"
@@ -41,7 +44,6 @@ window.onload = function() {
     		});
     		
     	
-    		alert("To");
     		}
     };
 };
@@ -100,9 +102,3 @@ function formToJSON(username,password){
 		"password" : password
 	});
 }*/
-function formToJSON(username,password){
-	return JSON.stringify({
-		"username" : username,
-		"password" : password
-	});
-}
