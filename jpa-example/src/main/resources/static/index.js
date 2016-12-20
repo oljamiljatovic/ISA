@@ -29,6 +29,9 @@ window.onload = function() {
     					window.location.href = "barman.html";
     				}
     				/*if(roleOfUser == "false"){
+    				alert(data);
+    			/*	if(roleOfUser == "false"){
+>>>>>>> d62337de8a634653d308fc3305b82b333aaf2c7b
     					alert("Wrong username or password");
     					window.location.href= "LogIn.html"
     				}
