@@ -16,6 +16,7 @@ import rs.ac.uns.ftn.informatika.jpa.service.CalendarForWaiterService;
 @Controller 
 @RequestMapping("/calendarForWaiterController")
 public class CalendarForWaiterController {
+	
 	@Autowired
 	private CalendarForWaiterService calendarForWaiterService;
 	@RequestMapping(
