@@ -8,8 +8,11 @@ INSERT INTO guest(username,password) VALUES ('Vladica','vladicavladica')
 INSERT INTO guest(username,password) VALUES ('Desa','desadesa')
 INSERT INTO guest(username,password) VALUES ('Mica','micamica')
 
-INSERT INTO employee(username,password,name) VALUES ('Mikica','mikimiki','mikica')
-INSERT INTO employee(username,password,name) VALUES ('Sanja','sanjasanja','sanja')
+INSERT INTO user(username,password) VALUES('OGI','ogiogi')
+
+INSERT INTO calendar_for_waiter(username,datum) VALUES ('Mica','01/01/2016')
+INSERT INTO calendar_for_waiter(username,datum) VALUES ('Desa','01/11/2016,01/12/2016,01/13/2016,01/14/2016,01/15/2016,01/25/2016,01/26/2016,01/27/2016,01/28/2016,01/29/2016')
+
 -- AUSTRALIA
 
 -- Brisbane
