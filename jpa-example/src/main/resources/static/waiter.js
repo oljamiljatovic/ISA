@@ -1,10 +1,8 @@
 $(document).on('click','#kalendar',function(e){
 	e.preventDefault();
-	alert("Prikazi kalendar");
 	$("#content").empty();
 	var today = new Date();
 	var y = today.getFullYear();
-	
 	$.ajax({
 		type : 'GET',
 		url :  '/calendarForWaiterController/getCalendarForWaiter',
@@ -14,7 +12,6 @@ $(document).on('click','#kalendar',function(e){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index, calendarForWaiter) {
 				if(calendarForWaiter.username == "Desa"){
-					alert(calendarForWaiter.datum);
 					var datesString  = calendarForWaiter.datum;
 					var dates = [];
 					dates = datesString.split(',');
@@ -22,6 +19,24 @@ $(document).on('click','#kalendar',function(e){
 						addDates: dates,
 						numberOfMonths: [1,3],
 						defaultDate: '1/1/'+y
+					});
+					var timesString = calendarForWaiter.times;
+					var times = [];
+					times = timesString.split(',');
+					$("#content").append('<p><b>'+calendarForWaiter.username+'</b></p>');
+					$.each(dates, function(index2, date) {
+						$("#content").append('<p>'+date+'    '+times[index2]+'</p>');
+					});
+				}else{
+					var datesString  = calendarForWaiter.datum;
+					var dates = [];
+					dates = datesString.split(',');
+					var timesString = calendarForWaiter.times;
+					var times = [];
+					times = timesString.split(',');
+					$("#content").append('<p><b>'+calendarForWaiter.username+'</b></p>');
+					$.each(dates, function(index2, date) {
+						$("#content").append('<p>'+date+'   '+times[index2]+'</p>');
 					});
 				}
 				
@@ -35,9 +50,14 @@ $(document).on('click','#kalendar',function(e){
 });
 $(document).on('click','#stolovi',function(e){
 	e.preventDefault();
-	alert("Prikazi stolove");
 	$("#content").empty();
-	$("#content").append("<img src='jpa-example/src/main/resources/static/seating.jpg' alt='Graficki prikaz stolova'>");
+	//$("#content").append("<img src='jpa-example/src/main/resources/static/seating.jpg' alt='Graficki prikaz stolova'>");
+	$("#content").append("<button id='1' style='height:50px;width:80px'>1</button><button id='2' style='height:50px;width:80px'>2</button><button id='3' style='height:50px;width:80px'>3</button>");
+	$("#content").append("<button id='4' style='height:50px;width:80px'>4</button><button id='5' style='height:50px;width:80px'>5</button><button id='6' style='height:50px;width:80px'>6</button></br>");
+	$("#content").append("<button id='7' style='height:50px;width:80px'>7</button><button id='8' style='height:50px;width:80px'>8</button><button id='9' style='height:50px;width:80px'>9</button>");
+	$("#content").append("<button id='10' style='height:50px;width:80px'>10</button><button id='11' style='height:50px;width:80px'>11</button><button id='12' style='height:50px;width:80px'>12</button></br>");
+	$("#content").append("<button id='13' style='height:50px;width:80px'>13</button><button id='14' style='height:50px;width:80px'>14</button><button id='15' style='height:50px;width:80px'>15</button>");
+	$("#content").append("<button id='16' style='height:50px;width:80px'>16</button><button id='17' style='height:50px;width:80px'>17</button><button id='18' style='height:50px;width:80px'>18</button></br>");
 });
 
 /*

@@ -27,6 +27,17 @@ public class CalendarForWaiter {
 	@Column(nullable = false)
 	private String datum;
 	
+	@Column(nullable = false)
+	private String times;
+	
+	public String getTimes() {
+		return times;
+	}
+
+	public void setTimes(String times) {
+		this.times = times;
+	}
+
 	public CalendarForWaiter(){}
 
 	public Integer getId() {
