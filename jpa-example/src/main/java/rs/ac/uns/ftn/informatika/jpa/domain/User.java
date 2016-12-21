@@ -18,9 +18,9 @@ import javax.persistence.Table;
 public class User {
 
 	@Id
-	  @GeneratedValue
-	  @Column(name="id", unique=true, nullable=false)
-	  private Integer id;
+    @GeneratedValue
+	@Column(name="id", unique=true, nullable=false)
+	private Integer id;
 	
 	@Column(name="username",nullable = false)
 	protected String username;
@@ -28,6 +28,9 @@ public class User {
 	@Column(nullable = false)
 	protected String password;
 
+	@Column(nullable = false)
+	protected String role;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -36,13 +39,29 @@ public class User {
 		
 	}
 	
-	
-
 	public User(String username, String password) {
-		super();
+		
 		this.username = username;
 		this.password = password;
-		this.id = 151;
+		
+	}
+
+
+
+	public User(Integer id, String username, String password, String role) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public void setId(Integer id) {

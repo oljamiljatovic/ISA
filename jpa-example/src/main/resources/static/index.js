@@ -11,7 +11,7 @@ window.onload = function() {
     	else{
     		$.ajax({
     			type : 'POST',
-    			url :  '/loginController/login',
+    			url :  '/userController/logIn',
     			contentType : 'application/json',
     			dataType :'json',
     			data : JSON.stringify({
@@ -25,7 +25,7 @@ window.onload = function() {
     					window.location.href= "waiter.html"
     				}else if(username == "Mica"){
     					window.location.href = "cook.html";
-    				}else if(username == "Oljka"){
+    				}else if(username == "oljka"){
     					window.location.href = "barman.html";
     				}
     		
