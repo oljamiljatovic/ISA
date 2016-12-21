@@ -28,25 +28,7 @@ window.onload = function() {
     				}else if(username == "Oljka"){
     					window.location.href = "barman.html";
     				}
-    				/*if(roleOfUser == "false"){
-    				alert(data);
-    			/*	if(roleOfUser == "false"){
->>>>>>> d62337de8a634653d308fc3305b82b333aaf2c7b
-    					alert("Wrong username or password");
-    					window.location.href= "LogIn.html"
-    				}
-    				else if(roleOfUser == "admin"){
-    					
-    					window.location.href = "AdminHome.html";
-    				}
-    				else if(roleOfUser == "customer"){
-    					
-    					window.location.href = "CustomerHome.html";
-    				}
-    				else{ //seller
-    					
-    					window.location.href = "SellerHome.html";
-    				}*/
+    		
     			},
 
     			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -57,6 +39,26 @@ window.onload = function() {
     	
     		}
     };
+    
+    
+    
+    
+    document.getElementById('dugmeSign').onclick = function() {
+    	
+    					window.location.href= "signIn.html"
+    	
+    };
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 };
 /*$(document).on('click','#dugmeLogovanje',function(e){
 	e.preventDefault();
