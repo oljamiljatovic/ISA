@@ -12,23 +12,27 @@ import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="user")
 @Inheritance(strategy=JOINED)
 public class User {
 
 	@Id
-	  @GeneratedValue
-	  @Column(name="id", unique=true, nullable=false)
-	  private Integer id;
+    @GeneratedValue
+	@Column(name="id", unique=true, nullable=false)
+	protected Long id;
 	
-	@Column(name="username",nullable = false)
-	protected String username;
+	@Column(name="email",nullable = false)
+	protected String email;
 	
 	@Column(nullable = false)
 	protected String password;
 
-	public Integer getId() {
+	@Column(nullable = false)
+	protected String role;
+	
+	public Long getId() {
 		return id;
 	}
 	
@@ -36,25 +40,41 @@ public class User {
 		
 	}
 	
-	
 
-	public User(String username, String password) {
+	public User(String email, String password, String role) {
 		super();
-		this.username = username;
+		this.email = email;
 		this.password = password;
-		this.id = 151;
+		this.role = role;
 	}
 
-	public void setId(Integer id) {
+	public User(Long id, String email, String password, String role) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -64,12 +84,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	
-
-
-
-
 
 
 	

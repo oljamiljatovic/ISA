@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="calendarForWaiter")
-@Inheritance(strategy=JOINED)
+/*@Inheritance(strategy=JOINED)*/
 public class CalendarForWaiter {
 	@Id
 	@GeneratedValue

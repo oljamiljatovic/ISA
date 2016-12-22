@@ -1,52 +1,66 @@
 window.onload = function() {
     document.getElementById('dugmeLogovanje').onclick = function() {
-    	var username = $("#username").val();
+    	var email = $("#email").val();
     	var password = $("#password").val();
-    	if(username == ""){
-    		toastr.error("Username is empty");
+    	if(email == ""){
+    		toastr.error("Email is empty");
     	}
     	else if(password == ""){
-    		toastr.error("Password is emptry");
+    		toastr.error("Password is empty");
     	}
     	else{
     		$.ajax({
     			type : 'POST',
-    			url :  '/loginController/login',
+    			url :  '/userController/logIn',
     			contentType : 'application/json',
     			dataType :'json',
     			data : JSON.stringify({
-    				"username" : username,
+    				"email" : email,
     				"password" : password
     			}),
-    			success : function(data){
-    				alert(data.username);
-    				username = data.username;
-    				if(username == "Desa"){
+    			success : function(dataUser){
+    				
+    				
+    				if(dataUser == null){
+    					alert("Null");
+    					window.location.reload();
+    				}
+    				var userRole =  dataUser.role;
+    				var userEmail = dataUser.email;
+    				if(userRole == "guest"){
+    					
+    							$.ajax({
+    									type : 'POST',
+    									url :  '/guestController/findGuestByEmail',
+    									contentType : 'text/plain',
+    									dataType :'json',
+    									data : userEmail,
+    									success : function(dataFound){
+    										/* Ovdje ga treba dodati u sesiju kao Guest*/
+    											alert(dataFound.name + " "+ dataFound.surname + " "+ dataFound.email + " "+ dataFound.password );
+    									},
+
+    									error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    										alert("AJAX ERROR: " + errorThrown);
+    									}
+    							});
+    						
+    					
+    					
+    					window.location.href= "userProfile.html"
+    				}else if(userRole == "employee"){
     					window.location.href= "waiter.html"
-    				}else if(username == "Mica"){
+    				}
+    				/*alert(data.username);
+    				username = data.username;
+    				if(username == "desa"){
+    					window.location.href= "waiter.html"
+    				}else if(username == "mica"){
     					window.location.href = "cook.html";
-    				}else if(username == "Oljka"){
+    				}else if(username == "oljka"){
     					window.location.href = "barman.html";
-    				}
-    				/*if(roleOfUser == "false"){
-    				alert(data);
-    			/*	if(roleOfUser == "false"){
->>>>>>> d62337de8a634653d308fc3305b82b333aaf2c7b
-    					alert("Wrong username or password");
-    					window.location.href= "LogIn.html"
-    				}
-    				else if(roleOfUser == "admin"){
-    					
-    					window.location.href = "AdminHome.html";
-    				}
-    				else if(roleOfUser == "customer"){
-    					
-    					window.location.href = "CustomerHome.html";
-    				}
-    				else{ //seller
-    					
-    					window.location.href = "SellerHome.html";
     				}*/
+    		
     			},
 
     			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -57,6 +71,26 @@ window.onload = function() {
     	
     		}
     };
+    
+    
+    
+    
+    document.getElementById('dugmeSign').onclick = function() {
+    	
+    					window.location.href= "signIn.html"
+    	
+    };
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 };
 /*$(document).on('click','#dugmeLogovanje',function(e){
 	e.preventDefault();

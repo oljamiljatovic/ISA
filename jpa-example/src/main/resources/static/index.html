@@ -3,29 +3,35 @@
 <head>
 <meta charset="ISO-8859-1">
 <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
-<!-- 
-<script type="text/javascript" src="js/jquery.js"></script>
-<link href="js/toastr.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="js/toastr.min.js"></script> -->
+<script type="text/javascript" src="js/index.js"> </script>
 
-<script type="text/javascript" src="index.js"> </script>
+<link rel="stylesheet" href="css/style.css">
 
 <title>Logovanje</title>
 </head>
 <body>
 
+<div class="centered-content-wrap">
+<div class="login-page wrapper centered centered-block"> 
 <div class = "form-group">
 	<br/>
 	Username : 
-	<input type = "text" id = "username" name="username" class="in-text"/>
+	<input type = "text" id = "email" name="E-mail" class="in-text"/>
 	<br/>
 	Password :
-	<input type = "text" id = "password" name="password" class="in-text"/>
+	<input type = "text" id = "password" name="Password" class="in-text"/>
 	<br/>
-	<input type = "submit" id = "dugmeLogovanje" value="Log in" class="btn orange">
+	<input type = "submit" id = "dugmeLogovanje" value="Log In" class="btn orange">
 	
 	
 </div>
+</div>
+</div>
 
+<div>
+	<input type = "submit" id = "dugmeSign" value="Sign In" class="btn orange">
+	<input type = "submit" id = "dugmeGoogle" value="Log In using Google+" class="btn orange">
+	<input type = "submit" id = "dugmeFacebook" value="Log In using Facebook" class="btn orange">
+</div>
 </body>
 </html>

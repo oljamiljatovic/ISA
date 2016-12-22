@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.service.GuestService;
 
 
 @Controller
+@RequestMapping("/guestController")
 public class GuestController {
 
 	@Autowired
@@ -32,37 +34,64 @@ public class GuestController {
 	@Transactional(readOnly = true)
 	public ArrayList<String> getGuests() {
 	
-		ArrayList<String> guestUsernames= new ArrayList<String>();
+		ArrayList<String> guestEmails= new ArrayList<String>();
 		ArrayList<Guest> guests = this.guestService.getGuests();
 		
 		for(int i = 0 ; i <guests.size(); i++){
-			guestUsernames.add(guests.get(i).getUsername());
+			guestEmails.add(guests.get(i).getEmail());
 			
 		}
 		
-		return guestUsernames;
+		return guestEmails;
 	}
-	/*//@RequestMapping(value="/schedule", method = RequestMethod.POST)
-	//public void action(@RequestParam(value = "param[]") String[] paramValues){...}
-	@RequestMapping(
-			value = "/log/{id}/{id2}",
-			method = RequestMethod.POST)
-	public String getGreeting(@RequestParam("id") String username, @RequestParam("id2") String password) {
 	
-		ArrayList<Guest> guests = this.guestService.getGuests();
+	
+	@RequestMapping(
+			value = "/findGuestByEmail",
+			method = RequestMethod.POST,
+			consumes = MediaType.TEXT_PLAIN_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Guest> findGuestByEmail(
+			@RequestBody String email) throws Exception {
+		
+		Guest foundGuest = guestService.findGuestByEmail(email);
+		
+		
+		return new ResponseEntity<Guest>(foundGuest, HttpStatus.OK);
+	}
+	
 
-		for(int i = 0 ; i <guests.size(); i++){
-			if(guests.get(i).getUsername().equals(username)){
-				if(guests.get(i).getPassword().equals(password)){
-					return "Uspjesno prijavljen";
-				}else{
-					return "Pogresna lozinka";
-				}
-			}else{
-				return "Ne postoji korisnicko ime";
-			}
-			
-		}
-		return null;
-	}*/
+	@RequestMapping(
+			value = "/regIn",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Guest> regIn(
+			@RequestBody Guest guest) throws Exception {
+	
+		
+		Guest addedGuest = guestService.createNew(guest);
+		
+		return new ResponseEntity<Guest>(addedGuest, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/change/{id}",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Guest> update(
+			@RequestBody Guest guest, @PathVariable Long id) throws Exception {
+	
+		Guest foundedGuest = guestService.findOne(id);
+		foundedGuest.setName(guest.getName());
+		foundedGuest.setSurname(guest.getSurname());
+		Guest changedGuest = guestService.update(foundedGuest, id);
+		
+		
+		return new ResponseEntity<Guest>(changedGuest, HttpStatus.OK);
+	}
+	
+	
 }
