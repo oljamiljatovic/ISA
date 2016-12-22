@@ -1,8 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
-
-import java.util.ArrayList;
-import java.util.Date;
+import static javax.persistence.InheritanceType.JOINED;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +10,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="calendarForWaiter")
-/*@Inheritance(strategy=JOINED)*/
-public class CalendarForWaiter {
+@Table(name="workingArea")
+@Inheritance(strategy=JOINED)
+public class WorkingArea {
 	@Id
 	@GeneratedValue
 	@Column(name="id", unique=true, nullable=false)
@@ -24,20 +22,9 @@ public class CalendarForWaiter {
 	private String username;
 	
 	@Column(nullable = false)
-	private String datum;
-	
-	@Column(nullable = false)
-	private String times;
-	
-	public String getTimes() {
-		return times;
-	}
+	private String area;
 
-	public void setTimes(String times) {
-		this.times = times;
-	}
-
-	public CalendarForWaiter(){}
+	public WorkingArea(){}
 
 	public Integer getId() {
 		return id;
@@ -55,14 +42,12 @@ public class CalendarForWaiter {
 		this.username = username;
 	}
 
-	public String getDatum() {
-		return datum;
+	public String getArea() {
+		return area;
 	}
 
-	public void setDatum(String datum) {
-		this.datum = datum;
+	public void setArea(String area) {
+		this.area = area;
 	}
-
-	
 	
 }

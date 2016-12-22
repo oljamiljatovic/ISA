@@ -52,13 +52,167 @@ $(document).on('click','#stolovi',function(e){
 	e.preventDefault();
 	$("#content").empty();
 	//$("#content").append("<img src='jpa-example/src/main/resources/static/seating.jpg' alt='Graficki prikaz stolova'>");
-	$("#content").append("<button id='1' style='height:50px;width:80px'>1</button><button id='2' style='height:50px;width:80px'>2</button><button id='3' style='height:50px;width:80px'>3</button>");
-	$("#content").append("<button id='4' style='height:50px;width:80px'>4</button><button id='5' style='height:50px;width:80px'>5</button><button id='6' style='height:50px;width:80px'>6</button></br>");
-	$("#content").append("<button id='7' style='height:50px;width:80px'>7</button><button id='8' style='height:50px;width:80px'>8</button><button id='9' style='height:50px;width:80px'>9</button>");
-	$("#content").append("<button id='10' style='height:50px;width:80px'>10</button><button id='11' style='height:50px;width:80px'>11</button><button id='12' style='height:50px;width:80px'>12</button></br>");
-	$("#content").append("<button id='13' style='height:50px;width:80px'>13</button><button id='14' style='height:50px;width:80px'>14</button><button id='15' style='height:50px;width:80px'>15</button>");
-	$("#content").append("<button id='16' style='height:50px;width:80px'>16</button><button id='17' style='height:50px;width:80px'>17</button><button id='18' style='height:50px;width:80px'>18</button></br>");
+	$("#content").append("<button class='table' id='1' style='height:50px;width:80px'>1</button><button class='table' id='2' style='height:50px;width:80px'>2</button><button class='table' id='3' style='height:50px;width:80px'>3</button>");
+	$("#content").append("<button class='table' id='4' style='height:50px;width:80px'>4</button><button class='table' id='5' style='height:50px;width:80px'>5</button><button class='table' id='6' style='height:50px;width:80px'>6</button></br>");
+	$("#content").append("<button class='table' id='7' style='height:50px;width:80px'>7</button><button class='table' id='8' style='height:50px;width:80px'>8</button><button class='table' id='9' style='height:50px;width:80px'>9</button>");
+	$("#content").append("<button class='table' id='10' style='height:50px;width:80px'>10</button><button class='table' id='11' style='height:50px;width:80px'>11</button><button class='table' id='12' style='height:50px;width:80px'>12</button></br>");
+	$("#content").append("<button class='table' id='13' style='height:50px;width:80px'>13</button><button class='table' id='14' style='height:50px;width:80px'>14</button><button class='table' id='15' style='height:50px;width:80px'>15</button>");
+	$("#content").append("<button class='table' id='16' style='height:50px;width:80px'>16</button><button class='table' id='17' style='height:50px;width:80px'>17</button><button class='table' id='18' style='height:50px;width:80px'>18</button></br>");
+	
+	$.ajax({
+		type : 'GET',
+		url :  '/workingAreaController/getWorkingArea',
+		contentType : 'application/json',
+		dataType :'json',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index, workingArea) {
+				if(workingArea.username == "Desa"){
+					$("#content").append("</br><button style='background-color:red;height:50px;width:80px'></button>Moj reon");
+					var areas = [];
+					var areaString = workingArea.area;
+					areas = areaString.split(',');
+					//alert(workingArea.area);
+					$.each(areas, function(index2, area) {
+						var buttons = $(document).find('button[class="table"]');
+						$.each(buttons, function(index3, button){
+							if(button.id == area){
+								$("#"+area).attr("disabled","disabled");
+								$("#"+area).css("background-color", "red");
+							}
+						});
+					});
+				}	
+			});
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+
 });
+
+function showOrders(){
+	$("#content").empty();
+	$.ajax({
+		type : 'GET',
+		url :  '/orderController/getOrder',
+		contentType : 'application/json',
+		dataType :'json',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("#content").append("</br><button id='addOrder'>Dodaj porudzbinu</button>");
+			$("#content").append('<p><b>Lista porudzbina</b></p>');
+			$("#content").append("<table id='tableOrder'>");
+		      $("#content").append("<thead>");
+		      $("#content").append("<tr>");
+		      $("#content").append("<th>Sto</th>");
+		      $("#content").append("<th>Drinkici</th>");
+		      $("#content").append("<th>Jela</th>");
+		      $("#content").append("</tr>");
+		      $("#content").append("</thead>");
+		      $("#content").append("<tbody>");
+		      $.each(list, function(index, order) {
+					if(order.username == "Desa"){
+						var drinks = order.drinks;
+						var meals = order.meals;
+						var desk = order.desk;
+						var forma = $('<form method="post" class="orderForm" action=""></form>');
+				        var tr = $('<tr></tr>');
+				        tr.append('<td align="center">' + desk + '</td><td align="center">'+drinks+'</td><td align="center">' + meals + '</td>');
+				        forma.append('<input type="hidden" name="edit" id='+index+' value="'+ desk+";"+drinks+";"+meals +'">' +
+				                '<input type="submit" id="submitEdit" name='+index+' value="Izmjeni">');
+				        var td = $('<td></td>');
+				        td.append(forma);
+				        tr.append(td);
+				        $('#content').append(tr);
+					}	
+				});
+
+			  $("#content").append("</tbody>");
+			  $("#content").append("</table>");
+			  //$("#tableOrder").css("border","1px solid #000");
+			  //$("#tableOrder").css("align","center");
+
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+}
+
+$(document).on('click','#order',function(e){
+	showOrders();
+});
+
+$(document).on('click', '#submitEdit', function(e) {
+	e.preventDefault();
+	var name = $(this).attr('name');
+	var zaSplit;
+	$(document).find('input[name="edit"]').each(function(e){	
+		  var id = this.id;
+		 if(name == id ){
+			 zaSplit = this.value;
+		 }
+	});
+	var splitovano  = zaSplit.split(";");
+	var desk = splitovano[0];
+	var drinks = splitovano[1];
+	var meals = splitovano[2];
+	$("#content").empty();
+	$("#content").append('<p><b>Izmjena porudzbine</b></p>');
+	$("#content").append('<p>*potrebno je popuniti sva polja</p>');
+	$("#content").append('<table class="edit"></table>');
+	
+	$("table.edit").append('<tr><td>Sto: &nbsp;</td><td><input type="text" id="deskId" value="'+desk+'"></td></tr>');
+	$("#deskId").attr('readonly','readonly');
+	$("table.edit").append('<tr><td>Drinkici: </td><td><input type="text" id="drinksId" value="'+drinks+'"></td></tr>');
+	$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><input type="text" id="mealsId" value="'+meals+'"></td></tr>');
+	$("table.edit").append('<tr><td>&nbsp;</td><td><input type="submit" id="update" value="Potvrdi"></td>');
+});
+
+$(document).on('click', '#update', function(e) {
+	showOrders();
+});
+
+$(document).on('click','#addOrder',function(e){
+	$("#content").empty();
+	$("#content").append('<table><tr><td>Broj stola</td><td><input type="text" id="desk"></td></tr>');
+	$("#content").append('<tr><td>Drinkici</td><td><input type="text" id="drinks"></td></tr>');
+	$("#content").append('<tr><td>Jela</td><td><input type="text" id="meals"></td></tr>');
+	$("#content").append('<tr><td>&nbsp;</td><td><input type="submit" id="submitOrder"></td></tr>');
+});
+
+$(document).on('click','#submitOrder',function(e){
+	var desk = $(document).find('#desk').val();
+	var drinks = $(document).find('#drinks').val();
+	var meals = $(document).find('#meals').val();
+	
+	//drugi ajax poziv
+	$.ajax({
+		type : 'POST',
+		url :  '/orderController/addOrder',
+		contentType : 'application/json',
+		dataType :'json',
+		data : JSON.stringify({
+			"username" :"Desa",
+			"desk" : desk,
+			"drinks" : drinks,
+			"meals" : meals
+		}),
+		success : function(data){
+			alert("Porudzbina je uspjesno izvrsena!");
+			showOrders();
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+});
+
 
 /*
  <html>

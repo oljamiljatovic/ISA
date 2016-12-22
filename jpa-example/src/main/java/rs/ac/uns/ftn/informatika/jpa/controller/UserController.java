@@ -2,18 +2,25 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.service.CityService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 
@@ -36,20 +43,64 @@ public class UserController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> createGreeting(
+	public ResponseEntity<User> logIn(
 			@RequestBody User user) throws Exception {
-		System.out.println("Usao u login");
-		System.out.println("User :"+ user.getUsername());
-		System.out.println("User :"+ user.getPassword());
 		
-		User foundUser  = userService.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
-		System.out.println("Broj pronadjenih"+ foundUser.getUsername());
 		
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		User foundUser  = userService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
+		
+		
+	
+		if(foundUser == null){
+			System.out.println("NULL");
+		}
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+			HttpSession session= attr.getRequest().getSession(true); 
+			session.setAttribute("korisnik", foundUser);
+			
+			
+		return new ResponseEntity<User>(foundUser, HttpStatus.OK);
 	}
 	
 	
 
+	@RequestMapping(
+			value = "/regIn",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> regIn(
+			@RequestBody User user) throws Exception {
 	
+		
+		User addedUser = userService.createNew(user);
+		
+		return new ResponseEntity<User>(addedUser, HttpStatus.OK);
+	}
+	
+	
+
+	@RequestMapping(
+			value = "/isValidate",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> findGuestByEmail() throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+
+		System.out.println("Korisnik u sesiji"+u.getEmail());
+
+		return new ResponseEntity<User>(u, HttpStatus.OK);
+	
+	}
+	
+	
+
 	
 }

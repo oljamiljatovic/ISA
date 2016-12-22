@@ -15,6 +15,6 @@ public interface GuestRepository extends PagingAndSortingRepository<Guest, Long>
 	
 	public ArrayList<Guest> findAll();
 	
-	
+	public Guest findGuestByEmail(String email);
 
 }

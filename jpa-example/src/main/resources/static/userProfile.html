@@ -3,10 +3,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="index.js"> </script>
+<script type="text/javascript" src="js/index.js"> </script>
 
 <link rel="stylesheet" href="css/style.css">
-<!-- <script type="text/javascript" src="js/CustomerHome.js"> </script> -->
+<script type="text/javascript" src="js/userProfile.js"> </script> 
 
 
 </head>
@@ -36,15 +36,24 @@
 		
 		
 		<div style="float:right">
-		<label>Ime i prezime </label>
-		<input type="text" name="ime" id="ime" class="in-text"/>
+		<label>Ime </label>
+		<input type="text" name="ime" id="ime" class="in-text" readonly="readonly"/>
+		
 		</br>
-		<label>Adresa </label>
-		<input type="text" name="adresa" id="adresa" class="in-text"/>
+		<label>Prezime </label>
+		<input type="text" name="prezime" id="prezime" class="in-text" readonly="readonly"/>
+		
 		</br>
+		<!-- <label>Adresa </label>
+		<input type="text" name="adresa" id="adresa" class="in-text" readonly="readonly"/>
+		</br> -->
 		<label>Broj poseta </label>
-		<input type="text" name="brojPoseta" id="brojPoseta" class="in-text"/>
+		<input type="text" name="brojPoseta" id="brojPoseta" class="in-text" readonly="readonly"/>
 		</div>
+		</br>
+		<button id="izmjeni" class="btn green">Izmjeni </button>
+		<button id="potvrdiIzmjenu" class="btn green">Potvrdi </button>
+		
 	</div>
 	
 	</br></br>
@@ -55,87 +64,7 @@
 	<input type="text"  placeholder="search" name="pretraziPrijatelja" id="pretraziPrijatelja" class="in-text"/>
 	</div>
 	
-<!-- 	
-	<form action="" id = "ponudjeneProdavnice">
-		<table>
-			<tr> 
-				<td><p align="center" style="color: #40a540; font-family: serif;   font-size: 30px;">Prodavnice na raspolaganju :</p></td> 
-			</tr>
-			
-			<tr id="trForAppend"> 
-				<td> 
-					<select name="objekat" id="sveProdavnice" onchange="prikaziProdavnice()" class="selectProdavnica">
-						<option disabled selected>Odaberite prodavnicu...</option>
-					</select>
-				</td>
-				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td id="ocjenePrikaz">
-					 <select id = "ocjenaProdavnice"  class="myButton">
-						<option value="1" class="selectButton" >Nedovoljno</option>
-						<option value="2" class="selectButton">Dovoljno</option>
-						<option value="3" class="selectButton">Dobro</option>
-						<option value="4" class="selectButton">Vrlo dobro</option>
-						<option value="5" class="selectButton">Odlicno</option>
-					</select>
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;</td>
-					<td id="dugmeOcjena"> <input type = "button" class="btn orange" value="Ocjeni" id = "dugmeOcjeniProdavnicu"></td>
-			<td> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </td>
-				<td  id="tdProsjecnaOcjenaTekst" ><p style="width: 85px; height:27px;  color:#7a7a52;"><b>Prosjecna ocjena :  </b></p></td>
-				<td id="tdProsjecnaOcjenaProdavnice"> <input type = "text" style="width: 85px; height:27px; color:white; background:  #ffa64d; border-radius: 7px;"  id = "prosecnaOcena" disabled> </td>
-				
-			</tr>
-			
-			
-			
-		</table>
-	</form>
-	 -->
-	
-<!-- 
-	
-			<p id="imeProdavniceLabela" align="center" style="color: #40a540; font-family: serif;   font-size: 30px;"></p>
-	 <form action="" method="post" name = "proizvodi" id = "proizvodiUOdabranojProdavnici">
-		<table  id = "proizvodiUOdabranojProdavnicii" style="border-collapse:separate; border-style: ridge; border-color : #ffb366; border-spacing:1.3em;" align="center" >
-			
-		</table>
-	</form> 
- -->
 
-
-
-<!-- 	<form action="" method="post" name = "proizvodiUKorpii" id = "proizvodiUKorpii">
-		<table  id = "proizvodiUKorpi" style="border-collapse:separate;  border-spacing:1.3em;" >
-		
-		</table>
-		<select id="selectDostavljaci" onchange="PromjenaDostavljaca()">
-		<option> </option>
-		</select>
-	</form>  
-	 -->
-	
-<!-- 	<br/> <br/>
-	<p id="naslovRecenzije" align="left" style="color: #40a540; font-family: serif;   font-size: 25px;"></p>
-	<form action="" method="post" name = "recenzijee" id = "recenzijee">
-		<table  id = "recenzije" style="border-collapse:separate;  border-spacing:1.3em;" >
-		
-			
-		</table>
-		
-	</form>   -->
-	
-
-	<!-- <form action="" method = "post" name="dodavanjeRecenzije" id ="dodavanjeRecenzije">
-	<table id = "dodavanjeNoveRecenzije" style="border-collapse:separate;  border-spacing:1.3em;">
-	
-
-		<tr><td>Id </td><td><input type="text" id="idRecenzije" class="in-text"></td></tr>
-		<tr><td>Mark</td><td><input type="text" id="markRecenzije" class="in-text"></td></tr>
-		<tr><td>Comment </td><td><input type="text" id="commentRecenzije" class="in-text"></td></tr>	
-		<tr><td><input type = "button" value="Dodaj" onclick="dodajNovuRecenziju()"id = "addReviewButton" class="btn orange" ><td></tr>
-	</table>
-	
-	</form> -->
 </div> 
 
 </body>

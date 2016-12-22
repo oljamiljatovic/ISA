@@ -1,12 +1,12 @@
 window.onload = function() {
     document.getElementById('dugmeLogovanje').onclick = function() {
-    	var username = $("#username").val();
+    	var email = $("#email").val();
     	var password = $("#password").val();
-    	if(username == ""){
-    		toastr.error("Username is empty");
+    	if(email == ""){
+    		toastr.error("Email is empty");
     	}
     	else if(password == ""){
-    		toastr.error("Password is emptry");
+    		toastr.error("Password is empty");
     	}
     	else{
     		$.ajax({
@@ -15,23 +15,59 @@ window.onload = function() {
     			contentType : 'application/json',
     			dataType :'json',
     			data : JSON.stringify({
-    				"username" : username,
+    				"email" : email,
     				"password" : password
     			}),
-    			success : function(data){
-    				alert(data.username);
-    				username = data.username;
-    				if(username == "Desa"){
+    			success : function(dataUser){
+    				
+    				if(dataUser.accept== "false"){
+    					alert("niste potvrdili registraciju");
+    				}
+    				
+    				if(dataUser == null){
+    					alert("Null");
+    					window.location.reload();
+    				}
+    				var userRole =  dataUser.role;
+    				var userEmail = dataUser.email;
+    				if(userRole == "guest"){
+    					
+    					/*		$.ajax({
+    									type : 'POST',
+    									url :  '/guestController/findGuestByEmail',
+    									contentType : 'text/plain',
+    									dataType :'json',
+    									data : userEmail,
+    									success : function(dataFound){
+    										 Ovdje ga treba dodati u sesiju kao Guest
+    											//alert("Name u drugom ajaxu"+dataFound.name + " Surname"+ dataFound.surname + " Email"+ dataFound.email + " Password"+ dataFound.password );
+    									},
+    									error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    										alert("PROBLEM");
+    										alert("AJAX ERROR: " + errorThrown);
+    									}
+    							});
+    						*/
+    					
+    					
+    					window.location.href= "userProfile.html"
+    				}else if(userRole == "employee"){
     					window.location.href= "waiter.html"
-    				}else if(username == "Mica"){
-    					window.location.href = "systemManager.html";
+    				}
+    				/*alert(data.username);
+    				username = data.username;
+    				if(username == "desa"){
+    					window.location.href= "waiter.html"
+    				}else if(username == "mica"){
+    					window.location.href = "cook.html";
     				}else if(username == "oljka"){
     					window.location.href = "barman.html";
-    				}
+    				}*/
     		
     			},
 
     			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    				alert("Da li je ovdje problem");
     				alert("AJAX ERROR: " + errorThrown);
     			}
     		});

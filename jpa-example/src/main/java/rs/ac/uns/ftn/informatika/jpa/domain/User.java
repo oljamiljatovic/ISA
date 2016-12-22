@@ -12,6 +12,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("session")
 @Entity
 @Table(name="user")
 @Inheritance(strategy=JOINED)
@@ -20,10 +25,10 @@ public class User {
 	@Id
     @GeneratedValue
 	@Column(name="id", unique=true, nullable=false)
-	private Integer id;
+	protected Long id;
 	
-	@Column(name="username",nullable = false)
-	protected String username;
+	@Column(name="email",nullable = false)
+	protected String email;
 	
 	@Column(nullable = false)
 	protected String password;
@@ -31,7 +36,18 @@ public class User {
 	@Column(nullable = false)
 	protected String role;
 	
-	public Integer getId() {
+	@Column(nullable = false)
+	protected String accept;
+	
+	public String getAccept() {
+		return accept;
+	}
+
+	public void setAccept(String accept) {
+		this.accept = accept;
+	}
+
+	public Long getId() {
 		return id;
 	}
 	
@@ -39,21 +55,22 @@ public class User {
 		
 	}
 	
-	public User(String username, String password) {
-		
-		this.username = username;
-		this.password = password;
-		
-	}
 
-
-
-	public User(Integer id, String username, String password, String role) {
+	public User(String email, String password, String role, String accept) {
 		super();
-		this.id = id;
-		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.accept = accept;
+	}
+
+	public User(Long id, String email, String password, String role, String accept) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.accept = accept;
 	}
 
 	public String getRole() {
@@ -64,16 +81,17 @@ public class User {
 		this.role = role;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -83,12 +101,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	
-
-
-
-
 
 
 	

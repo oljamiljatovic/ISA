@@ -4,6 +4,15 @@
 
 -- =================================================================================================
 
+INSERT INTO user(email,password,role,accept) VALUES('oljka','oljkaoljka','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('mica','micamica','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('vlado','vladovlado','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('desa','desadesa','employee','true')
+
+INSERT INTO guest(id,name,surname) VALUES('1','Olja','Miljatovic')
+INSERT INTO guest(id,name,surname) VALUES('2','Milica','Milutinovic')
+INSERT INTO guest(id,name,surname) VALUES('3','Vladimir','Stanojevic')
+
 
 insert into drink( name, price) values ('rakija',120)
 insert into drink(name, price) values ('vodka',180)
@@ -12,15 +21,15 @@ insert into drink(name, price) values ('vino',200)
 insert into drink(name, price) values ('sok',90)
 insert into drink(name, price) values ('voda',60)
 
-INSERT INTO user(username,password,role) VALUES('oljka','oljkaoljka','guest')
-INSERT INTO user(username,password,role) VALUES('mica','micamica','guest')
-INSERT INTO user(username,password,role) VALUES('vlado','vladovlado','guest')
-INSERT INTO user(username,password,role) VALUES('desa','desadesa','guest')
-
-
+-- raspored rada
 INSERT INTO calendar_for_waiter(username,datum,times) VALUES ('Mica','01/01/2016,01/02/2016','12:00-20:00,16:00-00:00')
 INSERT INTO calendar_for_waiter(username,datum,times) VALUES ('Desa','01/11/2016,01/12/2016,01/13/2016,01/14/2016,01/15/2016,01/25/2016,01/26/2016,01/27/2016,01/28/2016,01/29/2016','08:00-16:00,08:00-16:00,08:00-16:00,08:00-16:00,08:00-16:00,12:00-20:00,12:00-20:00,12:00-20:00,12:00-20:00,12:00-20:00')
-
+-- dodjeljeni reoni
+INSERT INTO working_area(username,area) VALUES ('Desa','1,2,7,8')
+INSERT INTO working_area(username,area) VALUES ('Oljka','3,4,9,10,11')
+-- narudzbine
+INSERT INTO orderr(username,desk,drinks,meals) VALUES ('Desa','2','pivo,kafa,rakija','posni pasulj,cijela pastrmka')
+INSERT INTO orderr(username,desk,drinks,meals) VALUES ('Mica','3','caj sa limunom','pita sa visnjama')
 
 -- AUSTRALIA
 

@@ -36,7 +36,7 @@ public class EmployeeController {
 		ArrayList<Employee> employees = this.employeeService.getEmployees();
 		
 		for(int i = 0 ; i <employees.size(); i++){
-			employeesUsernames.add(employees.get(i).getUsername());
+			employeesUsernames.add(employees.get(i).getEmail());
 			
 		}
 		
