@@ -1,15 +1,25 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import org.springframework.util.Assert;
 
 @Entity
-public class Menu {
+public class Drink implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	//@GeneratedValue
+	@GeneratedValue
 	private Long id;
 	
 	@Column(nullable = false)
@@ -18,13 +28,17 @@ public class Menu {
 	@Column(nullable = false)
 	private int price;
 	
-	public Menu(){
+	//@ManyToOne(optional = false)
+	//private DrinkList drinkList;
+	
+	public Drink(){
 		
 	}
 	
-	public Menu(Long id, String name, int price) {
+	public Drink(/*DrinkList drinkList,*/ String name, int price) {
 		super();
-		this.id = id;
+		//Assert.notNull(drinkList, "Lista pica ne sme biti null");
+		//this.drinkList = drinkList;
 		this.name = name;
 		this.price = price;
 	}

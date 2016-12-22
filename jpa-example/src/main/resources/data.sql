@@ -14,6 +14,12 @@ INSERT INTO guest(id,name,surname) VALUES('2','Milica','Milutinovic')
 INSERT INTO guest(id,name,surname) VALUES('3','Vladimir','Stanojevic')
 
 
+insert into drink( name, price) values ('rakija',120)
+insert into drink(name, price) values ('vodka',180)
+insert into drink(name, price) values ('tekila',150)
+insert into drink(name, price) values ('vino',200)
+insert into drink(name, price) values ('sok',90)
+insert into drink(name, price) values ('voda',60)
 
 -- raspored rada
 INSERT INTO calendar_for_waiter(username,datum,times) VALUES ('Mica','01/01/2016,01/02/2016','12:00-20:00,16:00-00:00')
