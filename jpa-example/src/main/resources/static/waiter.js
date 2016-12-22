@@ -174,7 +174,34 @@ $(document).on('click', '#submitEdit', function(e) {
 });
 
 $(document).on('click', '#update', function(e) {
-	showOrders();
+	var drinks =$(document).find('#drinksId').val();
+	var meals =$(document).find('#mealsId').val();
+	var desk =$(document).find('#deskId').val();
+	
+	$.ajax({
+		type : 'PUT',
+		url :  '/orderController/change/1',
+		contentType : 'application/json',
+		dataType :'json',
+		data : JSON.stringify({
+			"username" : "Desa",
+			"desk" : desk,
+			"drinks" : drinks,
+			"meals" : meals
+		}),
+		success : function(data){		
+			alert("Uspjesno izvrsena promjena");
+			showOrders();
+
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	
+	});
+
+	
 });
 
 $(document).on('click','#addOrder',function(e){
