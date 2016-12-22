@@ -3,7 +3,7 @@ $(document).on('click','#kalendar',function(e){
 	$("#content").empty();
 	var today = new Date();
 	var y = today.getFullYear();
-	$.ajax({
+	/*$.ajax({
 		type : 'GET',
 		url :  '/calendarForWaiterController/getCalendarForWaiter',
 		contentType : 'application/json',
@@ -46,7 +46,7 @@ $(document).on('click','#kalendar',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 			alert("AJAX ERROR: " + errorThrown);
 		}
-	});
+	});*/
 });
 $(document).on('click','#stolovi',function(e){
 	e.preventDefault();

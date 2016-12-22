@@ -3,15 +3,11 @@
 --
 
 -- =================================================================================================
-INSERT INTO user(username,password) VALUES('OGI','ogiogi')
--- rasporedi rada
-=======
+INSERT INTO user(email,password,role) VALUES('OGI','ogiogi','guest')
 INSERT INTO user(email,password,role) VALUES('oljka','oljkaoljka','guest')
 INSERT INTO user(email,password,role) VALUES('mica','micamica','guest')
 INSERT INTO user(email,password,role) VALUES('vlado','vladovlado','guest')
 INSERT INTO user(email,password,role) VALUES('desa','desadesa','employee')
-
-
 
 INSERT INTO guest(id,name,surname) VALUES('1','Olja','Miljatovic')
 INSERT INTO guest(id,name,surname) VALUES('2','Milica','Milutinovic')

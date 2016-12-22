@@ -1,6 +1,5 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
-import static javax.persistence.InheritanceType.JOINED;
 
 import java.util.ArrayList;
 import java.util.Date;
