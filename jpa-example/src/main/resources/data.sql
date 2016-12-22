@@ -3,7 +3,7 @@
 --
 
 -- =================================================================================================
-INSERT INTO user(email,password,role) VALUES('OGI','ogiogi','guest')
+
 INSERT INTO user(email,password,role) VALUES('oljka','oljkaoljka','guest')
 INSERT INTO user(email,password,role) VALUES('mica','micamica','guest')
 INSERT INTO user(email,password,role) VALUES('vlado','vladovlado','guest')

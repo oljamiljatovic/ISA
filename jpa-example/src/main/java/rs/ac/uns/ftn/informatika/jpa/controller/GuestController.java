@@ -46,7 +46,7 @@ public class GuestController {
 	}
 	
 	
-	@RequestMapping(
+	/*@RequestMapping(
 			value = "/findGuestByEmail",
 			method = RequestMethod.POST,
 			consumes = MediaType.TEXT_PLAIN_VALUE,
@@ -55,11 +55,11 @@ public class GuestController {
 			@RequestBody String email) throws Exception {
 		
 		Guest foundGuest = guestService.findGuestByEmail(email);
-		
+		System.out.println("guestController"+ foundGuest.getEmail()+"fas"+foundGuest.getName());
 		
 		return new ResponseEntity<Guest>(foundGuest, HttpStatus.OK);
 	}
-	
+	*/
 
 	@RequestMapping(
 			value = "/regIn",

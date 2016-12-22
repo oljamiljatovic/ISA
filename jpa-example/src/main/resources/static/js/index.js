@@ -19,7 +19,7 @@ window.onload = function() {
     				"password" : password
     			}),
     			success : function(dataUser){
-    				
+    				alert("dataUser iz prvog ajaxa"+dataUser.email);
     				
     				if(dataUser == null){
     					alert("Null");
@@ -29,22 +29,22 @@ window.onload = function() {
     				var userEmail = dataUser.email;
     				if(userRole == "guest"){
     					
-    							$.ajax({
+    					/*		$.ajax({
     									type : 'POST',
     									url :  '/guestController/findGuestByEmail',
     									contentType : 'text/plain',
     									dataType :'json',
     									data : userEmail,
     									success : function(dataFound){
-    										/* Ovdje ga treba dodati u sesiju kao Guest*/
-    											alert(dataFound.name + " "+ dataFound.surname + " "+ dataFound.email + " "+ dataFound.password );
+    										 Ovdje ga treba dodati u sesiju kao Guest
+    											//alert("Name u drugom ajaxu"+dataFound.name + " Surname"+ dataFound.surname + " Email"+ dataFound.email + " Password"+ dataFound.password );
     									},
-
     									error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    										alert("PROBLEM");
     										alert("AJAX ERROR: " + errorThrown);
     									}
     							});
-    						
+    						*/
     					
     					
     					window.location.href= "userProfile.html"
@@ -64,6 +64,7 @@ window.onload = function() {
     			},
 
     			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    				alert("Da li je ovdje problem");
     				alert("AJAX ERROR: " + errorThrown);
     			}
     		});

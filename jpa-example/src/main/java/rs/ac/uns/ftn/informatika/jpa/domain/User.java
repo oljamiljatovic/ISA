@@ -12,7 +12,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("session")
 @Entity
 @Table(name="user")
 @Inheritance(strategy=JOINED)

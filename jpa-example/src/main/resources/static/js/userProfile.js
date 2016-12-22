@@ -1,4 +1,28 @@
+
+
+
 window.onload = function() {
+	
+	$.ajax({
+		type : 'GET',
+		dataType : 'json',
+		url :'/userController/isValidate',
+		success : function(data){
+			alert("Tipovi");
+			var roleData = data.role;
+			alert(roleData);
+				if(roleData != "guest"){
+					document.location.href="index.html";
+				}else{
+					alert("OK");
+				}
+			
+		},
+	error : function(XMLHttpRequest, textStatus, errorThrown) {
+		alert("GRESKA");
+	}	
+	});
+	
 	   document.getElementById('izmjeni').onclick = function() {
 		   document.getElementById("ime").readOnly = false;
 		   document.getElementById("prezime").readOnly = false;
