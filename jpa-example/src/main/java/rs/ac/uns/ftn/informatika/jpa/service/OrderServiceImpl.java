@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
+import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.repository.OrderRepository;
 
 @Service
@@ -19,5 +20,8 @@ public class OrderServiceImpl implements OrderService{
 	public ArrayList<Order> getOrders() {
 		
 		return this.orderRepository.findAll();
+	}
+	public Order createNew(Order order) {
+		return orderRepository.save(order);
 	}
 }
