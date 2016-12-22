@@ -36,6 +36,17 @@ public class User {
 	@Column(nullable = false)
 	protected String role;
 	
+	@Column(nullable = false)
+	protected String accept;
+	
+	public String getAccept() {
+		return accept;
+	}
+
+	public void setAccept(String accept) {
+		this.accept = accept;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -45,19 +56,21 @@ public class User {
 	}
 	
 
-	public User(String email, String password, String role) {
+	public User(String email, String password, String role, String accept) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.accept = accept;
 	}
 
-	public User(Long id, String email, String password, String role) {
+	public User(Long id, String email, String password, String role, String accept) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.accept = accept;
 	}
 
 	public String getRole() {

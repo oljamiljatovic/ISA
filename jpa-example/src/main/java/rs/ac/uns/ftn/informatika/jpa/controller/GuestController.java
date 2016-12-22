@@ -1,11 +1,20 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
@@ -28,6 +38,11 @@ public class GuestController {
 	@Autowired
 	private GuestService guestService;
 	
+	
+	
+	 @Autowired
+	 private JavaMailSender mailSender;
+
 	
 	@GetMapping("/guests")
 	@ResponseBody
@@ -71,11 +86,30 @@ public class GuestController {
 	
 		
 		Guest addedGuest = guestService.createNew(guest);
+		sendMail(addedGuest);
 		
 		return new ResponseEntity<Guest>(addedGuest, HttpStatus.OK);
 	}
 	
+	 public void sendMail(Guest guest) {
+		 
+		 SimpleMailMessage mail = new SimpleMailMessage();
+		 mail.setTo(guest.getEmail());
+		 mail.setFrom("oljicamiljatovic@gmail.com");
+		 mail.setSubject("Info");
+		 mail.setText("http://localhost:9999/guestController/accept/"+guest.getId());
+		 
+		   
+	        try {
+	        	   mailSender.send(mail);
+	        } catch (MailException ex) {
+	            System.out.println(ex);
+	        }
+	         
 	
+	    }
+
+  
 	@RequestMapping(
 			value = "/change/{id}",
 			method = RequestMethod.PUT,
@@ -93,5 +127,24 @@ public class GuestController {
 		return new ResponseEntity<Guest>(changedGuest, HttpStatus.OK);
 	}
 	
+
+	@RequestMapping(
+			value = "/accept/{id}",
+			method = RequestMethod.GET)
+	public void update(
+			 @PathVariable Long id) throws Exception {
 	
+		System.out.println("Usao je u potvrdu");
+		Guest foundedGuest = guestService.findOne(id);
+		foundedGuest.setAccept("true");
+		
+		guestService.update(foundedGuest, id);
+		/*foundedGuest.setName(guest.getName());
+		foundedGuest.setSurname(guest.getSurname());
+		Guest changedGuest = guestService.update(foundedGuest, id);
+		*/
+	
+	
+		
+	}
 }

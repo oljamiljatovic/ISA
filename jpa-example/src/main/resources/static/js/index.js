@@ -19,7 +19,10 @@ window.onload = function() {
     				"password" : password
     			}),
     			success : function(dataUser){
-    				alert("dataUser iz prvog ajaxa"+dataUser.email);
+    				
+    				if(dataUser.accept== "false"){
+    					alert("niste potvrdili registraciju");
+    				}
     				
     				if(dataUser == null){
     					alert("Null");

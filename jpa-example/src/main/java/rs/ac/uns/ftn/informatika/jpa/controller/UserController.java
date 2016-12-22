@@ -48,6 +48,9 @@ public class UserController {
 		
 		
 		User foundUser  = userService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
+		
+		
+	
 		if(foundUser == null){
 			System.out.println("NULL");
 		}

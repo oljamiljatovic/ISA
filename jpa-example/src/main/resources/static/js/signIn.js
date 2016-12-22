@@ -31,6 +31,7 @@ window.onload = function() {
     	    				"email" :email,
     	    				"password" : password,
     	    				"role" : "guest",
+    	    				"accept" : "false",
     	    				"name" : name,
     	    				"surname" : surname
     	    			}),
@@ -42,6 +43,7 @@ window.onload = function() {
     	    			},
 
     	    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    	    			
     	    				alert("AJAX ERROR: " + errorThrown);
     	    			}
     	    		

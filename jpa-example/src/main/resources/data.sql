@@ -4,14 +4,16 @@
 
 -- =================================================================================================
 
-INSERT INTO user(email,password,role) VALUES('oljka','oljkaoljka','guest')
-INSERT INTO user(email,password,role) VALUES('mica','micamica','guest')
-INSERT INTO user(email,password,role) VALUES('vlado','vladovlado','guest')
-INSERT INTO user(email,password,role) VALUES('desa','desadesa','employee')
+INSERT INTO user(email,password,role,accept) VALUES('oljka','oljkaoljka','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('mica','micamica','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('vlado','vladovlado','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('desa','desadesa','employee','true')
 
 INSERT INTO guest(id,name,surname) VALUES('1','Olja','Miljatovic')
 INSERT INTO guest(id,name,surname) VALUES('2','Milica','Milutinovic')
 INSERT INTO guest(id,name,surname) VALUES('3','Vladimir','Stanojevic')
+
+
 
 -- raspored rada
 INSERT INTO calendar_for_waiter(username,datum,times) VALUES ('Mica','01/01/2016,01/02/2016','12:00-20:00,16:00-00:00')
