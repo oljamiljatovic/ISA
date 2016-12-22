@@ -49,8 +49,10 @@ window.onload = function() {
     							});
     						*/
     					
-    					
-    					window.location.href= "userProfile.html"
+    					if(dataUser.email=="mica")
+    						window.location.href= "systemManager.html";
+    					else
+    						window.location.href= "userProfile.html";
     				}else if(userRole == "employee"){
     					window.location.href= "waiter.html"
     				}

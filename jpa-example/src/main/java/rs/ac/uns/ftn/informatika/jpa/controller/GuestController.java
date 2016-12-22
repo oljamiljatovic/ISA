@@ -1,14 +1,8 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
-import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.service.GuestService;
 
