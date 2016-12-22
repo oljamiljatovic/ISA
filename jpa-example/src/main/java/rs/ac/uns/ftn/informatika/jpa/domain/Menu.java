@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -51,5 +52,4 @@ public class Menu {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
 }

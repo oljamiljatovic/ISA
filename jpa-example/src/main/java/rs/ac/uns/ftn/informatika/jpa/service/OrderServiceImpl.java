@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.repository.OrderRepository;
 
 @Service
@@ -23,5 +24,13 @@ public class OrderServiceImpl implements OrderService{
 	}
 	public Order createNew(Order order) {
 		return orderRepository.save(order);
+	}
+	public Order update(Order order, Long id) {
+		order.setId(id);
+		return orderRepository.save(order);
+	}
+	@Override
+	public Order findOne(Long id) {
+		return orderRepository.findOne(id);
 	}
 }
