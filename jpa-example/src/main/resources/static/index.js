@@ -24,7 +24,7 @@ window.onload = function() {
     				if(username == "Desa"){
     					window.location.href= "waiter.html"
     				}else if(username == "Mica"){
-    					window.location.href = "cook.html";
+    					window.location.href = "systemManager.html";
     				}else if(username == "oljka"){
     					window.location.href = "barman.html";
     				}

@@ -4,6 +4,14 @@
 
 -- =================================================================================================
 
+
+insert into drink( name, price) values ('rakija',120)
+insert into drink(name, price) values ('vodka',180)
+insert into drink(name, price) values ('tekila',150)
+insert into drink(name, price) values ('vino',200)
+insert into drink(name, price) values ('sok',90)
+insert into drink(name, price) values ('voda',60)
+
 INSERT INTO user(username,password,role) VALUES('oljka','oljkaoljka','guest')
 INSERT INTO user(username,password,role) VALUES('mica','micamica','guest')
 INSERT INTO user(username,password,role) VALUES('vlado','vladovlado','guest')
