@@ -20,41 +20,29 @@ window.onload = function() {
     			}),
     			success : function(dataUser){
     				
-    				if(dataUser.accept== "false"){
-    					alert("niste potvrdili registraciju");
-    				}
-    				
     				if(dataUser == null){
-    					alert("Null");
     					window.location.reload();
     				}
+    				
+    				if(dataUser.accept== "false"){
+    					alert("Molimo Vas da potvrdite registraciju");
+    					window.location.href= "index.html";
+    				}else{
+    				
+    				
     				var userRole =  dataUser.role;
     				var userEmail = dataUser.email;
     				if(userRole == "guest"){
-    					
-    					/*		$.ajax({
-    									type : 'POST',
-    									url :  '/guestController/findGuestByEmail',
-    									contentType : 'text/plain',
-    									dataType :'json',
-    									data : userEmail,
-    									success : function(dataFound){
-    										 Ovdje ga treba dodati u sesiju kao Guest
-    											//alert("Name u drugom ajaxu"+dataFound.name + " Surname"+ dataFound.surname + " Email"+ dataFound.email + " Password"+ dataFound.password );
-    									},
-    									error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-    										alert("PROBLEM");
-    										alert("AJAX ERROR: " + errorThrown);
-    									}
-    							});
-    						*/
+    			
     					
     					if(dataUser.email=="mica")
     						window.location.href= "systemManager.html";
     					else
     						window.location.href= "userProfile.html";
+    				
     				}else if(userRole == "employee"){
     					window.location.href= "waiter.html"
+    				}
     				}
     				/*alert(data.username);
     				username = data.username;

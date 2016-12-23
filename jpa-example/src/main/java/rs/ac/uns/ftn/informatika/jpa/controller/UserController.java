@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class UserController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> logIn(
-			@RequestBody User user) throws Exception {
+			/*@Valid*/ @RequestBody User user) throws Exception {
 		
 		
 		User foundUser  = userService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
