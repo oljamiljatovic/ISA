@@ -1,19 +1,29 @@
 $(document).on('submit','#registracijaMenadzera',function(e){
 	e.preventDefault();
-	//var id = $('#idMenadzera').val();
 	var name = $('#imeMenadzera').val();
+	var surname = $('#prezimeMenadzera').val();
+	var address = $('#adresaMenadzera').val();
+	var email = $('#emailMenadzera').val();
+	var contact = $('#kontaktMenadzera').val();
 	var dataa = JSON.stringify({
-		//"id" : id,
-		"name" : name
+		"name" : name,
+		"surname" : surname,
+		"address" : address,
+		"email" : email,
+		"contact" : contact
 	});
 	
-	/*if(id == ""){
-		toastr.error("Id je prazan");
-	}
-	else*/ if(name == ""){
-		toastr.error("Ime je prazno");
-	}
-	else{
+	if(name == ""){
+		alert("Ime je prazno");
+	}else if(surname == ""){
+		alert("Prezime je prazno");
+	}else if(address == ""){
+		alert("Adresa je prazna");
+	}else if(email == ""){
+		alert("Email je prazan");
+	}else if(contact == ""){
+		alert("Kontakt je prazan");
+	}else{
 		$.ajax({
 			type : 'POST',
 			url :  '/registerController/registerManager',

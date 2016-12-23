@@ -23,9 +23,12 @@ public class Restaurant implements Serializable{
     @GeneratedValue
 	@Column(name="id", unique=true, nullable=false)
 	private Long id;
-	
-	@Column(name="name", unique=true, nullable=false)
+	@Column(nullable=false)
 	private String name;
+	@Column( nullable=false)
+	private String address;
+	@Column(nullable=false)
+	private String contact;
 	//private Menu menu;
 	//@Column(name="drink_id")
 	//private DrinkList drinkList;
@@ -36,9 +39,10 @@ public class Restaurant implements Serializable{
 		
 	}
 	
-	public Restaurant(String name){
+	public Restaurant(String name, String address, String contact){
 		this.name = name;
-		//this.drink = drink;
+		this.address = address;
+		this.contact = contact;
 	}
 
 
@@ -61,25 +65,20 @@ public class Restaurant implements Serializable{
 		this.name = name;
 	}
 
-
-	/*public Menu getMenu() {
-		return menu;
+	public String getAddress() {
+		return address;
 	}
 
-
-	public void setMenu(Menu menu) {
-		this.menu = menu;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-
-	public DrinkList getDrinkList() {
-		return drinkList;
+	public String getContact() {
+		return contact;
 	}
 
-
-	public void setDrinkList(DrinkList drinkList) {
-		this.drinkList = drinkList;
-	}*/
-	
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
 	
 }

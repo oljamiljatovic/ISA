@@ -2652,3 +2652,17 @@ footer {
         color: #f67d34; }
         .pagination ul li a:hover {
           text-decoration: underline; }
+
+          
+#wrapper {
+  display:table-row;
+  width:100%;
+}
+#first {
+  display:table-cell;
+  width:30%;
+}
+#second {
+  display:table-cell;
+  width:30%;
+}

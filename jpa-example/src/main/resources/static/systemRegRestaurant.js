@@ -18,13 +18,21 @@ $(document).ready(function(){
 $(document).on('submit','#registracijaRestorana',function(e){
 	e.preventDefault();
 	var name = $('#imeRestorana').val();
+	var address = $('#adresaRestorana').val();
+	var contact = $('#kontaktRestorana').val();
 	if(name == ""){
 		alert("Ime je prazno");
+	}else if(address == ""){
+		alert("Adresa je prazna");
+	}else if(contact == ""){
+		alert("Kontakt je prazno");
 	}else if($("input[type=checkbox]:checked").length==0){
 		alert("Morate uneti pice");
 	}else{
 		var data2 = JSON.stringify({
 			"name" : name,
+			"address" : address,
+			"contact" : contact
 		});
 		$.ajax({
 			type : 'POST',
