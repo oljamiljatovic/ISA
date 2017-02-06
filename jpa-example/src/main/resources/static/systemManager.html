@@ -3,8 +3,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="systemRegManager.js"> </script>
-<script type="text/javascript" src="systemRegRestaurant.js"> </script>
+<script type="text/javascript" src="js/systemRegManager.js"> </script>
+<script type="text/javascript" src="js/systemRegRestaurant.js"> </script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -30,6 +30,12 @@
 		Kontakt:
 		<input type = "text" id = "kontaktMenadzera" class="in-text"/>
 		<br/>
+		Lozinka:
+		<input type = "password" id = "lozinkaMenadzera" class="in-text"/>
+		<br/>
+		Izaberi restoran:
+		<select id="restoranMenadzera"> </select>
+		<br/>
 		<input type = "submit" id = "submit" value="Submit" class="btn orange">
 	</form>
 	</div></div></div>
@@ -44,6 +50,9 @@
 		Naziv:
 		<input type = "text" id = "imeRestorana" class="in-text"/>
 		<br/>
+		Vrsta restorana:
+		<input type = "text" id = "vrstaRestorana" class="in-text"/>
+		<br/>
 		Adresa:
 		<input type = "text" id = "adresaRestorana" class="in-text"/>
 		<br/>
@@ -51,6 +60,8 @@
 		<input type = "text" id = "kontaktRestorana" class="in-text"/>
 		<br/>
 		<div id="izborPica">
+		</div><br/>
+		<div id="izborObroka">
 		</div><br/>
 		<input type = "submit" id = "submit" value="Submit" class="btn orange">
 	</form>

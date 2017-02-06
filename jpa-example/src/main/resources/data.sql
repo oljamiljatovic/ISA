@@ -21,6 +21,14 @@ insert into drink(name, price) values ('vino',200)
 insert into drink(name, price) values ('sok',90)
 insert into drink(name, price) values ('voda',60)
 
+
+insert into meal(name, price) values ('supa',120)
+insert into meal(name, price) values ('pasulj',180)
+insert into meal(name, price) values ('biftek',150)
+insert into meal(name, price) values ('musaka',200)
+insert into meal(name, price) values ('meso',90)
+insert into meal(name, price) values ('grasak',60)
+
 -- raspored rada
 INSERT INTO calendar_for_waiter(username,datum,times) VALUES ('Mica','01/01/2016,01/02/2016','12:00-20:00,16:00-00:00')
 INSERT INTO calendar_for_waiter(username,datum,times) VALUES ('Desa','01/11/2016,01/12/2016,01/13/2016,01/14/2016,01/15/2016,01/25/2016,01/26/2016,01/27/2016,01/28/2016,01/29/2016','08:00-16:00,08:00-16:00,08:00-16:00,08:00-16:00,08:00-16:00,12:00-20:00,12:00-20:00,12:00-20:00,12:00-20:00,12:00-20:00')

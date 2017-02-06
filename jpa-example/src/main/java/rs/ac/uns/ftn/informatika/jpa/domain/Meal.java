@@ -11,13 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Drink implements Serializable{
+public class Meal implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5035634402207901527L;
 
 	@Id
     @GeneratedValue
-	@Column(name="drink_id", unique=true, nullable=false)
+	@Column(name="meal_id", unique=true, nullable=false)
 	private Long id;
 	
 	@Column(nullable = false, unique=true)
@@ -28,11 +31,11 @@ public class Drink implements Serializable{
 	
 	private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
 	
-	public Drink(){
-		
+	public Meal() {
+		// TODO Auto-generated constructor stub
 	}
 	
-	public Drink(String name, int price) {
+	public Meal(String name, int price) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -61,8 +64,8 @@ public class Drink implements Serializable{
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "drinks")
+	
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "meals")
 	public ArrayList<Restaurant> getRestaurants() {
 		return restaurants;
 	}
@@ -70,5 +73,5 @@ public class Drink implements Serializable{
 	public void setRestaurants(ArrayList<Restaurant> restaurants) {
 		this.restaurants = restaurants;
 	}
-	
+
 }

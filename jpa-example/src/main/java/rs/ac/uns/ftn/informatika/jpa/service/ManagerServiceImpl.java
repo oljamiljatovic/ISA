@@ -24,4 +24,16 @@ public class ManagerServiceImpl implements ManagerService {
 		return this.managerRepository.save(manag);
 	}
 
+	@Override
+	public RestaurantManager getManager(String email) {
+		return this.managerRepository.findByEmail(email);
+	}
+
+	@Override
+	public void updateManager(RestaurantManager rest) {
+		// TODO Auto-generated method stub
+		managerRepository.updateManager(rest.getRestaurant(), rest.getId());
+		
+	}
+
 }

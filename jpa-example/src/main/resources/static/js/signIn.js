@@ -62,23 +62,11 @@ window.onload = function() {
     		}
     };
     
-    
-    
-    
     document.getElementById('dugmeSign').onclick = function() {
     	
     					window.location.href= "signIn.html"
     	
     };
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 };

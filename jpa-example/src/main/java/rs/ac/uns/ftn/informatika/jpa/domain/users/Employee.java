@@ -19,6 +19,8 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User {
 	@Column(nullable = false)
 	private String name;
 	
+	
+	
 	public Employee(){
 		super();
 	}

@@ -6,7 +6,22 @@ $(document).ready(function(){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,pice){
-				$('#izborPica').append('<input type="checkbox" id = "' +pice[0] +'" value="' + pice[1] + '">' + pice[1]);
+				$('#izborPica').append('<input name="drink_dr" type="checkbox" id = "' +pice[1] +'" value="' + pice[1] + '">' + pice[1]);
+			});
+			
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/registerController/uzmiObroke',
+				success : function(data){
+					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$.each(list, function(index,obrok){
+						$('#izborObroka').append('<input name="meal_dr" type="checkbox" id = "' +obrok[1] +'" value="' + obrok[1] + '">' + obrok[1]);
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Admin ERROR: " + errorThrown);
+				}	
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -20,6 +35,9 @@ $(document).on('submit','#registracijaRestorana',function(e){
 	var name = $('#imeRestorana').val();
 	var address = $('#adresaRestorana').val();
 	var contact = $('#kontaktRestorana').val();
+	var type = $('#vrstaRestorana').val();
+	var drinks = [];
+	var meals = [];
 	if(name == ""){
 		alert("Ime je prazno");
 	}else if(address == ""){
@@ -29,10 +47,22 @@ $(document).on('submit','#registracijaRestorana',function(e){
 	}else if($("input[type=checkbox]:checked").length==0){
 		alert("Morate uneti pice");
 	}else{
+		$('input[name="drink_dr"]:checked').each(function() {
+			  drinks.push(this.value);
+			  console.log(this.value);
+		});
+		$('input[name="meal_dr"]:checked').each(function() {
+			  meals.push(this.value);
+			  console.log(this.value);
+		});
+		
 		var data2 = JSON.stringify({
 			"name" : name,
+			"type" : type,
 			"address" : address,
-			"contact" : contact
+			"contact" : contact,
+			"drinks" : drinks,
+			"meals" : meals
 		});
 		$.ajax({
 			type : 'POST',

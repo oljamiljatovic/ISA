@@ -6,19 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
-import rs.ac.uns.ftn.informatika.jpa.repository.DrinkRepository;
+import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
+import rs.ac.uns.ftn.informatika.jpa.repository.MealRepository;
 
 @Service
 @Transactional
-public class DrinkServiceImpl implements DrinkService {
+public class MealServiceImpl implements MealService {
 	
 	@Autowired
-	private DrinkRepository drinkRepository;
-	
+	private MealRepository mealRepository;
+
 	@Override
-	public ArrayList<Drink> getDrinks() {
+	public ArrayList<Meal> getMeals() {
 		
-		return this.drinkRepository.findAll();
+		return this.mealRepository.findAll();
+		//return null;
 	}
+	
+
 }

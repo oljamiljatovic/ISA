@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class RestaurantManager implements Serializable {
@@ -28,18 +29,25 @@ public class RestaurantManager implements Serializable {
 	private String email;
 	@Column(nullable = false)
 	private String contact;
+	@Column(nullable = false)
+	private String password;
+	@Column(nullable = false)
+	private String restaurant;
 	
 	public RestaurantManager(){
 		
 	}
 	
-	public RestaurantManager(String name, String surname, String address, String email, String contact) {
+	public RestaurantManager(String name, String surname, String address, String email, String contact,
+			String password, String restaurant) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.address = address;
 		this.email = email;
 		this.contact = contact;
+		this.password = password;
+		setRestaurant(restaurant);
 	}
 
 	public Long getId() {
@@ -88,6 +96,23 @@ public class RestaurantManager implements Serializable {
 
 	public void setContact(String contact) {
 		this.contact = contact;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRestaurant() {
+		return restaurant;
+	}
+
+	@OneToOne
+	public void setRestaurant(String restaurant) {
+		this.restaurant = restaurant;
 	}
 	
 }

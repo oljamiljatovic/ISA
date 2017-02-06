@@ -42,6 +42,8 @@ window.onload = function() {
     				
     				}else if(userRole == "employee"){
     					window.location.href= "waiter.html"
+    				}else if(userRole=="restaurantManager"){
+    					window.location.href = "restaurantManager.html";
     				}
     				}
     				/*alert(data.username);
