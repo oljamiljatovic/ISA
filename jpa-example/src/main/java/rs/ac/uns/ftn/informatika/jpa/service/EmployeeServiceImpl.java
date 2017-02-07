@@ -24,6 +24,23 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return this.employeeRepository.findAll();
 	}
 
+	@Override
+	public Employee addEmployee(Employee e) {
+		return this.employeeRepository.save(e);
+	}
 
+	@Override
+	public ArrayList<Employee> getEmployeesOfRestaurant(String rest) {
+		
+		return this.employeeRepository.findByRestaurant(rest);
+	}
+
+	@Override
+	public ArrayList<Employee> getWaitersOfRestaurant(String rest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	
 }

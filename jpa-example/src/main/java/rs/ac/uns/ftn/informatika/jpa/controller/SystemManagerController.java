@@ -43,7 +43,6 @@ public class SystemManagerController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	//@Transactional(readOnly = false)
 	public ResponseEntity<RestaurantManager> addManager(@RequestBody RestaurantManager manag)  
 			throws Exception {
 		this.managerService.addManager(manag);
