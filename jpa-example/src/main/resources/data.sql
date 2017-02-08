@@ -36,8 +36,8 @@ INSERT INTO calendar_for_waiter(username,datum,times) VALUES ('Desa','01/11/2016
 INSERT INTO working_area(username,area) VALUES ('Desa','1,2,7,8')
 INSERT INTO working_area(username,area) VALUES ('Oljka','3,4,9,10,11')
 -- narudzbine
-INSERT INTO orderr(username,desk,drinks,meals) VALUES ('Desa','2','pivo,kafa,rakija','posni pasulj,cijela pastrmka')
-INSERT INTO orderr(username,desk,drinks,meals) VALUES ('Mica','3','caj sa limunom','pita sa visnjama')
+INSERT INTO orderr(username,desk) VALUES ('Desa','2')
+INSERT INTO orderr(username,desk) VALUES ('Mica','3')
 
 -- AUSTRALIA
 

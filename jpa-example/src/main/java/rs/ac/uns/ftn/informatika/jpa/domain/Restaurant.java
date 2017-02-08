@@ -45,7 +45,6 @@ public class Restaurant implements Serializable{
 		this.type = type;
 		this.address = address;
 		this.contact = contact;
-		
 	}
 
 

@@ -1,3 +1,22 @@
+function message(){
+	toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "100",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+}
 $(document).on('click','#kalendar',function(e){
 	e.preventDefault();
 	$("#content").empty();
@@ -95,6 +114,7 @@ $(document).on('click','#stolovi',function(e){
 
 function showOrders(){
 	$("#content").empty();
+	
 	$.ajax({
 		type : 'GET',
 		url :  '/orderController/getOrder',
@@ -102,13 +122,13 @@ function showOrders(){
 		dataType :'json',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#content").append("</br><button id='addOrder'>Dodaj porudzbinu</button>");
-			$("#content").append('<p><b>Lista porudzbina</b></p>');
+			$("#content").append("</br><button id='addOrder' class='btn orange'>Dodaj porudžbinu</button>");
+			$("#content").append('<p><b>Lista porudžbina</b></p>');
 			$("#content").append("<table id='tableOrder'>");
 		      $("#content").append("<thead>");
 		      $("#content").append("<tr>");
 		      $("#content").append("<th>Sto</th>");
-		      $("#content").append("<th>Drinkici</th>");
+		      $("#content").append("<th>Pića</th>");
 		      $("#content").append("<th>Jela</th>");
 		      $("#content").append("</tr>");
 		      $("#content").append("</thead>");
@@ -119,20 +139,27 @@ function showOrders(){
 						var meals = order.meals;
 						var desk = order.desk;
 						var forma = $('<form method="post" class="orderForm" action=""></form>');
+						var formaBill = $('<form method="post" class="orderBill" action=""></form>');
 				        var tr = $('<tr></tr>');
 				        tr.append('<td align="center">' + desk + '</td><td align="center">'+drinks+'</td><td align="center">' + meals + '</td>');
 				        forma.append('<input type="hidden" name="edit" id='+index+' value="'+ desk+";"+drinks+";"+meals +'">' +
-				                '<input type="submit" id="submitEdit" name='+index+' value="Izmjeni">');
+				                '<input type="submit" id="submitEdit" name='+index+' value="Izmjeni" class="btn green">');
 				        var td = $('<td></td>');
 				        td.append(forma);
+				        formaBill.append('<input type="hidden" name="bill" id='+index+' value="'+ desk+";"+drinks+";"+meals +'">' +
+				                '<input type="submit" id="bill" name='+index+' value="Kreiraj račun" class="btn green">');
+				        var tdBill = $('<td></td>');
+				        tdBill.append(formaBill);
 				        tr.append(td);
+				        tr.append(tdBill);
 				        $('#content').append(tr);
 					}	
 				});
-
+	
 			  $("#content").append("</tbody>");
 			  $("#content").append("</table>");
-			  //$("#tableOrder").css("border","1px solid #000");
+			  //var table = document.getElementById("tableOrder");
+			  //table.style.border = "thick solid red";
 			  //$("#tableOrder").css("align","center");
 
 		},
@@ -159,28 +186,163 @@ $(document).on('click', '#submitEdit', function(e) {
 	});
 	var splitovano  = zaSplit.split(";");
 	var desk = splitovano[0];
-	var drinks = splitovano[1];
-	var meals = splitovano[2];
+	var drinks = splitovano[1].split(",");
+	var meals = splitovano[2].split(",");
+
 	$("#content").empty();
-	$("#content").append('<p><b>Izmjena porudzbine</b></p>');
+	$("#content").append('</br><p><b>Izmjena porudžbine</b></p>');
 	$("#content").append('<p>*potrebno je popuniti sva polja</p>');
 	$("#content").append('<table class="edit"></table>');
-	
 	$("table.edit").append('<tr><td>Sto: &nbsp;</td><td><input type="text" id="deskId" value="'+desk+'"></td></tr>');
 	$("#deskId").attr('readonly','readonly');
-	$("table.edit").append('<tr><td>Drinkici: </td><td><input type="text" id="drinksId" value="'+drinks+'"></td></tr>');
-	$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><input type="text" id="mealsId" value="'+meals+'"></td></tr>');
-	$("table.edit").append('<tr><td>&nbsp;</td><td><input type="submit" id="update" value="Potvrdi"></td>');
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/registerController/uzmiPica',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("table.edit").append('<tr><td>Pića: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+			$.each(list, function(index,pice){
+				$('#comboDrinks').append('<option>'+pice[1]+'</option>');
+			});
+			
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/registerController/uzmiObroke',
+				success : function(data){
+					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
+					$.each(list, function(index,obrok){
+						$('#comboMeals').append('<option>'+obrok[1]+'</option>');
+					});
+					$('#comboDrinks').val(drinks);
+					$('#comboMeals').val(meals);
+					$("table.edit").append('<tr><td>&nbsp;</td><td><input type="submit" id="update" name="'+name+'" value="Potvrdi" class="btn green"></td>');
+				
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Meal ERROR: " + errorThrown);
+				}	
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Drink ERROR: " + errorThrown);
+		}	
+	});
+
+});
+$(document).on('click', '#bill', function(e) {
+	e.preventDefault();
+	var name = $(this).attr('name');
+	var zaSplit;
+	$(document).find('input[name="bill"]').each(function(e){	
+		  var id = this.id;
+		 if(name == id ){
+			 zaSplit = this.value;
+		 }
+	});
+	var splitovano  = zaSplit.split(";");
+	var desk = splitovano[0];
+	var drinks = splitovano[1].split(",");
+	var meals = splitovano[2].split(",");
+	var billSum = 0;
+	$("#content").empty();
+	$("#content").append('</br><p><b>Račun</b></p>');
+	$("#content").append('<table class="bill"></table>');
+	$("table.bill").append('<tr><td>Sto: &nbsp;</td><td>'+desk+'</td></tr>');
+	$("#deskId").attr('readonly','readonly');
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/registerController/uzmiPica',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("table.bill ").append('<tr><td>Pića: &nbsp;</td></tr>');
+			$.each(list, function(index1,pice){
+				$.each(drinks, function(index2,drink){
+					if(pice[1]==drink){
+						$("table.bill ").append('<tr><td>'+pice[1]+' = '+pice[2]+'</td></tr>');
+						billSum=billSum + pice[2];
+					}
+				});
+			});
+			
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/registerController/uzmiObroke',
+				success : function(data){
+					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$("table.bill").append('<tr><td>Jela: &nbsp;</td></tr>');
+					$.each(list, function(index1,obrok){
+						$.each(meals, function(index2,meal){
+							if(obrok[1]==meal){
+								$("table.bill ").append('<tr><td>'+obrok[1]+' = '+obrok[2]+'</td></tr>');
+								billSum=billSum + obrok[2];
+							}
+						});
+					});
+					$("table.bill").append('<tr><td>Ukupno: </td><td>'+billSum+'</td></tr>');
+					var dateOfBill = new Date().getTime();
+					$.ajax({
+						type : 'POST',
+						url :  '/billController/addBill',
+						contentType : 'application/json',
+						dataType :'json',
+						data : JSON.stringify({
+							"username" :"Desa",
+							"bill" : billSum,
+							"dateOfBill" : dateOfBill
+						}),
+						success : function(data){
+							Command: toastr["success"]("Uspješno kreiran račun.", "Odlično!")
+							message();
+						},
+
+						error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+							alert("Bill ERROR: " + errorThrown);
+						}
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Meal ERROR: " + errorThrown);
+				}	
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Drink ERROR: " + errorThrown);
+		}	
+	});
+
 });
 
+function todayDate(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+
+	if(dd<10) {
+	    dd='0'+dd
+	} 
+
+	if(mm<10) {
+	    mm='0'+mm
+	} 
+
+	today = mm+'/'+dd+'/'+yyyy;
+	return today;
+}
 $(document).on('click', '#update', function(e) {
-	var drinks =$(document).find('#drinksId').val();
-	var meals =$(document).find('#mealsId').val();
+	var drinks = $('#comboDrinks').val();
+	var meals = $('#comboMeals').val();
 	var desk =$(document).find('#deskId').val();
-	
+	var name = $(this).attr('name');
+	var id = parseInt(name) + 1;//jer su indeksi od 0, a indeksi u bazi od 1
 	$.ajax({
 		type : 'PUT',
-		url :  '/orderController/change/1',
+		url :  '/orderController/change/'+id,
 		contentType : 'application/json',
 		dataType :'json',
 		data : JSON.stringify({
@@ -189,10 +351,10 @@ $(document).on('click', '#update', function(e) {
 			"drinks" : drinks,
 			"meals" : meals
 		}),
-		success : function(data){		
-			alert("Uspjesno izvrsena promjena");
+		success : function(data){	
+			Command: toastr["success"]("Uspješno izvršena izmjena porudžbine.", "Odlično!")
+			message();
 			showOrders();
-
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -206,18 +368,48 @@ $(document).on('click', '#update', function(e) {
 
 $(document).on('click','#addOrder',function(e){
 	$("#content").empty();
-	$("#content").append('<table><tr><td>Broj stola</td><td><input type="text" id="desk"></td></tr>');
-	$("#content").append('<tr><td>Drinkici</td><td><input type="text" id="drinks"></td></tr>');
-	$("#content").append('<tr><td>Jela</td><td><input type="text" id="meals"></td></tr>');
-	$("#content").append('<tr><td>&nbsp;</td><td><input type="submit" id="submitOrder"></td></tr>');
+	$("#content").append('</br><p><b>Dodavanje porudžbine</b></p>');
+	$("#content").append('<p>*potrebno je popuniti sva polja</p>');
+	$("#content").append('<table id="tableAddOrder"></table>');
+	$("#tableAddOrder").append('<tr><td>Broj stola</td><td><input type="text" id="desk"></td></tr>');
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/registerController/uzmiPica',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("#tableAddOrder").append('<tr><td>Pica: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+			$.each(list, function(index,pice){
+				$('#comboDrinks').append('<option>'+pice[1]+'</option>');
+			});
+			
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/registerController/uzmiObroke',
+				success : function(data){
+					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
+					$.each(list, function(index,obrok){
+						$('#comboMeals').append('<option>'+obrok[1]+'</option>');
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Meal ERROR: " + errorThrown);
+				}	
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Drink ERROR: " + errorThrown);
+		}	
+	});
+	$("#content").append('<tr><td>&nbsp;</td><td><input type="submit" id="submitOrder" class="btn orange"></td></tr>');
 });
 
 $(document).on('click','#submitOrder',function(e){
 	var desk = $(document).find('#desk').val();
-	var drinks = $(document).find('#drinks').val();
-	var meals = $(document).find('#meals').val();
-	
-	//drugi ajax poziv
+	var drinks = $('#comboDrinks').val();
+	var meals = $('#comboMeals').val();
 	$.ajax({
 		type : 'POST',
 		url :  '/orderController/addOrder',
@@ -230,7 +422,8 @@ $(document).on('click','#submitOrder',function(e){
 			"meals" : meals
 		}),
 		success : function(data){
-			alert("Porudzbina je uspjesno izvrsena!");
+			Command: toastr["success"]("Uspješno dodata porudžbina.", "Odlično!")
+			message();
 			showOrders();
 		},
 
@@ -238,6 +431,7 @@ $(document).on('click','#submitOrder',function(e){
 			alert("AJAX ERROR: " + errorThrown);
 		}
 	});
+	
 });
 
 

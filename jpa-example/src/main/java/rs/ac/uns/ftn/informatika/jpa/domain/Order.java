@@ -2,11 +2,18 @@ package rs.ac.uns.ftn.informatika.jpa.domain;
 
 import static javax.persistence.InheritanceType.JOINED;
 
+import java.util.ArrayList;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,15 +31,25 @@ public class Order {
 	@Column(nullable = false)
 	private String desk;
 	
-	@Column(nullable = false)
-	private String drinks;
+	private ArrayList<String> drinks = new ArrayList<String>();
 	
-	@Column(nullable = false)
-	private String meals;
 	
+	private ArrayList<String> meals = new ArrayList<String>();
+	//private ArrayList<Drink> drinks = new ArrayList<Drink>();
 
 	public Order(){}
-
+	
+	public Order(String username,String desk,ArrayList<String> drinks,ArrayList<String> meals){
+		this.username = username;
+		this.desk = desk;
+		setDrinks(drinks);
+		setMeals(meals);
+	}
+	public Order(String username,String desk){
+		this.username = username;
+		this.desk = desk;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -48,23 +65,33 @@ public class Order {
 	public void setDesk(String desk) {
 		this.desk = desk;
 	}
-
-	public String getDrinks() {
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	public ArrayList<String> getDrinks() {
 		return drinks;
 	}
 
-	public void setDrinks(String drinks) {
+	public void setDrinks(ArrayList<String> drinks) {
 		this.drinks = drinks;
 	}
-
-	public String getMeals() {
+	@ManyToMany(fetch = FetchType.LAZY)
+	public ArrayList<String> getMeals() {
 		return meals;
 	}
 
-	public void setMeals(String meals) {
+	public void setMeals(ArrayList<String> meals) {
 		this.meals = meals;
 	}
+	/*@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinTable(name="drink_order", joinColumns=@JoinColumn(name="order_id"),
+	inverseJoinColumns=@JoinColumn(name="drink_id"))
+	public ArrayList<Drink> getDrinks() {
+		return drinks;
+	}
 
+	public void setDrinks(ArrayList<Drink> drinks) {
+		this.drinks = drinks;
+	}*/
 	public String getUsername() {
 		return username;
 	}
