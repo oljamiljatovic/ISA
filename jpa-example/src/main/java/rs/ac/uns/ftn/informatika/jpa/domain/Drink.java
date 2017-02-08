@@ -26,7 +26,7 @@ public class Drink implements Serializable{
 	@Column(nullable = false)
 	private int price;
 	
-	private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+	//private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
 	
 	public Drink(){
 		
@@ -62,13 +62,13 @@ public class Drink implements Serializable{
 		this.price = price;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "drinks")
+	/*@ManyToMany(fetch = FetchType.LAZY, mappedBy = "drinks")
 	public ArrayList<Restaurant> getRestaurants() {
 		return restaurants;
 	}
 
 	public void setRestaurants(ArrayList<Restaurant> restaurants) {
 		this.restaurants = restaurants;
-	}
+	}*/
 	
 }

@@ -7,5 +7,8 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 public interface EmployeeService {
 
-	ArrayList<Employee> getEmployees();
+	public ArrayList<Employee> getEmployees();
+	public Employee addEmployee(Employee e);
+	public ArrayList<Employee> getEmployeesOfRestaurant(String rest);
+	public ArrayList<Employee> getWaitersOfRestaurant(String rest);
 }

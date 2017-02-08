@@ -1,4 +1,19 @@
-$(document).ready(function(){
+$(document).on('click','#registrMenadz',function(e){
+	e.preventDefault();
+	$('#content').empty();
+	$('#content').append('<div id="wraper"><div class="centered-content-wrap">'+
+			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
+				'<form method="post" id="registracijaMenadzera">'+
+					'Podaci o menadzeru:<br/><br/>'+
+					'Ime:<input type = "text" id = "imeMenadzera" class="in-text"/><br/>'+
+					'Prezime:<input type = "text" id = "prezimeMenadzera" class="in-text"/><br/>'+
+					'Adresa:<input type = "text" id = "adresaMenadzera" class="in-text"/><br/>'+
+					'Email:<input type = "text" id = "emailMenadzera" class="in-text"/><br/>'+
+					'Kontakt:<input type = "text" id = "kontaktMenadzera" class="in-text"/><br/>'+
+					'Lozinka:<input type = "password" id = "lozinkaMenadzera" class="in-text"/><br/>'+
+					'Izaberi restoran:<select id="restoranMenadzera"> </select><br/>'+
+					'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
+					'</form></div></div></div>');
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
