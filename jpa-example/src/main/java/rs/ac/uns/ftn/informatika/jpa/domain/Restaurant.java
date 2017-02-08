@@ -49,8 +49,7 @@ public class Restaurant implements Serializable{
 		this.address = address;
 		this.contact = contact;
 		setDrinks(drinks);
-		setMeals(meals);
-		
+		setMeals(meals);	
 	}
 
 
