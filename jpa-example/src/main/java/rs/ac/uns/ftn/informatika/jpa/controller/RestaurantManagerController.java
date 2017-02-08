@@ -75,10 +75,10 @@ public class RestaurantManagerController {
 		rm.setRestaurant(rest.getName());
 		this.managerService.updateManager(rm);
 		//this.restaurantService.updateRestaurant(rest);
-		if(rest.getDrinks().size()>1){
+		/*if(rest.getDrinks().size()>1){
 			System.out.println(rest.getDrinks().get(0));
 			System.out.println(rest.getDrinks().get(1));
-		}
+		}*/
 		return new ResponseEntity<Restaurant>(rest, HttpStatus.OK);
 	}
 	

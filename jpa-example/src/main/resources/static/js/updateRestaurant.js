@@ -11,11 +11,10 @@ $(document).on('click','#restoran',function(e){
 		'Vrsta restorana:<input type = "text" id = "vrstaRestorana" class="in-text"/><br/>'+
 		'Adresa:<input type = "text" id = "adresaRestorana" class="in-text"/><br/>'+
 		'Kontakt:<input type = "text" id = "kontaktRestorana" class="in-text"/><br/>'+
-		'<div id="izborPica"></div><br/><div id="izborObroka"></div><br/>'+
 		'<input type = "submit" id = "submitIzmenaRestorana" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 	
-	$.ajax({
+	/*$.ajax({
 		type: 'GET',
 		dataType: 'json',
 		url : '/registerController/uzmiPica',
@@ -68,6 +67,24 @@ $(document).on('click','#restoran',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Admin ERROR: " + errorThrown);
 		}	
+	});*/
+	
+	$.ajax({
+		type : 'GET',
+		url :  '/registerController/uzmiRestoranMenadzera',
+		contentType : 'application/json',
+		success : function(data){
+			
+			$('#imeRestorana').val(data.name);
+			$('#vrstaRestorana').val(data.type);
+			$('#adresaRestorana').val(data.address);
+			$('#kontaktRestorana').val(data.contact);
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("Da li je ovdje problem");
+			alert("AJAX ERROR: " + errorThrown);
+		}
 	});
 	
 });
@@ -87,25 +104,21 @@ $(document).on('click','#submitIzmenaRestorana',function(e){
 		alert("Adresa je prazna");
 	}else if(contact == ""){
 		alert("Kontakt je prazno");
-	}else if($("input[type=checkbox]:checked").length==0){
-		alert("Morate uneti pice");
 	}else{
-		$('input[name="drink_dr"]:checked').each(function() {
+		/*$('input[name="drink_dr"]:checked').each(function() {
 			  drinks.push(this.value);
 			  console.log(this.value);
 		});
 		$('input[name="meal_dr"]:checked').each(function() {
 			  meals.push(this.value);
 			  console.log(this.value);
-		});
+		});*/
 		
 		var data2 = JSON.stringify({
 			"name" : name,
 			"type" : type,
 			"address" : address,
-			"contact" : contact,
-			"drinks" : drinks,
-			"meals" : meals
+			"contact" : contact
 		});
 		$.ajax({
 			type : 'POST',

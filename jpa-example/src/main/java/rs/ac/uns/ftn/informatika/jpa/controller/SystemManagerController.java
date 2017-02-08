@@ -68,10 +68,6 @@ public class SystemManagerController {
 	//@JsonCreator
 	public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant rest)  throws Exception {
 		this.restaurantService.addRestaurant(rest);
-		if(rest.getDrinks().size()>1){
-			System.out.println(rest.getDrinks().get(0));
-			System.out.println(rest.getDrinks().get(1));
-		}
 		return new ResponseEntity<Restaurant>(rest, HttpStatus.OK);
 	}
 	

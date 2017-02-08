@@ -35,21 +35,16 @@ public class Restaurant implements Serializable{
 	private String address;
 	@Column(nullable=true)
 	private String contact;
-	private ArrayList<String> drinks = new ArrayList<String>();
-	private ArrayList<String> meals = new ArrayList<String>();
 	
 	public Restaurant(){
 		
 	}
 	
-	public Restaurant(String name, String type, String address, String contact, ArrayList<String> drinks, 
-			ArrayList<String> meals){
+	public Restaurant(String name, String type, String address, String contact){
 		this.name = name;
 		this.type = type;
 		this.address = address;
 		this.contact = contact;
-		setDrinks(drinks);
-		setMeals(meals);
 		
 	}
 
@@ -87,30 +82,6 @@ public class Restaurant implements Serializable{
 
 	public void setContact(String contact) {
 		this.contact = contact;
-	}
-	
-	public ArrayList<String> getDrinks() {
-		return drinks;
-	}
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "restaurant_drinks", joinColumns = {
-			@JoinColumn(name = "restaurant_id", nullable = false, updatable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "drink_id", nullable = false, updatable = false) })
-	public void setDrinks(ArrayList<String> drinks) {
-		this.drinks = drinks;
-	}
-
-	public ArrayList<String> getMeals() {
-		return meals;
-	}
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "restaurant_meals", joinColumns = {
-			@JoinColumn(name = "restaurant_id", nullable = false, updatable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "meal_id", nullable = false, updatable = false) })
-	public void setMeals(ArrayList<String> meals) {
-		this.meals = meals;
 	}
 
 	public String getType() {

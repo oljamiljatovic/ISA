@@ -21,7 +21,6 @@ public interface RestaurantRepository extends PagingAndSortingRepository<Restaur
 	
 
 	@Modifying
-	@Query("update Restaurant set name = ?,type = ?,address =?, contact=?, drinks=?, meals=? where id = ? ")
-	public void updateRestaurant(String rest, String name, String address, String contact, 
-			ArrayList<String> drinks, ArrayList<String> meals, Long id);
+	@Query("update Restaurant set name = ?,type = ?,address =?, contact=? where id = ? ")
+	public void updateRestaurant(String rest, String type, String address, String contact, Long id);
 }
