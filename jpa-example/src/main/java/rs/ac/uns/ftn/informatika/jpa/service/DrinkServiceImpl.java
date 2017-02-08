@@ -21,4 +21,14 @@ public class DrinkServiceImpl implements DrinkService {
 		
 		return this.drinkRepository.findAll();
 	}
+
+	@Override
+	public Drink getDrink(Long id) {
+		return this.drinkRepository.findById(id);
+	}
+
+	@Override
+	public void deleteDrink(Drink dr) {
+		this.drinkRepository.delete(dr);
+	}
 }

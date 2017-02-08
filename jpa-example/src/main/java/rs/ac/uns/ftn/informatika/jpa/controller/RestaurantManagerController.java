@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
@@ -24,6 +26,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.AssignReonService;
+import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
@@ -50,6 +53,8 @@ public class RestaurantManagerController {
 	private WorkScheduleService workScheduleService;
 	@Autowired
 	private AssignReonService assignReonService;
+	@Autowired
+	private DrinkService drinkService;
 	
 	@RequestMapping(
 			value = "/updateRestaurant",
@@ -226,5 +231,16 @@ public class RestaurantManagerController {
 		this.assignReonService.createAssignReon(reon);
 		return new ResponseEntity<AssignReon>(reon, HttpStatus.OK);
 	}
-
+	
+	
+	@RequestMapping(
+			value = "/deleteDrink",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void deleteDrink(@RequestBody Drink drink)  throws Exception {
+		
+		Drink dr = this.drinkService.getDrink(drink.getId());
+		this.drinkService.deleteDrink(dr);
+	}
 }
