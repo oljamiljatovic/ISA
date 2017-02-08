@@ -218,7 +218,7 @@ $(document).on('click', '#submitEdit', function(e) {
 					});
 					$('#comboDrinks').val(drinks);
 					$('#comboMeals').val(meals);
-					$("table.edit").append('<tr><td>&nbsp;</td><td><input type="submit" id="update" name="'+name+'" value="Potvrdi" class="btn orange"></td>');
+					$("table.edit").append('<tr><td>&nbsp;</td><td><input type="submit" id="update" name="'+name+'" value="Potvrdi" class="btn green"></td>');
 				
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
