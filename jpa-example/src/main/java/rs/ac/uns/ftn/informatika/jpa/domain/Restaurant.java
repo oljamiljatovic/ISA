@@ -25,11 +25,11 @@ public class Restaurant implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue
-	@Column(name="restaurant_id", unique=true, nullable=false)
+	@Column(unique=true, nullable=false)
 	private Long id;
 	@Column(nullable=false)
 	private String name;
-	@Column(nullable=false)
+	@Column(name="type_id", nullable=false)
 	private String type;
 	@Column( nullable=true)
 	private String address;

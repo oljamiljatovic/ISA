@@ -46,7 +46,9 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 		"email" : email,
 		"contact" : contact,
 		"password" : password,
-		"restaurant" : restaurant
+		"restaurant" : restaurant,
+		"role" : "restaurantManager",
+		"accept" : "true"
 	});
 	
 	if(name == ""){
@@ -69,7 +71,7 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 			success : function(data){
 				alert(data.id);
 				
-				$.ajax({
+				/*$.ajax({
 	    			type : 'POST',
 	    			url :  '/guestController/regIn',
 	    			contentType : 'application/json',
@@ -90,7 +92,7 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 	    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 	    				alert("AJAX ERROR: " + errorThrown);
 	    			}
-	    			});
+	    			});*/
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)

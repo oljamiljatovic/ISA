@@ -1,24 +1,25 @@
 package rs.ac.uns.ftn.informatika.jpa.domain.users;
 
+import static javax.persistence.InheritanceType.JOINED;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.OneToOne;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.User;
+
 @Entity
-public class RestaurantManager implements Serializable {
+@Inheritance(strategy=JOINED)
+public class RestaurantManager extends User implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
 	@Column(nullable = false)
 	private String name;
 	@Column(nullable = false)
@@ -26,20 +27,17 @@ public class RestaurantManager implements Serializable {
 	@Column(nullable = false)
 	private String address;
 	@Column(nullable = false)
-	private String email;
-	@Column(nullable = false)
 	private String contact;
 	@Column(nullable = false)
-	private String password;
-	@Column(nullable = false)
 	private String restaurant;
+	
 	
 	public RestaurantManager(){
 		
 	}
 	
-	public RestaurantManager(String name, String surname, String address, String email, String contact,
-			String password, String restaurant) {
+	public RestaurantManager(String name, String surname, String role, String address, String email, String contact,
+			String password, String restaurant, String accept) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -47,6 +45,8 @@ public class RestaurantManager implements Serializable {
 		this.email = email;
 		this.contact = contact;
 		this.password = password;
+		this.accept = accept;
+		this.role = role;
 		setRestaurant(restaurant);
 	}
 
@@ -82,28 +82,12 @@ public class RestaurantManager implements Serializable {
 		this.address = address;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getContact() {
 		return contact;
 	}
 
 	public void setContact(String contact) {
 		this.contact = contact;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getRestaurant() {

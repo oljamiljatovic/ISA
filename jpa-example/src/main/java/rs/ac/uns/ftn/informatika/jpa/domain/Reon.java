@@ -23,8 +23,6 @@ public class Reon implements Serializable {
 	private String location;
 	@Column(nullable = false)
 	private int numberTable;
-	@Column(nullable = true)
-	private ArrayList<String> tables = new ArrayList<String>();
 	@Column(nullable = false)
 	private String restaurant;
 	
@@ -32,13 +30,12 @@ public class Reon implements Serializable {
 		
 	}
 	
-	public Reon(String name, String location, String rest, int numberTable, ArrayList<String> tables) {
+	public Reon(String name, String location, String rest, int numberTable) {
 		super();
 		this.name = name;
 		this.location = location;
 		this.restaurant = rest;
 		this.numberTable = numberTable;
-		this.tables = tables;
 	}
 
 	public Long getId() {
@@ -71,14 +68,6 @@ public class Reon implements Serializable {
 
 	public void setNumberTable(int numberTable) {
 		this.numberTable = numberTable;
-	}
-
-	public ArrayList<String> getTables() {
-		return tables;
-	}
-
-	public void setTables(ArrayList<String> tables) {
-		this.tables = tables;
 	}
 
 	public String getRestaurant() {

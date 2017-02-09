@@ -1,3 +1,4 @@
+//http://www.bootstrap-year-calendar.com/#Download
 function message(){
 	toastr.options = {
 			  "closeButton": false,
@@ -17,57 +18,76 @@ function message(){
 			  "hideMethod": "fadeOut"
 			}
 }
-$(document).on('click','#kalendar',function(e){
+$(document).on('click','#calendar',function(e){
 	e.preventDefault();
 	$("#content").empty();
-	var today = new Date();
-	var y = today.getFullYear();
 	$.ajax({
-		type : 'GET',
-		url :  '/calendarForWaiterController/getCalendarForWaiter',
-		contentType : 'application/json',
-		dataType :'json',
+		type: 'GET',
+		dataType: 'json',
+		url : '/waiterController/getWorkSchedules',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$.each(list, function(index, calendarForWaiter) {
-				if(calendarForWaiter.username == "Desa"){
-					var datesString  = calendarForWaiter.datum;
-					var dates = [];
-					dates = datesString.split(',');
-					$('#content').multiDatesPicker({
-						addDates: dates,
-						numberOfMonths: [1,3],
-						defaultDate: '1/1/'+y
-					});
-					var timesString = calendarForWaiter.times;
-					var times = [];
-					times = timesString.split(',');
-					$("#content").append('<p><b>'+calendarForWaiter.username+'</b></p>');
-					$.each(dates, function(index2, date) {
-						$("#content").append('<p>'+date+'    '+times[index2]+'</p>');
-					});
-				}else{
-					var datesString  = calendarForWaiter.datum;
-					var dates = [];
-					dates = datesString.split(',');
-					var timesString = calendarForWaiter.times;
-					var times = [];
-					times = timesString.split(',');
-					$("#content").append('<p><b>'+calendarForWaiter.username+'</b></p>');
-					$.each(dates, function(index2, date) {
-						$("#content").append('<p>'+date+'   '+times[index2]+'</p>');
-					});
-				}
+			$.each(list, function(index,ws){
 				
+				var partsStart =ws.dateStart.split('-');
+				var partsEnd =ws.dateEnd.split('-');
+				Command: toastr["info"]("Smjena: "+ws.shift+", od: "+partsStart[2]+"."+partsStart[1]+"."+partsStart[0]+"."
+						+" do: "+partsEnd[2]+"."+partsEnd[1]+"."+partsEnd[0]+".", "Raspored rada!")
+				message();
+				colorDate(partsStart[0],partsStart[1]-1,partsStart[2],partsEnd[0],partsEnd[1]-1,partsEnd[2]);
 			});
 		},
-
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Calendar ERROR: " + errorThrown);
+		}	
 	});
+	
 });
-$(document).on('click','#stolovi',function(e){
+
+function colorDate(yearStart,monthStart,dayStart,yearEnd,monthEnd,dayEnd){
+	$('#content').append('</br>');
+	$('#content').calendar({ 
+		/*selectRange: function(e) {
+            editEvent({ startDate: e.startDate, endDate: e.endDate });
+        },
+		mouseOnDay: function(e) {
+            if(e.events.length > 0) {
+                var content = '';
+                
+                for(var i in e.events) {
+                    content += '<div class="event-tooltip-content">'
+                                    + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                                    + '<div class="event-location">' + e.events[i].location + '</div>'
+                                + '</div>';
+                }
+            
+                $(e.element).popover({ 
+                    trigger: 'manual',
+                    container: 'body',
+                    html:true,
+                    content: content
+                });
+                
+                $(e.element).popover('show');
+            }
+        },
+        mouseOutDay: function(e) {
+            if(e.events.length > 0) {
+                $(e.element).popover('hide');
+            }
+        },*/
+        dataSource: [
+                     {
+                         id: 0,
+                         name: 'Google I/O',
+                         location: 'San Francisco, CA',
+                         startDate: new Date(yearStart, monthStart, dayStart),
+                         endDate: new Date(yearEnd, monthEnd, dayEnd)
+                     }
+                 ]
+    });
+}
+$(document).on('click','#tables',function(e){
 	e.preventDefault();
 	$("#content").empty();
 	//$("#content").append("<img src='jpa-example/src/main/resources/static/seating.jpg' alt='Graficki prikaz stolova'>");
@@ -378,9 +398,9 @@ $(document).on('click','#addOrder',function(e){
 		url : '/registerController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#tableAddOrder").append('<tr><td>Pica: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+			$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
 			$.each(list, function(index,pice){
-				$('#comboDrinks').append('<option>'+pice[1]+'</option>');
+				$('#comboDrinks').append('<option>'+pice.name+'</option>');
 			});
 			
 			$.ajax({
