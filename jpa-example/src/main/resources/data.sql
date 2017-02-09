@@ -14,6 +14,38 @@ INSERT INTO guest(id,name,surname) VALUES('2','Milica','Milutinovic')
 INSERT INTO guest(id,name,surname) VALUES('3','Vladimir','Stanojevic')
 
 
+
+insert into restaurant(id,name,type_id,address,contact) values (1,'Kod Sime','domaca jela','Glavna 20','-')
+insert into restaurant(id,name,type_id,address,contact) values (2,'Kod Zore','domaca jela','Glavna 7','-')
+
+INSERT INTO user(id,email,password,role,accept) VALUES(5,'mmica','mica','restaurantManager','true')
+insert into restaurant_manager(id,name,surname,address,contact,restaurant) values (5,'Mica','Milut','Glavna 109', '-','Kod Sime')
+INSERT INTO user(id,email,password,role,accept) VALUES(6,'zora','zorazora','waiter','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (6,'Zora','Milut','1967-04-23', 'L','38','Kod Sime')
+INSERT INTO user(id,email,password,role,accept) VALUES(7,'sima','simasima','cook','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (7,'Sinisa','Milut','1964-05-29', 'XL','46','Kod Sime')
+INSERT INTO user(id,email,password,role,accept) VALUES(8,'dana','danadana','barman','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (8,'Dana','Zivan','1972-01-29', 'L','39','Kod Sime')
+INSERT INTO user(id,email,password,role,accept) VALUES(9,'gavra','gavragavra','waiter','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (9,'Gavra','Zivan','1978-02-21', 'XL','44','Kod Sime')
+
+insert into reon(id,name,location,restaurant, number_table) values (1,'West','west part','Kod Sime',3)
+insert into tablee(id,reon,restaurant) values (1,'West','Kod Sime')
+insert into tablee(id,reon,restaurant) values (2,'West','Kod Sime')
+insert into tablee(id,reon,restaurant) values (3,'West','Kod Sime')
+insert into reon(id,name,location,restaurant, number_table) values (2,'East','east part','Kod Sime',3)
+insert into tablee(id,reon,restaurant) values (4,'East','Kod Sime')
+insert into tablee(id,reon,restaurant) values (5,'East','Kod Sime')
+insert into tablee(id,reon,restaurant) values (6,'East','Kod Sime')
+
+insert into assign_reon(id,waiter_id,reon_id) values (1,6,1)
+insert into assign_reon(id,waiter_id,reon_id) values (2,9,2)
+
+insert into work_schedule(id,worker_id,shift,date_start,date_end) values (1,6,'prva','2017-02-10','2017-03-11')
+insert into work_schedule(id,worker_id,shift,date_start,date_end) values (2,7,'druga','2017-02-10','2017-03-11')
+insert into work_schedule(id,worker_id,shift,date_start,date_end) values (3,8,'prva','2017-02-10','2017-03-11')
+
+
 insert into drink( name, price) values ('rakija',120)
 insert into drink(name, price) values ('vodka',180)
 insert into drink(name, price) values ('tekila',150)

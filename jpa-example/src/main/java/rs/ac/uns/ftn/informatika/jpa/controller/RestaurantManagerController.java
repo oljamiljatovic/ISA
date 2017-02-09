@@ -128,14 +128,11 @@ public class RestaurantManagerController {
 			String nameRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(nameRest);
 		}
-		ArrayList<String> tables = new ArrayList<String>();
+		
 		for(int i=0; i<reon.getNumberTable(); i++){
 			Tablee table = new Tablee(reon.getName(),r.getName());
 			this.tableService.createTable(table);
-			tables.add(Long.toString(table.getId()));
 		}
-		
-		reon.setTables(tables);
 		reon.setRestaurant(r.getName());
 		this.reonService.createReon(reon);
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);

@@ -157,7 +157,6 @@ $(document).on('click','#submitDodajKonfiguraciju',function(e){
 	var name = $('#nazivReona').val();
 	var location = $('#lokacijaReona').val();
 	var number = $('#brojStolova').val();
-	var tables = [];
 	var restaurant = "";
 	if(name == ""){
 		alert("Ime je prazno");
@@ -171,7 +170,6 @@ $(document).on('click','#submitDodajKonfiguraciju',function(e){
 			"name" : name,
 			"location" : location,
 			"numberTable" : number,
-			"tables" : tables,
 			"restaurant" : restaurant
 		});
 		
