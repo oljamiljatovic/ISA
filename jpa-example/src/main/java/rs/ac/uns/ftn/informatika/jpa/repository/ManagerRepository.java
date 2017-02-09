@@ -16,5 +16,5 @@ public interface ManagerRepository extends PagingAndSortingRepository<Restaurant
 	
 	@Modifying
 	@Query("update RestaurantManager set restaurant = ? where id = ? ")
-	public void updateManager(String rest, Long id);
+	public void updateManager(Long rest, Long id);
 }

@@ -8,6 +8,6 @@ public interface ReonService {
 	
 	public Reon createReon(Reon reon);
 	
-	public ArrayList<Reon> getReonsOfRestorans(String rest);
+	public ArrayList<Reon> getReonsOfRestorans(Long rest);
 
 }

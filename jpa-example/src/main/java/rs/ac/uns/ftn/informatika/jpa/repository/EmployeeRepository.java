@@ -12,6 +12,6 @@ import java.util.List;
 public interface EmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
 
 	public ArrayList<Employee> findAll(); 
-	public ArrayList<Employee> findByRestaurant(String restaurant);
+	public ArrayList<Employee> findByRestaurant(Long restaurant);
 	
 }

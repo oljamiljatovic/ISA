@@ -24,13 +24,13 @@ public class Reon implements Serializable {
 	@Column(nullable = false)
 	private int numberTable;
 	@Column(nullable = false)
-	private String restaurant;
+	private Long restaurant;
 	
 	public Reon(){
 		
 	}
 	
-	public Reon(String name, String location, String rest, int numberTable) {
+	public Reon(String name, String location, Long rest, int numberTable) {
 		super();
 		this.name = name;
 		this.location = location;
@@ -70,11 +70,11 @@ public class Reon implements Serializable {
 		this.numberTable = numberTable;
 	}
 
-	public String getRestaurant() {
+	public Long getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(String restaurant) {
+	public void setRestaurant(Long restaurant) {
 		this.restaurant = restaurant;
 	}
 	
