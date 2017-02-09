@@ -70,15 +70,16 @@ public class RestaurantManagerController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			String nameRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(nameRest);
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
 		}
 		Long id = r.getId();
 		rest.setId(id);
-		this.restaurantService.deleteRestaurant(id);
-		this.restaurantService.addRestaurant(rest);
-		rm.setRestaurant(rest.getName());
-		this.managerService.updateManager(rm);
+		this.restaurantService.updateRestaurant(rest);
+		//this.restaurantService.deleteRestaurant(id);
+		//this.restaurantService.addRestaurant(rest);
+		//rm.setRestaurant(id);
+		//this.managerService.updateManager(rm);
 		//this.restaurantService.updateRestaurant(rest);
 		/*if(rest.getDrinks().size()>1){
 			System.out.println(rest.getDrinks().get(0));
@@ -101,10 +102,10 @@ public class RestaurantManagerController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			String nameRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(nameRest);
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
 		}
-		empl.setRestaurant(r.getName());
+		empl.setRestaurant(r.getId());
 		this.employeeService.addEmployee(empl);
 		System.out.println("-----------------------------"+empl.getId());
 		return new ResponseEntity<Employee>(empl, HttpStatus.OK);
@@ -125,16 +126,17 @@ public class RestaurantManagerController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			String nameRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(nameRest);
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
 		}
 		
+		reon.setRestaurant(r.getId());
+		this.reonService.createReon(reon);
+		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee table = new Tablee(reon.getName(),r.getName());
+			Tablee table = new Tablee(reon.getId(),r.getId());
 			this.tableService.createTable(table);
 		}
-		reon.setRestaurant(r.getName());
-		this.reonService.createReon(reon);
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
 	}
 	
@@ -160,12 +162,13 @@ public class RestaurantManagerController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		Restaurant r= null;
+		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
-			RestaurantManager rm= this.managerService.getManager(u.getEmail());
-			String nameRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(nameRest);
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r.getName());
+		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r.getId());
 		
 		return new ResponseEntity<ArrayList<Employee>>(temp, HttpStatus.OK);
 	}
@@ -181,12 +184,13 @@ public class RestaurantManagerController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		Restaurant r= null;
+		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
-			RestaurantManager rm= this.managerService.getManager(u.getEmail());
-			String nameRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(nameRest);
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r.getName());
+		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r.getId());
 		ArrayList<Employee> temp2 = new ArrayList<Employee>();
 		
 		for(int i=0; i<temp.size(); i++){
@@ -208,12 +212,13 @@ public class RestaurantManagerController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		Restaurant r= null;
+		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
-			RestaurantManager rm= this.managerService.getManager(u.getEmail());
-			String nameRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(nameRest);
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<Reon> t= this.reonService.getReonsOfRestorans(r.getName());
+		ArrayList<Reon> t= this.reonService.getReonsOfRestorans(r.getId());
 		
 		
 		return new ResponseEntity<ArrayList<Reon>>(t, HttpStatus.OK);

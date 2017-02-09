@@ -29,7 +29,7 @@ public class RestaurantManager extends User implements Serializable {
 	@Column(nullable = false)
 	private String contact;
 	@Column(nullable = false)
-	private String restaurant;
+	private Long restaurant;
 	
 	
 	public RestaurantManager(){
@@ -37,7 +37,7 @@ public class RestaurantManager extends User implements Serializable {
 	}
 	
 	public RestaurantManager(String name, String surname, String role, String address, String email, String contact,
-			String password, String restaurant, String accept) {
+			String password, Long restaurant, String accept) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -90,12 +90,12 @@ public class RestaurantManager extends User implements Serializable {
 		this.contact = contact;
 	}
 
-	public String getRestaurant() {
+	public Long getRestaurant() {
 		return restaurant;
 	}
 
 	@OneToOne
-	public void setRestaurant(String restaurant) {
+	public void setRestaurant(Long restaurant) {
 		this.restaurant = restaurant;
 	}
 	

@@ -26,14 +26,14 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implemen
 	@Column(nullable = false)
 	private String shoeNumber;
 	@Column(nullable = false)
-	private String restaurant;
+	private Long restaurant;
 	
 	public Employee(){
 		super();
 	}
 
 	public Employee(String name, String surname, String dateBirth, String type, String confNumber, 
-			String shoeNumber, String restaurant, String email, String accept, String password) {
+			String shoeNumber, Long restaurant, String email, String accept, String password) {
 		this.name = name;
 		this.surname = surname;
 		this.dateBirth = dateBirth;
@@ -87,12 +87,12 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implemen
 		this.shoeNumber = shoeNumber;
 	}
 
-	public String getRestaurant() {
+	public Long getRestaurant() {
 		return restaurant;
 	}
 	
 	@OneToOne
-	public void setRestaurant(String restaurant) {
+	public void setRestaurant(Long restaurant) {
 		this.restaurant = restaurant;
 	}
 	

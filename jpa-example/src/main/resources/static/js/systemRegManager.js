@@ -21,7 +21,7 @@ $(document).on('click','#registrMenadz',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,restoran){
-				$('#restoranMenadzera').append('<option value = "' +restoran.name +'" >' + restoran.name + '</option>');
+				$('#restoranMenadzera').append('<option value = "' +restoran.id +'" >' + restoran.name + '</option>');
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -70,29 +70,6 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 			data : dataa,
 			success : function(data){
 				alert(data.id);
-				
-				/*$.ajax({
-	    			type : 'POST',
-	    			url :  '/guestController/regIn',
-	    			contentType : 'application/json',
-	    			dataType :'json',
-	    			data : JSON.stringify({
-	    				"email" :email,
-	    				"password" : password,
-	    				"role" : "restaurantManager",
-	    				"accept" : "true",
-	    				"name" : name,
-	    				"surname" : surname
-	    			}),
-	    			success : function(data){
-	    				alert("Registracija je uspesno izvrsena!");
-	    				window.location.reload();
-	    			},
-
-	    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-	    				alert("AJAX ERROR: " + errorThrown);
-	    			}
-	    			});*/
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)

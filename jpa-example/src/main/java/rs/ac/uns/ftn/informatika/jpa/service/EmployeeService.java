@@ -9,6 +9,6 @@ public interface EmployeeService {
 
 	public ArrayList<Employee> getEmployees();
 	public Employee addEmployee(Employee e);
-	public ArrayList<Employee> getEmployeesOfRestaurant(String rest);
-	public ArrayList<Employee> getWaitersOfRestaurant(String rest);
+	public ArrayList<Employee> getEmployeesOfRestaurant(Long rest);
+	public ArrayList<Employee> getWaitersOfRestaurant(Long rest);
 }

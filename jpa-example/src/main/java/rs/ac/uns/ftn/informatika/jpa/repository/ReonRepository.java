@@ -8,6 +8,6 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 
 public interface ReonRepository extends PagingAndSortingRepository<Reon, Long> {
 	
-	public ArrayList<Reon> findByRestaurant(String restaurant);
+	public ArrayList<Reon> findByRestaurant(Long restaurant);
 
 }

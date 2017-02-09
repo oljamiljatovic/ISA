@@ -30,13 +30,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public ArrayList<Employee> getEmployeesOfRestaurant(String rest) {
+	public ArrayList<Employee> getEmployeesOfRestaurant(Long rest) {
 		
 		return this.employeeRepository.findByRestaurant(rest);
 	}
 
 	@Override
-	public ArrayList<Employee> getWaitersOfRestaurant(String rest) {
+	public ArrayList<Employee> getWaitersOfRestaurant(Long rest) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -17,7 +17,8 @@ public interface RestaurantRepository extends PagingAndSortingRepository<Restaur
 	@Override
 	public Iterable<Restaurant> findAll();
 	
-	public Restaurant findByName(String name);
+	@Override
+	public Restaurant findOne(Long id);
 	
 
 	@Modifying

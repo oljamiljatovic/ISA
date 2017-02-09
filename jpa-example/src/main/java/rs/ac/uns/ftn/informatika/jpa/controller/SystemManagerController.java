@@ -102,12 +102,12 @@ public class SystemManagerController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		Restaurant r= null;
+		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
-			RestaurantManager rm= this.managerService.getManager(u.getEmail());
-			String nameRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(nameRest);
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
 		}
-		
 		
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
 	}

@@ -537,10 +537,10 @@ td {
   border: 1px solid #cccccc;
   background: #eeeeee url(../images/datepicker/ui-bg_glass_60_eeeeee_1x400.png) 50% 50% repeat-x;
   font-weight: bold;
-  color: #f67d34; }
+  color: #ffcc99 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
-  color: #f67d34;
+  color: #ffcc99;
   text-decoration: none; }
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {

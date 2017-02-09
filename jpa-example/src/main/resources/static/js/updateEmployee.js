@@ -29,7 +29,7 @@ $(document).on('click','#submitNewEmployee',function(e){
 	var konfekc = $('#konfekcijskiRadnik').val();
 	var obuca = $('#obucaRadnik').val();
 	var email = $('#emailRadnika').val();
-	var rest = "";
+	var rest = 0;
 	var accept = "false";
 	var password = "111";
 	if(name == ""){

@@ -14,61 +14,6 @@ $(document).on('click','#restoran',function(e){
 		'<input type = "submit" id = "submitIzmenaRestorana" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 	
-	/*$.ajax({
-		type: 'GET',
-		dataType: 'json',
-		url : '/registerController/uzmiPica',
-		success : function(data){
-			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$.each(list, function(index,pice){
-				$('#izborPica').append('<input type="checkbox" name="drink_dr" id = "' +pice[1] +'" value="' + pice[1] + '">' + pice[1]);
-			});
-			
-			$.ajax({
-				type: 'GET',
-				dataType: 'json',
-				url : '/registerController/uzmiObroke',
-				success : function(data){
-					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-					$.each(list, function(index,obrok){
-						$('#izborObroka').append('<input type="checkbox" name="meal_dr" id = "' +obrok[1] +'" value="' + obrok[1] + '">' + obrok[1]);
-					});
-					
-					$.ajax({
-		    			type : 'GET',
-		    			url :  '/registerController/uzmiRestoranMenadzera',
-		    			contentType : 'application/json',
-		    			success : function(data){
-		    				
-		    				$('#imeRestorana').val(data.name);
-		    				$('#vrstaRestorana').val(data.type);
-		    				$('#adresaRestorana').val(data.address);
-		    				$('#kontaktRestorana').val(data.contact);
-		    				for(var i=0;i<data.drinks.length;i++) {
-								document.getElementById(data.drinks[i]).checked = true;
-							}
-		    				for(var i=0;i<data.meals.length;i++) {
-								document.getElementById(data.meals[i]).checked = true;
-							}
-		    		
-		    			},
-
-		    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-		    				alert("Da li je ovdje problem");
-		    				alert("AJAX ERROR: " + errorThrown);
-		    			}
-		    		});
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Admin ERROR: " + errorThrown);
-				}	
-			});
-		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
-		}	
-	});*/
-	
 	$.ajax({
 		type : 'GET',
 		url :  '/registerController/uzmiRestoranMenadzera',
@@ -105,14 +50,6 @@ $(document).on('click','#submitIzmenaRestorana',function(e){
 	}else if(contact == ""){
 		alert("Kontakt je prazno");
 	}else{
-		/*$('input[name="drink_dr"]:checked').each(function() {
-			  drinks.push(this.value);
-			  console.log(this.value);
-		});
-		$('input[name="meal_dr"]:checked').each(function() {
-			  meals.push(this.value);
-			  console.log(this.value);
-		});*/
 		
 		var data2 = JSON.stringify({
 			"name" : name,
@@ -157,7 +94,7 @@ $(document).on('click','#submitDodajKonfiguraciju',function(e){
 	var name = $('#nazivReona').val();
 	var location = $('#lokacijaReona').val();
 	var number = $('#brojStolova').val();
-	var restaurant = "";
+	var restaurant = 0;
 	if(name == ""){
 		alert("Ime je prazno");
 	}else if(location == ""){
@@ -241,28 +178,7 @@ $(document).on('submit','#formIzbrisiPice',function(e){
 		success : function(){
 			window.location.reload();
 			
-			$('#content').empty();
-			$('#content').append('<table id="tabelaPrikaz" ><tr><th>ID</th><th>NAZIV</th><th>CENA</th></tr>'+
-					'<th></th><th></th></table>');
-			
-			$.ajax({
-				type: 'GET',
-				dataType: 'json',
-				url : '/registerController/uzmiPica',
-				success : function(data){
-					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-					$.each(list, function(index,pice){
-						$('#tabelaPrikaz').append('<tr><td>'+pice.id+'</td><td>'+pice.name+'</td><td>'+pice.price+'</td>'+
-								'<td><form id="formIzbrisiPice" method="get" action=""><input type="submit" id="submitIzbrisiPice" value="Izbrisi"><input type="hidden" value='
-									+pice.id+'></form></td><td><form id="formIzmeniPice" method="get" action=""><input type="submit" value="Izmeni"><input type="hidden" id="idIzmena" value='
-									+pice.id+'></form></td></tr>');
-						
-					});
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Admin ERROR: " + errorThrown);
-				}	
-			});
+			alert('Uspesno brisanje pica!');
 			
 		},
 

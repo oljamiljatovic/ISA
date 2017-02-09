@@ -22,7 +22,7 @@ public class ReonServiceImpl implements ReonService {
 	}
 
 	@Override
-	public ArrayList<Reon> getReonsOfRestorans(String rest) {
+	public ArrayList<Reon> getReonsOfRestorans(Long rest) {
 		return this.reonRepository.findByRestaurant(rest);
 	}
 	

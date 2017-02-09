@@ -21,15 +21,15 @@ public class Tablee implements Serializable {
 	private Long id;
 	
 	@Column
-	private String reon;
+	private Long reon;
 	@Column
-	private String restaurant;
+	private Long restaurant;
 	
 	public Tablee(){
 		
 	}
 	
-	public Tablee(String reon, String restaurant) {
+	public Tablee(Long reon, Long restaurant) {
 		super();
 		this.reon = reon;
 		this.restaurant = restaurant;
@@ -43,22 +43,22 @@ public class Tablee implements Serializable {
 		this.id = id;
 	}
 
-	public String getReon() {
+	public Long getReon() {
 		return reon;
 	}
 
-	public void setReon(String reon) {
+	public void setReon(Long reon) {
 		this.reon = reon;
 	}
 
-	public String getRestaurant() {
+	public Long getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(String restaurant) {
+	public void setRestaurant(Long restaurant) {
 		this.restaurant = restaurant;
 	}
-
+	
 	
 
 }
