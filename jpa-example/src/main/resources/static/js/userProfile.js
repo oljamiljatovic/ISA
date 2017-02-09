@@ -12,6 +12,28 @@ window.onload = function() {
 			alert(roleData);
 				if(roleData != "guest"){
 					document.location.href="index.html";
+				}else{
+					$.ajax({
+						type : 'POST',
+						url :'/guestController/getGuest/',
+						contentType : 'application/json',
+						dataType : 'json',
+						data :  JSON.stringify({
+		    				"email" : data.email,
+		    				"password" : data.password
+		    			}),
+						success : function(dataa){
+							
+							 document.getElementById("ime").value=dataa.name;
+							 document.getElementById("prezime").value= dataa.surname;
+							 
+							
+						},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+						alert("GRESKA U ISPISU OSOBINA");
+					}
+					
+					});	
 				}
 			
 		},
