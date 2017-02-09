@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.service.GuestService;
 
@@ -100,6 +101,21 @@ public class GuestController {
 	
 	    }
 
+		@RequestMapping(
+				value = "/getGuest",
+				method = RequestMethod.POST,
+				consumes = MediaType.APPLICATION_JSON_VALUE,
+				produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Guest> getGuest(
+				/*@Valid*/ @RequestBody User user) throws Exception {
+			
+			String email = user.getEmail();
+			
+			Guest guest = guestService.findGuestByEmail(email);
+			
+			return new ResponseEntity<Guest>(guest, HttpStatus.OK);
+		}
+	 
   
 	@RequestMapping(
 			value = "/change/{id}",

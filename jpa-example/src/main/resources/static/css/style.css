@@ -1900,6 +1900,21 @@ h2 {
     .btn.red:hover {
       border-color: #be3730;
       background: #be3730; }
+      
+      
+            .btn.white {
+    border-color: #e2e2e2;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f67d34), color-stop(100%, #f1592a));
+    
+    *zoom: 1;
+    filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFF67D34', endColorstr='#FFF1592A'); }
+ 
+    .btn.white:hover {
+      border-color: #f9e8e0;
+      background: #f2dad0; }
+  
+      
+      
   .btn.green {
     border-color: #52a552;
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #61c261), color-stop(100%, #51a451));
@@ -2224,7 +2239,7 @@ footer {
     width: 322px;
     margin: 20px auto 20px auto;
     padding: 10px;
-    background: white;
+    background: #e8642c;
     overflow: hidden;
     padding: 15px;
     -webkit-border-radius: 5px;
@@ -2232,7 +2247,7 @@ footer {
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
-    border: solid 10px #e4e4e4; }
+    border: solid 10px #ef7845; }
     .centered-content-wrap .centered-block ul li {
       margin-bottom: 15px; }
       .centered-content-wrap .centered-block ul li .link {
