@@ -90,8 +90,53 @@ function colorDate(yearStart,monthStart,dayStart,yearEnd,monthEnd,dayEnd){
 $(document).on('click','#tables',function(e){
 	e.preventDefault();
 	$("#content").empty();
-	//$("#content").append("<img src='jpa-example/src/main/resources/static/seating.jpg' alt='Graficki prikaz stolova'>");
-	$("#content").append("<button class='table' id='1' style='height:50px;width:80px'>1</button><button class='table' id='2' style='height:50px;width:80px'>2</button><button class='table' id='3' style='height:50px;width:80px'>3</button>");
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/waiterController/getReons',
+		success : function(data){
+			var reons = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(reons, function(index,reon){
+				if(reon.name=="West"){
+					var i = 0;
+					while (i < reon.numberTable) {
+						$("#content").append("<button class='"+reon.name+"' id='"+i+"' style='height:50px;width:80px'>West"+i+"</button>");
+					    i++;
+					}
+				}else if(reon.name=="East"){
+					var i = 0;
+					while (i < reon.numberTable) {
+						$("#content").append("<button class='"+reon.name+"' id='"+i+"' style='height:50px;width:80px'>East"+i+"</button>");
+					    i++;
+					}
+				}
+			});
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/waiterController/getAssignReons',
+				success : function(data){
+					var assignReons = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$.each(assignReons, function(index1,assignReon){
+						$.each(reons, function(index2,reon){
+							if(reon.id==assignReon.reon_id){
+								Command: toastr["info"]("Reon: "+reon.name, "Dodjeljeni reon!")
+								message();
+								$("button."+reon.name).css("background-color", "blue");
+							}
+						});
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("AssignReon ERROR: " + errorThrown);
+				}	
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("REON ERROR: " + errorThrown);
+		}	
+	});
+	/*$("#content").append("<button class='table' id='1' style='height:50px;width:80px'>1</button><button class='table' id='2' style='height:50px;width:80px'>2</button><button class='table' id='3' style='height:50px;width:80px'>3</button>");
 	$("#content").append("<button class='table' id='4' style='height:50px;width:80px'>4</button><button class='table' id='5' style='height:50px;width:80px'>5</button><button class='table' id='6' style='height:50px;width:80px'>6</button></br>");
 	$("#content").append("<button class='table' id='7' style='height:50px;width:80px'>7</button><button class='table' id='8' style='height:50px;width:80px'>8</button><button class='table' id='9' style='height:50px;width:80px'>9</button>");
 	$("#content").append("<button class='table' id='10' style='height:50px;width:80px'>10</button><button class='table' id='11' style='height:50px;width:80px'>11</button><button class='table' id='12' style='height:50px;width:80px'>12</button></br>");
@@ -128,7 +173,7 @@ $(document).on('click','#tables',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 			alert("AJAX ERROR: " + errorThrown);
 		}
-	});
+	});*/
 
 });
 
