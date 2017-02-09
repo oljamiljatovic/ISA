@@ -203,7 +203,7 @@ $(document).on('click', '#submitEdit', function(e) {
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("table.edit").append('<tr><td>Pića: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
 			$.each(list, function(index,pice){
-				$('#comboDrinks').append('<option>'+pice[1]+'</option>');
+				$('#comboDrinks').append('<option>'+pice.name+'</option>');
 			});
 			
 			$.ajax({
@@ -261,9 +261,9 @@ $(document).on('click', '#bill', function(e) {
 			$("table.bill ").append('<tr><td>Pića: &nbsp;</td></tr>');
 			$.each(list, function(index1,pice){
 				$.each(drinks, function(index2,drink){
-					if(pice[1]==drink){
-						$("table.bill ").append('<tr><td>'+pice[1]+' = '+pice[2]+'</td></tr>');
-						billSum=billSum + pice[2];
+					if(pice.name==drink){
+						$("table.bill ").append('<tr><td>'+pice.name+' = '+pice.price+'</td></tr>');
+						billSum=billSum + pice.price;
 					}
 				});
 			});
