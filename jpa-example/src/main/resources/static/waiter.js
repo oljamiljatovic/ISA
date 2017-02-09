@@ -218,7 +218,7 @@ $(document).on('click', '#submitEdit', function(e) {
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/registerController/uzmiPica',
+		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("table.edit").append('<tr><td>Pića: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
@@ -229,7 +229,7 @@ $(document).on('click', '#submitEdit', function(e) {
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/registerController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiObroke',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
@@ -275,7 +275,7 @@ $(document).on('click', '#bill', function(e) {
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/registerController/uzmiPica',
+		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("table.bill ").append('<tr><td>Pića: &nbsp;</td></tr>');
@@ -291,7 +291,7 @@ $(document).on('click', '#bill', function(e) {
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/registerController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiObroke',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("table.bill").append('<tr><td>Jela: &nbsp;</td></tr>');
@@ -395,7 +395,7 @@ $(document).on('click','#addOrder',function(e){
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/registerController/uzmiPica',
+		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
@@ -406,7 +406,7 @@ $(document).on('click','#addOrder',function(e){
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/registerController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiObroke',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
