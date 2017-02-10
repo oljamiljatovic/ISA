@@ -9,12 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
@@ -104,27 +107,50 @@ public class WaiterController {
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<AssignReon> temp = new ArrayList<AssignReon>();
 		if(u.getRole().equals("waiter")){
-			ArrayList<Employee> employees = employeeService.getEmployees();
 			ArrayList<AssignReon> assignReons = assignReonService.findAll();
-			Long waiterId = null;
-			for(int i = 0;i<employees.size();i++){
-				System.out.println("EID"+employees.get(i).getId());
-				System.out.println("UID"+u.getId());
-				if(employees.get(i).getId().equals(u.getId())){
-					waiterId = employees.get(i).getId();
+			for(int j = 0;j<assignReons.size();j++){
+				if(assignReons.get(j).getWaiter_id().equals(u.getId())){
+					temp.add(assignReons.get(j));
 					break;
-				}
-			}
-			if(waiterId!=null){
-				for(int j = 0;j<assignReons.size();j++){
-					if(assignReons.get(j).getWaiter_id().equals(waiterId)){
-						System.out.println("ISti idivi kod assigna ");
-						temp.add(assignReons.get(j));
-						break;
-					}
 				}
 			}
 		}
 		return new ResponseEntity<ArrayList<AssignReon>>(temp, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/getEmployee",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Employee> getEmployee()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Employee temp = new Employee();
+		temp = employeeService.findById(u.getId());
+		return new ResponseEntity<Employee>(temp, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/update",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Employee> update(
+			@RequestBody Employee employee) throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Employee foundedEmployee = employeeService.findById(u.getId());
+		foundedEmployee.setDateBirth(employee.getDateBirth());
+		foundedEmployee.setEmail(employee.getEmail());
+		foundedEmployee.setConfNumber(employee.getConfNumber());
+		foundedEmployee.setShoeNumber(employee.getShoeNumber());
+		foundedEmployee.setPassword(employee.getPassword());
+		Employee changedEmployee = employeeService.update(foundedEmployee, u.getId());
+		return new ResponseEntity<Employee>(changedEmployee, HttpStatus.OK);
 	}
 }

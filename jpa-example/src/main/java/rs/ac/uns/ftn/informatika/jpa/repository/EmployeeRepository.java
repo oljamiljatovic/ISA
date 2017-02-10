@@ -13,5 +13,6 @@ public interface EmployeeRepository extends PagingAndSortingRepository<Employee,
 
 	public ArrayList<Employee> findAll(); 
 	public ArrayList<Employee> findByRestaurant(Long restaurant);
+	public Employee findById(Long id);
 	
 }
