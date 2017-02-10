@@ -19,23 +19,25 @@ public class Drink implements Serializable{
     @GeneratedValue
 	@Column(name="drink_id", unique=true, nullable=false)
 	private Long id;
-	
 	@Column(nullable = false, unique=true)
 	private String name;
-	
 	@Column(nullable = false)
-	private int price;
-	
-	//private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+	private String description;
+	@Column(nullable = false)
+	private float price;
+	@Column(nullable = false)
+	private Long restaurant;
 	
 	public Drink(){
 		
 	}
 	
-	public Drink(String name, int price) {
+	public Drink(String name, String description, float price, Long rest) {
 		super();
 		this.name = name;
 		this.price = price;
+		this.price = price;
+		this.restaurant = rest;
 	}
 
 	public Long getId() {
@@ -54,21 +56,28 @@ public class Drink implements Serializable{
 		this.name = name;
 	}
 
-	public int getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
-	/*@ManyToMany(fetch = FetchType.LAZY, mappedBy = "drinks")
-	public ArrayList<Restaurant> getRestaurants() {
-		return restaurants;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setRestaurants(ArrayList<Restaurant> restaurants) {
-		this.restaurants = restaurants;
-	}*/
-	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Long restaurant) {
+		this.restaurant = restaurant;
+	}
+
 }

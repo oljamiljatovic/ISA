@@ -46,20 +46,20 @@ insert into work_schedule(id,worker_id,shift,date_start,date_end) values (2,7,'d
 insert into work_schedule(id,worker_id,shift,date_start,date_end) values (3,8,'prva','2017-02-10','2017-03-11')
 
 
-insert into drink( name, price) values ('rakija',120)
-insert into drink(name, price) values ('vodka',180)
-insert into drink(name, price) values ('tekila',150)
-insert into drink(name, price) values ('vino',200)
-insert into drink(name, price) values ('sok',90)
-insert into drink(name, price) values ('voda',60)
+insert into drink(name,price,description,restaurant) values ('rakija',120,'zestoko',1)
+insert into drink(name, price,description,restaurant) values ('votka',180,'zestoko',1)
+insert into drink(name, price,description,restaurant) values ('tekila',150,'zestoko',1)
+insert into drink(name, price,description,restaurant) values ('vino',200,'vina',1)
+insert into drink(name, price,description,restaurant) values ('sok',90,'soksok',1)
+insert into drink(name, price,description,restaurant) values ('voda',60,'zestoko',1)
 
 
-insert into meal(name, price) values ('supa',120)
-insert into meal(name, price) values ('pasulj',180)
-insert into meal(name, price) values ('biftek',150)
-insert into meal(name, price) values ('musaka',200)
-insert into meal(name, price) values ('meso',90)
-insert into meal(name, price) values ('grasak',60)
+insert into meal(name, price,description,restaurant) values ('supa',120,'corba',1)
+insert into meal(name, price,description,restaurant) values ('pasulj',180,'corba',1)
+insert into meal(name, price,description,restaurant) values ('biftek',150,'meso',1)
+insert into meal(name, price,description,restaurant) values ('musaka',200,'glavno jelo',1)
+insert into meal(name, price,description,restaurant) values ('meso',90,'glavno jelo',1)
+insert into meal(name, price,description,restaurant) values ('grasak',60,'corba',1)
 
 -- narudzbine
 INSERT INTO orderr(username,desk) VALUES ('Desa','2')

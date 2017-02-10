@@ -17,9 +17,9 @@ public class DrinkServiceImpl implements DrinkService {
 	private DrinkRepository drinkRepository;
 	
 	@Override
-	public ArrayList<Drink> getDrinks() {
+	public ArrayList<Drink> getDrinksByRestaurant(Long id) {
 		
-		return this.drinkRepository.findAll();
+		return this.drinkRepository.findByRestaurant(id);
 	}
 
 	@Override
@@ -30,5 +30,16 @@ public class DrinkServiceImpl implements DrinkService {
 	@Override
 	public void deleteDrink(Drink dr) {
 		this.drinkRepository.delete(dr);
+	}
+
+	@Override
+	public void updateDrink(Drink dr) {
+		this.drinkRepository.updateDrink(dr.getName(), dr.getDescription(), 
+				dr.getPrice(), dr.getRestaurant(), dr.getId());
+	}
+
+	@Override
+	public Drink addDrink(Drink dr) {
+		return this.drinkRepository.save(dr);
 	}
 }
