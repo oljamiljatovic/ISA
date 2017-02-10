@@ -17,10 +17,30 @@ public class MealServiceImpl implements MealService {
 	private MealRepository mealRepository;
 
 	@Override
-	public ArrayList<Meal> getMeals() {
+	public ArrayList<Meal> getDrinksByRestaurant(Long rest_id) {
+		return this.mealRepository.findByRestaurant(rest_id);
+	}
+
+	@Override
+	public Meal getMeal(Long id) {
+		return this.mealRepository.findById(id);
+	}
+
+	@Override
+	public void deleteMeal(Meal dr) {
+		this.mealRepository.delete(dr);
 		
-		return this.mealRepository.findAll();
-		//return null;
+	}
+
+	@Override
+	public void updateMeal(Meal dr) {
+		this.mealRepository.updateMeal(dr.getName(),dr.getDescription(),
+				dr.getPrice(),dr.getRestaurant(),dr.getId());
+	}
+
+	@Override
+	public Meal addMeal(Meal dr) {
+		return this.mealRepository.save(dr);
 	}
 	
 
