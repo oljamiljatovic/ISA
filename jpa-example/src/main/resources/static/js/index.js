@@ -44,7 +44,14 @@ window.onload = function() {
     					window.location.href= "waiter.html"
     				}else if(userRole=="restaurantManager"){
     					window.location.href = "restaurantManager.html";
+    				}else if(userRole=="waiter"){
+    					window.location.href = "waiter.html";
+    				}else if(userRole=="cook"){
+    					window.location.href = "cook.html";
+    				}else if(userRole=="barman"){
+    					window.location.href = "barman.html";
     				}
+    				
     				}
     				/*alert(data.username);
     				username = data.username;

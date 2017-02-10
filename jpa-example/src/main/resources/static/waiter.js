@@ -1,3 +1,4 @@
+//http://www.bootstrap-year-calendar.com/#Download
 function message(){
 	toastr.options = {
 			  "closeButton": false,
@@ -17,61 +18,125 @@ function message(){
 			  "hideMethod": "fadeOut"
 			}
 }
-$(document).on('click','#kalendar',function(e){
+$(document).on('click','#calendar',function(e){
 	e.preventDefault();
 	$("#content").empty();
-	var today = new Date();
-	var y = today.getFullYear();
 	$.ajax({
-		type : 'GET',
-		url :  '/calendarForWaiterController/getCalendarForWaiter',
-		contentType : 'application/json',
-		dataType :'json',
+		type: 'GET',
+		dataType: 'json',
+		url : '/waiterController/getWorkSchedules',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$.each(list, function(index, calendarForWaiter) {
-				if(calendarForWaiter.username == "Desa"){
-					var datesString  = calendarForWaiter.datum;
-					var dates = [];
-					dates = datesString.split(',');
-					$('#content').multiDatesPicker({
-						addDates: dates,
-						numberOfMonths: [1,3],
-						defaultDate: '1/1/'+y
-					});
-					var timesString = calendarForWaiter.times;
-					var times = [];
-					times = timesString.split(',');
-					$("#content").append('<p><b>'+calendarForWaiter.username+'</b></p>');
-					$.each(dates, function(index2, date) {
-						$("#content").append('<p>'+date+'    '+times[index2]+'</p>');
-					});
-				}else{
-					var datesString  = calendarForWaiter.datum;
-					var dates = [];
-					dates = datesString.split(',');
-					var timesString = calendarForWaiter.times;
-					var times = [];
-					times = timesString.split(',');
-					$("#content").append('<p><b>'+calendarForWaiter.username+'</b></p>');
-					$.each(dates, function(index2, date) {
-						$("#content").append('<p>'+date+'   '+times[index2]+'</p>');
-					});
-				}
+			$.each(list, function(index,ws){
 				
+				var partsStart =ws.dateStart.split('-');
+				var partsEnd =ws.dateEnd.split('-');
+				Command: toastr["info"]("Smjena: "+ws.shift+", od: "+partsStart[2]+"."+partsStart[1]+"."+partsStart[0]+"."
+						+" do: "+partsEnd[2]+"."+partsEnd[1]+"."+partsEnd[0]+".", "Raspored rada!")
+				message();
+				colorDate(partsStart[0],partsStart[1]-1,partsStart[2],partsEnd[0],partsEnd[1]-1,partsEnd[2]);
 			});
 		},
-
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Calendar ERROR: " + errorThrown);
+		}	
 	});
+	
 });
-$(document).on('click','#stolovi',function(e){
+
+function colorDate(yearStart,monthStart,dayStart,yearEnd,monthEnd,dayEnd){
+	$('#content').append('</br>');
+	$('#content').calendar({ 
+		/*selectRange: function(e) {
+            editEvent({ startDate: e.startDate, endDate: e.endDate });
+        },
+		mouseOnDay: function(e) {
+            if(e.events.length > 0) {
+                var content = '';
+                
+                for(var i in e.events) {
+                    content += '<div class="event-tooltip-content">'
+                                    + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                                    + '<div class="event-location">' + e.events[i].location + '</div>'
+                                + '</div>';
+                }
+            
+                $(e.element).popover({ 
+                    trigger: 'manual',
+                    container: 'body',
+                    html:true,
+                    content: content
+                });
+                
+                $(e.element).popover('show');
+            }
+        },
+        mouseOutDay: function(e) {
+            if(e.events.length > 0) {
+                $(e.element).popover('hide');
+            }
+        },*/
+        dataSource: [
+                     {
+                         id: 0,
+                         name: 'Google I/O',
+                         location: 'San Francisco, CA',
+                         startDate: new Date(yearStart, monthStart, dayStart),
+                         endDate: new Date(yearEnd, monthEnd, dayEnd)
+                     }
+                 ]
+    });
+}
+$(document).on('click','#tables',function(e){
 	e.preventDefault();
 	$("#content").empty();
-	//$("#content").append("<img src='jpa-example/src/main/resources/static/seating.jpg' alt='Graficki prikaz stolova'>");
-	$("#content").append("<button class='table' id='1' style='height:50px;width:80px'>1</button><button class='table' id='2' style='height:50px;width:80px'>2</button><button class='table' id='3' style='height:50px;width:80px'>3</button>");
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/waiterController/getReons',
+		success : function(data){
+			var reons = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(reons, function(index,reon){
+				if(reon.name=="West"){
+					var i = 0;
+					while (i < reon.numberTable) {
+						$("#content").append("<button class='"+reon.name+"' id='"+i+"' style='height:50px;width:80px'>West"+i+"</button>");
+					    i++;
+					}
+				}else if(reon.name=="East"){
+					var i = 0;
+					while (i < reon.numberTable) {
+						$("#content").append("<button class='"+reon.name+"' id='"+i+"' style='height:50px;width:80px'>East"+i+"</button>");
+					    i++;
+					}
+				}
+			});
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/waiterController/getAssignReons',
+				success : function(data){
+					var assignReons = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$.each(assignReons, function(index1,assignReon){
+						$.each(reons, function(index2,reon){
+							if(reon.id==assignReon.reon_id){
+								Command: toastr["info"]("Reon: "+reon.name, "Dodjeljeni reon!")
+								message();
+								$("button."+reon.name).css("background-color", "blue");
+							}
+						});
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("AssignReon ERROR: " + errorThrown);
+				}	
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("REON ERROR: " + errorThrown);
+		}	
+	});
+	/*$("#content").append("<button class='table' id='1' style='height:50px;width:80px'>1</button><button class='table' id='2' style='height:50px;width:80px'>2</button><button class='table' id='3' style='height:50px;width:80px'>3</button>");
 	$("#content").append("<button class='table' id='4' style='height:50px;width:80px'>4</button><button class='table' id='5' style='height:50px;width:80px'>5</button><button class='table' id='6' style='height:50px;width:80px'>6</button></br>");
 	$("#content").append("<button class='table' id='7' style='height:50px;width:80px'>7</button><button class='table' id='8' style='height:50px;width:80px'>8</button><button class='table' id='9' style='height:50px;width:80px'>9</button>");
 	$("#content").append("<button class='table' id='10' style='height:50px;width:80px'>10</button><button class='table' id='11' style='height:50px;width:80px'>11</button><button class='table' id='12' style='height:50px;width:80px'>12</button></br>");
@@ -108,7 +173,7 @@ $(document).on('click','#stolovi',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 			alert("AJAX ERROR: " + errorThrown);
 		}
-	});
+	});*/
 
 });
 
@@ -198,18 +263,18 @@ $(document).on('click', '#submitEdit', function(e) {
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/registerController/uzmiPica',
+		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("table.edit").append('<tr><td>Pića: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
 			$.each(list, function(index,pice){
-				$('#comboDrinks').append('<option>'+pice[1]+'</option>');
+				$('#comboDrinks').append('<option>'+pice.name+'</option>');
 			});
 			
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/registerController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiObroke',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
@@ -255,15 +320,15 @@ $(document).on('click', '#bill', function(e) {
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/registerController/uzmiPica',
+		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("table.bill ").append('<tr><td>Pića: &nbsp;</td></tr>');
 			$.each(list, function(index1,pice){
 				$.each(drinks, function(index2,drink){
-					if(pice[1]==drink){
-						$("table.bill ").append('<tr><td>'+pice[1]+' = '+pice[2]+'</td></tr>');
-						billSum=billSum + pice[2];
+					if(pice.name==drink){
+						$("table.bill ").append('<tr><td>'+pice.name+' = '+pice.price+'</td></tr>');
+						billSum=billSum + pice.price;
 					}
 				});
 			});
@@ -271,7 +336,7 @@ $(document).on('click', '#bill', function(e) {
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/registerController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiObroke',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("table.bill").append('<tr><td>Jela: &nbsp;</td></tr>');
@@ -375,18 +440,18 @@ $(document).on('click','#addOrder',function(e){
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/registerController/uzmiPica',
+		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#tableAddOrder").append('<tr><td>Pica: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+			$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
 			$.each(list, function(index,pice){
-				$('#comboDrinks').append('<option>'+pice[1]+'</option>');
+				$('#comboDrinks').append('<option>'+pice.name+'</option>');
 			});
 			
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/registerController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiObroke',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
