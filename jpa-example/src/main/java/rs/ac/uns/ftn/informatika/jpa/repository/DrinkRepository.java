@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
-import java.lang.Long;
-import java.util.List;
 
 public interface DrinkRepository extends PagingAndSortingRepository<Drink, Long>{
 	

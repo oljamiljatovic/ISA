@@ -11,6 +11,12 @@
 	<script type="text/javascript" src="js/changeRestaurant.js"> </script>
 	<script type="text/javascript" src="js/mealAndDrink.js"> </script>
 	<script type="text/javascript" src="js/reonAndSchedule.js"> </script>
+	
+	<style type="text/css">
+   		.cao { list-style-type: none; margin: 0; padding: 0; overflow-x: hidden; color: black;
+   		height: 70px; overflow: auto; width: 300px; border: 1px solid #000; background-color: #ffeee6}
+   		.caocao { margin: 0; padding: 0; display: inline-block; text-align: center; float: left;}
+  	</style>
 </head>
 <body>
 	
@@ -40,8 +46,8 @@
 	  <li class="dropdown">
 	  	<a class="dropbtn">Ponude</a>
 	  		<div class="dropdown-content">
-		      <a id="prikazAkcija">Dodaj ponudjaca</a>
-		      <a id="zavrseneAkcije">Objavi ponudu</a>
+		      <a id="dodajPonudjaca">Dodaj ponudjaca</a>
+		      <a id="dodajPonudu">Objavi ponudu</a>
 		      <a id="zavrseneAkcije">Aktuelne ponude</a>
 		    </div>
 	  </li>
@@ -62,6 +68,25 @@
 	</ul>
 	
 	<div id="content"></div>
-	
+    
+    <!--  <div id="wraper">
+	<div class="centered-content-wrap" id="first">
+	<div class="login-page wrapper centered centered-block"> 
+	<div class = "form-group">
+	<form method="post" id="registracijaMenadzera">
+		Podaci o ponudi:
+		<br/><br/>
+		Datum zavrsetka ponude:
+		<input type = "date" id = "imeMenadzera" class="in-text"/>
+		<br/>
+		Izaberi spisak:
+		<ul id="cao">
+		   <li class="caocao"><input type="checkbox" name="chk1" id="chk1">First</li>
+		  </ul><br/><br/>
+		<input type = "submit" id = "submit" value="Submit" class="btn orange">
+	</form>
+	</div></div></div></div> -->
+    
+
 </body>
 </html>

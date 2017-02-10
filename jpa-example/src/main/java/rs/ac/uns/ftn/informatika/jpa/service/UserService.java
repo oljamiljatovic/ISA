@@ -1,7 +1,5 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
-import java.util.List;
-
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 
 public interface UserService {
@@ -11,4 +9,7 @@ public interface UserService {
 	User createNew(User user);
 	
 	User update(User user, Long id);
+	
+
+	public void updateUserPassword(User dr);
 }

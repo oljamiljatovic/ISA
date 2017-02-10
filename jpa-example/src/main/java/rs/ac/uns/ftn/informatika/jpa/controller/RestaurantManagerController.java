@@ -19,9 +19,11 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
+import rs.ac.uns.ftn.informatika.jpa.service.ProviderService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 
@@ -38,6 +40,8 @@ public class RestaurantManagerController {
 	private EmployeeService employeeService;
 	@Autowired
 	private ReonService reonService;
+	@Autowired
+	private ProviderService providerService;
 	
 	@RequestMapping(
 			value = "/uzmiRestoranMenadzera",
@@ -103,6 +107,29 @@ public class RestaurantManagerController {
 		empl.setRestaurant(r.getId());
 		this.employeeService.addEmployee(empl);
 		return new ResponseEntity<Employee>(empl, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/addProvider",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Provider> addProvider(@RequestBody Provider prov)  throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes)
+				RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Restaurant r= null;
+		RestaurantManager rm = null;
+		if(u.getRole().equals("restaurantManager")){
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
+		}
+		prov.setRestaurant(r.getId());
+		this.providerService.addProvider(prov);
+		return new ResponseEntity<Provider>(prov, HttpStatus.OK);
 	}
 	
 	@RequestMapping(

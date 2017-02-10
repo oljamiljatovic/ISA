@@ -1,16 +1,15 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
-import rs.ac.uns.ftn.informatika.jpa.repository.HotelRepository;
 import rs.ac.uns.ftn.informatika.jpa.repository.UserRepository;
 
 @Service
+@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -29,6 +28,11 @@ public class UserServiceImpl implements UserService {
 	public User update(User user, Long id) {
 		user.setId(id);
 		return userRepository.save(user);
+	}
+
+	@Override
+	public void updateUserPassword(User dr) {
+		this.userRepository.updateUser(dr.getPassword(), dr.getId());
 	}
 	
 

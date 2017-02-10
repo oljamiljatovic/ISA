@@ -18,12 +18,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
+import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.MealService;
+import rs.ac.uns.ftn.informatika.jpa.service.OfferService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 
 
@@ -39,6 +41,8 @@ public class MealAndDrinkController {
 	private ManagerService managerService;
 	@Autowired
 	private RestaurantService restaurantService;
+	@Autowired
+	private OfferService offerService;
 	
 	@RequestMapping(
 			value = "/uzmiPica",
@@ -170,5 +174,29 @@ public class MealAndDrinkController {
 		meal.setRestaurant(r.getId());
 		this.mealService.addMeal(meal);
 		return new ResponseEntity<Meal>(meal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/addOffer",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Offer> addOffer(@RequestBody Offer offer)  
+			throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Restaurant r= null;
+		RestaurantManager rm=null;
+		if(u.getRole().equals("restaurantManager")){
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
+		}
+		offer.setRestaurant(r.getId());
+		this.offerService.addOffer(offer);
+		return new ResponseEntity<Offer>(offer, HttpStatus.OK);
 	}
 }
