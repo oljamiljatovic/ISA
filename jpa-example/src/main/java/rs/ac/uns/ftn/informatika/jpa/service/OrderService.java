@@ -12,4 +12,8 @@ public interface OrderService {
 	Order update(Order order, Long id);
 	
 	Order findOne(Long id);
+	
+	public ArrayList<Order> findByWaiter_id(Long waiter_id);
+	
+	public ArrayList<Order> findByRestaurant(Long restaurant);
 }

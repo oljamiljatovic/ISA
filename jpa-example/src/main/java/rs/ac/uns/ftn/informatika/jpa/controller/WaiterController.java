@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,14 +16,15 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
-import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.service.AssignReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
+import rs.ac.uns.ftn.informatika.jpa.service.TableService;
 import rs.ac.uns.ftn.informatika.jpa.service.WorkScheduleService;
 
 @Controller 
@@ -38,6 +38,8 @@ public class WaiterController {
 	private AssignReonService assignReonService;
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private TableService tableService;
 	
 	@RequestMapping(
 			value = "/getWorkSchedules",
@@ -93,6 +95,28 @@ public class WaiterController {
 
 		}
 		return new ResponseEntity<ArrayList<Reon>>(temp, HttpStatus.OK);
+	}
+	///vraca stolove koji pripadaju reonu kome pripada konbar
+	@RequestMapping(
+			value = "/getTables",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Tablee>> getTables()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		ArrayList<Tablee> temp = new ArrayList<Tablee>();
+		if(u.getRole().equals("waiter")){
+			Employee employee = employeeService.findById(u.getId());
+			ArrayList<Reon> reons= reonService.getReonsOfRestorans(employee.getRestaurant());
+			Long reonId = reons.get(0).getId();
+			Long restaurantId = employee.getRestaurant();
+			System.out.println("reonId" + reonId);
+			temp = tableService.findByReonAndRestaurant(reonId, restaurantId);
+		}
+		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
 	
 	@RequestMapping(

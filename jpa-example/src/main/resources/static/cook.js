@@ -180,3 +180,90 @@ $(document).on('click','#submitUpdateProfile',function(e){
 		});
 	}
 });
+$(document).on('click','#orderedMeals',function(e){
+	showOrders();
+});
+function showOrders(){
+	$("#content").empty();
+	$.ajax({
+		type : 'GET',
+		url :  '/orderController/getOrdersForRestaurant',
+		contentType : 'application/json',
+		dataType :'json',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("#content").append('<p><b>Poručena jela</b></p>');
+			$("#content").append("<table id='tableOrder'>");
+		      $("#content").append("<thead>");
+		      $("#content").append("<tr>");
+		      $("#content").append("<th>Sto</th>");
+		      $("#content").append("<th>Jela</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("</tr>");
+		      $("#content").append("</thead>");
+		      $("#content").append("<tbody>");
+		      $.each(list, function(index, order) {
+						var meals = order.meals;
+						var desk = order.table_id;
+						var forma = $('<form method="post" class="orderForm" action=""></form>');
+						var formaSignal = $('<form method="post" class="signalMeal" action=""></form>');
+				        var tr = $('<tr></tr>');
+				        tr.append('<td align="center">' + desk + '</td><td align="center">' + meals + '</td>');
+				        forma.append('<input type="hidden" name="acceptMeal" id='+index+' value="'+ desk+";"+meals +'">' +
+				                '<input type="submit" id="acceptMeal" name='+index+' value="Prihvati za spremanje" class="btn green">');
+				        var td = $('<td></td>');
+				        td.append(forma);
+				        formaSignal.append('<input type="hidden" name="signalMeal" id='+index+' value="'+ desk+";"+meals +'">' +
+				                '<input type="submit" id="signalMeal" name='+index+' value="Gotovo jelo" class="btn green">');
+				        var tdSignal = $('<td></td>');
+				        tdSignal.append(formaSignal);
+				        tr.append(td);
+				        tr.append(tdSignal);
+				        $('#content').append(tr);
+				});
+	
+			  $("#content").append("</tbody>");
+			  $("#content").append("</table>");
+			  //var table = document.getElementById("tableOrder");
+			  //table.style.border = "thick solid red";
+			  //$("#tableOrder").css("align","center");
+
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+}
+$(document).on('click', '#acceptMeal', function(e) {
+	e.preventDefault();
+	var name = $(this).attr('name');
+	var zaSplit;
+	$(document).find('input[name="acceptMeal"]').each(function(e){	
+		  var id = this.id;
+		 if(name == id ){
+			 zaSplit = this.value;
+		 }
+	});
+	var splitovano  = zaSplit.split(";");
+	var desk = splitovano[0];
+	var meals = splitovano[1].split(",");
+	alert("acceptMeal");
+});
+$(document).on('click', '#signalMeal', function(e) {
+	e.preventDefault();
+	var name = $(this).attr('name');
+	var zaSplit;
+	$(document).find('input[name="signalMeal"]').each(function(e){	
+		  var id = this.id;
+		 if(name == id ){
+			 zaSplit = this.value;
+		 }
+	});
+	var splitovano  = zaSplit.split(";");
+	var desk = splitovano[0];
+	var meals = splitovano[1].split(",");
+	alert("signalMeal");
+
+});

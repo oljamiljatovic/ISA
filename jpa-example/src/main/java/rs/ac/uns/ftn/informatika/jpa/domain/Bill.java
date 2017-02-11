@@ -24,7 +24,7 @@ public class Bill implements Serializable{
 	private Long id;
 	
 	@Column(nullable = false)
-	private String username;
+	private Long waiter_id;
 	
 	@Column(nullable = false)
 	private int bill;
@@ -42,14 +42,6 @@ public class Bill implements Serializable{
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public int getBill() {
 		return bill;
 	}
@@ -64,6 +56,14 @@ public class Bill implements Serializable{
 
 	public void setDateOfBill(Date dateOfBill) {
 		this.dateOfBill = dateOfBill;
+	}
+
+	public Long getWaiter_id() {
+		return waiter_id;
+	}
+
+	public void setWaiter_id(Long waiter_id) {
+		this.waiter_id = waiter_id;
 	}
 	
 	

@@ -142,7 +142,7 @@ function showOrders(){
 	$("#content").empty();
 	$.ajax({
 		type : 'GET',
-		url :  '/orderController/getOrder',
+		url :  '/orderController/getOrders',
 		contentType : 'application/json',
 		dataType :'json',
 		success : function(data){
@@ -155,14 +155,15 @@ function showOrders(){
 		      $("#content").append("<th>Sto</th>");
 		      $("#content").append("<th>Pića</th>");
 		      $("#content").append("<th>Jela</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("<th>&nbsp;</th>");
 		      $("#content").append("</tr>");
 		      $("#content").append("</thead>");
 		      $("#content").append("<tbody>");
 		      $.each(list, function(index, order) {
-					if(order.username == "Desa"){
 						var drinks = order.drinks;
 						var meals = order.meals;
-						var desk = order.desk;
+						var desk = order.table_id;
 						var forma = $('<form method="post" class="orderForm" action=""></form>');
 						var formaBill = $('<form method="post" class="orderBill" action=""></form>');
 				        var tr = $('<tr></tr>');
@@ -178,7 +179,6 @@ function showOrders(){
 				        tr.append(td);
 				        tr.append(tdBill);
 				        $('#content').append(tr);
-					}	
 				});
 	
 			  $("#content").append("</tbody>");
@@ -213,22 +213,24 @@ $(document).on('click', '#submitEdit', function(e) {
 	var desk = splitovano[0];
 	var drinks = splitovano[1].split(",");
 	var meals = splitovano[2].split(",");
-
+	var allDrinks = [];
+	var allMeals = [];
 	$("#content").empty();
-	$("#content").append('</br><p><b>Izmjena porudžbine</b></p>');
+/*	$("#content").append('</br><p><b>Izmjena porudžbine</b></p>');
 	$("#content").append('<p>*potrebno je popuniti sva polja</p>');
 	$("#content").append('<table class="edit"></table>');
 	$("table.edit").append('<tr><td>Sto: &nbsp;</td><td><input type="text" id="deskId" value="'+desk+'"></td></tr>');
-	$("#deskId").attr('readonly','readonly');
+	$("#deskId").attr('readonly','readonly');*/
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
 		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("table.edit").append('<tr><td>Pića: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+			//$("table.edit").append('<tr><td>Pića: &nbsp;</td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
 			$.each(list, function(index,pice){
-				$('#comboDrinks').append('<option>'+pice.name+'</option>');
+				//$('#comboDrinks').append('<option>'+pice.name+'</option>');
+				allDrinks.push(pice.name);
 			});
 			
 			$.ajax({
@@ -237,13 +239,33 @@ $(document).on('click', '#submitEdit', function(e) {
 				url : '/mealAndDrinkController/uzmiObroke',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-					$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
+					//$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
 					$.each(list, function(index,obrok){
-						$('#comboMeals').append('<option>'+obrok.name+'</option>');
+						//$('#comboMeals').append('<option>'+obrok.name+'</option>');
+						allMeals.push(obrok.name);
 					});
+					$('#content').empty();
+					$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
+							'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
+								'<form method="post" id="updateForm">'+
+									'Izmjena porudžbine:<br/>'+
+									'<br/>Sto:<input type="text" id="deskId" style="width:270px" value="'+desk+'">'+
+									'<br/>Pića:'+
+									'<select id="comboDrinks" multiple="multiple" size="5" style="width:300px"></select>'+
+									'<br/>Jela:'+
+									'<select id="comboMeals" multiple="multiple" size="5" style="width:300px"></select>'+
+									'<br/><input type = "submit" id = "update" name="'+name+'" value="Potvrdi" class="btn orange">'+
+									'</form></div></div></div></div>');
+					$.each(allDrinks, function(index,drink){
+						$('#comboDrinks').append('<option>'+drink+'</option>');
+					});
+					$.each(allMeals, function(index,meal){
+						$('#comboMeals').append('<option>'+meal+'</option>');
+					});
+					$("#deskId").attr('readonly','readonly');
 					$('#comboDrinks').val(drinks);
 					$('#comboMeals').val(meals);
-					$("table.edit").append('<tr><td>&nbsp;</td><td><input type="submit" id="update" name="'+name+'" value="Potvrdi" class="btn green"></td>');
+					//$("table.edit").append('<tr><td>&nbsp;</td><td><input type="submit" id="update" name="'+name+'" value="Potvrdi" class="btn green"></td>');
 				
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -255,8 +277,42 @@ $(document).on('click', '#submitEdit', function(e) {
 			alert("Drink ERROR: " + errorThrown);
 		}	
 	});
-
 });
+
+$(document).on('click', '#update', function(e) {
+	e.preventDefault();
+	var drinks = $('#comboDrinks').val();
+	var meals = $('#comboMeals').val();
+	var desk =$(document).find('#deskId').val();
+	var name = $(this).attr('name');
+	var id = parseInt(name) + 1;//jer su indeksi od 0, a indeksi u bazi od 1
+	$.ajax({
+		type : 'PUT',
+		url :  '/orderController/change/'+id,
+		contentType : 'application/json',
+		dataType :'json',
+		data : JSON.stringify({
+			"waiter_id" : "1",
+			"table_id" : desk,
+			"restaurant" : "1",
+			"drinks" : drinks,
+			"meals" : meals
+		}),
+		success : function(data){	
+			Command: toastr["success"]("Uspješno izvršena izmjena porudžbine.", "Odlično!")
+			message();
+			showOrders();
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	
+	});
+
+	
+});
+
 $(document).on('click', '#bill', function(e) {
 	e.preventDefault();
 	var name = $(this).attr('name');
@@ -316,7 +372,7 @@ $(document).on('click', '#bill', function(e) {
 						contentType : 'application/json',
 						dataType :'json',
 						data : JSON.stringify({
-							"username" :"Desa",
+							"waiter_id" :"1",
 							"bill" : billSum,
 							"dateOfBill" : dateOfBill
 						}),
@@ -359,98 +415,108 @@ function todayDate(){
 	today = mm+'/'+dd+'/'+yyyy;
 	return today;
 }
-$(document).on('click', '#update', function(e) {
-	var drinks = $('#comboDrinks').val();
-	var meals = $('#comboMeals').val();
-	var desk =$(document).find('#deskId').val();
-	var name = $(this).attr('name');
-	var id = parseInt(name) + 1;//jer su indeksi od 0, a indeksi u bazi od 1
-	$.ajax({
-		type : 'PUT',
-		url :  '/orderController/change/'+id,
-		contentType : 'application/json',
-		dataType :'json',
-		data : JSON.stringify({
-			"username" : "Desa",
-			"desk" : desk,
-			"drinks" : drinks,
-			"meals" : meals
-		}),
-		success : function(data){	
-			Command: toastr["success"]("Uspješno izvršena izmjena porudžbine.", "Odlično!")
-			message();
-			showOrders();
-		},
-
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
-	
-	});
-
-	
-});
 
 $(document).on('click','#addOrder',function(e){
 	$("#content").empty();
-	$("#content").append('</br><p><b>Dodavanje porudžbine</b></p>');
+	/*$("#content").append('</br><p><b>Dodavanje porudžbine</b></p>');
 	$("#content").append('<p>*potrebno je popuniti sva polja</p>');
-	$("#content").append('<table id="tableAddOrder"></table>');
-	$("#tableAddOrder").append('<tr><td>Broj stola</td><td><input type="text" id="desk"></td></tr>');
+	$("#content").append('<table id="tableAddOrder"></table>');*/
+	var allDrinks = [];
+	var allMeals = [];
+	var allTables= [];
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/mealAndDrinkController/uzmiPica',
+		url : '/waiterController/getTables',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
-			$.each(list, function(index,pice){
-				$('#comboDrinks').append('<option>'+pice.name+'</option>');
+			//$("#tableAddOrder").append('<tr><td>Sto: &nbsp; </td><td><select id="comboTables" style="width:170px;">');
+			$.each(list, function(index,table){
+				//$('#comboTables').append('<option>'+table.id+'</option>');
+				allTables.push(table.id);
 			});
-			
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/mealAndDrinkController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiPica',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-					$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
-					$.each(list, function(index,obrok){
-						$('#comboMeals').append('<option>'+obrok.name+'</option>');
+					//$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+					$.each(list, function(index,pice){
+						//$('#comboDrinks').append('<option>'+pice.name+'</option>');
+						allDrinks.push(pice.name);
+					});
+					$.ajax({
+						type: 'GET',
+						dataType: 'json',
+						url : '/mealAndDrinkController/uzmiObroke',
+						success : function(data){
+							var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+							//$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
+							$.each(list, function(index,obrok){
+								//$('#comboMeals').append('<option>'+obrok.name+'</option>');
+								allMeals.push(obrok.name);
+							});
+							$('#content').empty();
+							$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
+									'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
+										'<form method="post" id="updateForm">'+
+											'Dodavanje porudžbine:<br/>'+
+											'<br/>Sto:<br/>'+
+											'<select id="comboTables" style="width:300px"></select>'+
+											'<br/>Pića:'+
+											'<select id="comboDrinks" multiple="multiple" size="5" style="width:300px"></select>'+
+											'<br/>Jela:'+
+											'<select id="comboMeals" multiple="multiple" size="5" style="width:300px"></select>'+
+											'<br/><input type = "submit" id = "submitOrder" value="Potvrdi" class="btn orange">'+
+											'</form></div></div></div></div>');
+							$.each(allTables, function(index,table){
+								$('#comboTables').append('<option>'+table+'</option>');
+							});
+							$.each(allDrinks, function(index,drink){
+								$('#comboDrinks').append('<option>'+drink+'</option>');
+							});
+							$.each(allMeals, function(index,meal){
+								$('#comboMeals').append('<option>'+meal+'</option>');
+							});
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							alert("Meal ERROR: " + errorThrown);
+						}	
 					});
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Meal ERROR: " + errorThrown);
+					alert("Drink ERROR: " + errorThrown);
 				}	
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Drink ERROR: " + errorThrown);
+			alert("Tablee ERROR: " + errorThrown);
 		}	
 	});
-	$("#content").append('<tr><td>&nbsp;</td><td><input type="submit" id="submitOrder" class="btn orange"></td></tr>');
+	
 });
 
 $(document).on('click','#submitOrder',function(e){
-
-	var desk = $(document).find('#desk').val();
+	e.preventDefault();
+	var table = $('#comboTables').val();
 	var drinks = $('#comboDrinks').val();
 	var meals = $('#comboMeals').val();
-	var listOfDrinks = [];
-	$.ajax({
+	var listOfDrinkss = [];
+	/*$.ajax({
 		type: 'GET',
 		dataType: 'json',
 		url : '/mealAndDrinkController/uzmiPica',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
 			$.each(list, function(index1,pice){
 				$.each(drinks, function(index2,drink){
-					if(pice.name == drink[index2]){
-						listOfDrinks.push(pice)
+					if(pice.name == drink){
+						listOfDrinkss.push(pice)
 					}
 				});
 			});
+			var listOfDrinks = JSON.stringify(listOfDrinkss);
 			$.ajax({
 				type : 'POST',
 				url :  '/orderController/catchList',
@@ -473,15 +539,16 @@ $(document).on('click','#submitOrder',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Drink ERROR: " + errorThrown);
 		}	
-	});
-	/*$.ajax({
+	});*/
+	$.ajax({
 		type : 'POST',
 		url :  '/orderController/addOrder',
 		contentType : 'application/json',
 		dataType :'json',
 		data : JSON.stringify({
-			"username" :"Desa",
-			"desk" : desk,
+			"waiter_id" :"1",
+			"table_id" : table,
+			"restaurant" : "1",
 			"drinks" : drinks,
 			"meals" : meals
 		}),
@@ -494,7 +561,7 @@ $(document).on('click','#submitOrder',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 			alert("AJAX ERROR: " + errorThrown);
 		}
-	});*/
+	});
 });
 $(document).on('click','#updateProfile',function(e){
 	$.ajax({
