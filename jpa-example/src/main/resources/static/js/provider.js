@@ -31,8 +31,8 @@ $(document).ready(function(){
 							'<a id="ponudjacIzmenaLozinke">Promeni sifru</a></div></li>'+
 							'<li class="dropdown"><a class="dropbtn">Restoran</a>'+
 							'<div class="dropdown-content">'+	
-							'<a id="restoran">Izmeni restoran</a>'+
-							'<a id="konfiguracija">Konfiguracija</a></div></li>'+
+							'<a id="aktivnePonude">Aktivne ponude</a>'+
+							'<a id="spisakPonuda">Spisak ponuda</a></div></li>'+
 							'<li><a id="dugmeOdjava">Odjavi se</a></li></ul>');
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -211,4 +211,110 @@ $(document).on('submit','#izmenaPonudjaca',function(e){
 			}
 		});
 	}
+});
+
+
+$(document).on('click','#aktivnePonude',function(e){
+	e.preventDefault();
+	$('#content').empty();
+	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID</th><th>RESTORAN</th><th></th>/tr></table>');
+	
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/providerController/uzmiSvePonude',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,ponuda){
+				$('#tabelaPrikaz').append('<tr><td>'+ponuda.endDate+'</td><td>'+ponuda.restaurant+'</td>'+
+						'<td><form id="formVidiPonudu" method="get" action="">'+
+							'<input type="submit" value="Vidi ponudu/porudzbinu">' +
+							'<input type="hidden" id="idIzmenaId" value='+ponuda.id+'></form></td></tr>');
+				
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+	
+});
+
+
+$(document).on('submit','#formVidiPonudu',function(e){
+	e.preventDefault();
+	var id = $(this).find("input[type=hidden]").val();
+	$('#content').empty();
+	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
+		'<div class="login-page wrapper centered centered-block">'+
+		'<div class = "form-group"><form method="post" id="submitDodajPonudu">'+
+		'Podaci o ponudi:<br/><br/>'+
+		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/>'+
+		'Trazena jela:<ul class="cao" id="spisakJela"></ul><br/>'+
+		'Trazena pica:<ul class="cao" id="spisakPica"></ul><br/><br/>'+
+			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
+			'</form></div></div></div></div>');
+	
+	var data2 = JSON.stringify({
+		"id" : id,
+		"endDate" : "",
+		"meals" : [],
+		"drinks" : [],
+		"restaurant" : 0
+	});
+	
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/mealAndDrinkController/uzmiPica',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,pice){
+				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'k" id="'+
+						pice.id+'">'+pice.name+'</li>');
+			});
+			
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/mealAndDrinkController/uzmiObroke',
+				success : function(data){
+					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$.each(list, function(index,jela){
+						$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'k" id="'+
+								jela.id+'">'+jela.name+'</li>');
+					});
+					
+					$.ajax({
+						type: 'GET',
+						contentType : 'application/json',
+						dataType : 'json',
+						data : data2,
+						url : '/providerController/uzmiPonudu',
+						success : function(ponuda){
+							$('#krajPonude').val(ponuda.endDate);
+							
+							for(var i=0;i<ponuda.drinks.length;i++) {
+								document.getElementById(ponuda.drinks[i]).checked = true;
+								
+							}
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							alert("Admin ERROR: " + errorThrown);
+						}	
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Admin ERROR: " + errorThrown);
+				}	
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+	
+	
+	
+	
 });
