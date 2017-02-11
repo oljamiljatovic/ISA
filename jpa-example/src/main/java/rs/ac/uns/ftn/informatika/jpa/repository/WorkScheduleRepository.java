@@ -12,7 +12,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 public interface WorkScheduleRepository extends PagingAndSortingRepository<WorkSchedule, Long> {
 	
 	@Query("select w from WorkSchedule w where w.worker_id = ?1")
-	WorkSchedule findWorkScheduleByWorker_id(Long worker_id);
+	ArrayList<WorkSchedule> findByWorker_id(Long worker_id);
 	
 	public ArrayList<WorkSchedule> findAll(); 
 }

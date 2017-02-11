@@ -9,4 +9,6 @@ public interface AssignReonService {
 	public AssignReon createAssignReon(AssignReon assignReon);
 	
 	public ArrayList<AssignReon> findAll();
+	
+	public ArrayList<AssignReon> findByWaiter_id(Long waiter_id);
 }

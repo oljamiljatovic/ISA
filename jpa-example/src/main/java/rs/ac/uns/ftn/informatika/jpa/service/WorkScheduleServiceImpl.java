@@ -22,8 +22,8 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
 	}
 
 	@Override
-	public WorkSchedule findWorkScheduleByWorker_id(Long worker_id) {
-		return workScheduleRepository.findWorkScheduleByWorker_id(worker_id);
+	public ArrayList<WorkSchedule> findByWorker_id(Long worker_id) {
+		return workScheduleRepository.findByWorker_id(worker_id);
 	}
 
 	@Override

@@ -50,8 +50,9 @@ public class WaiterController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<WorkSchedule> temp = new ArrayList<WorkSchedule>();
-		if(u.getRole().equals("waiter")){
-			ArrayList<WorkSchedule> ws = workScheduleService.findAll();
+		if(u.getRole().equals("waiter") || u.getRole().equals("cook") || u.getRole().equals("barman")){
+			temp = workScheduleService.findByWorker_id(u.getId());
+			/*ArrayList<WorkSchedule> ws = workScheduleService.findAll();
 			Long id =u.getId();
 			Long worker_id = null;
 			for(int i=0;i<ws.size();i++){
@@ -59,7 +60,7 @@ public class WaiterController {
 				if(id.equals(worker_id)){
 					temp.add(ws.get(i));
 				}
-			}
+			}*/
 		}
 		return new ResponseEntity<ArrayList<WorkSchedule>>(temp, HttpStatus.OK);
 	}
@@ -76,7 +77,8 @@ public class WaiterController {
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<Reon> temp = new ArrayList<Reon>();
 		if(u.getRole().equals("waiter")){
-			ArrayList<Employee> employees = employeeService.getEmployees();
+			Employee employee = employeeService.findById(u.getId());
+			/*ArrayList<Employee> employees = employeeService.getEmployees();
 			Long restId = null;
 			for(int i = 0;i<employees.size();i++){
 				System.out.println("EID"+employees.get(i).getId());
@@ -86,11 +88,9 @@ public class WaiterController {
 					System.out.println("Nasao rest"+restId);
 					break;
 				}
-			}
-			if(restId!=null){
-				temp = reonService.getReonsOfRestorans(restId);
-			}
-			
+			}*/
+			temp = reonService.getReonsOfRestorans(employee.getRestaurant());
+
 		}
 		return new ResponseEntity<ArrayList<Reon>>(temp, HttpStatus.OK);
 	}
@@ -107,13 +107,14 @@ public class WaiterController {
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<AssignReon> temp = new ArrayList<AssignReon>();
 		if(u.getRole().equals("waiter")){
-			ArrayList<AssignReon> assignReons = assignReonService.findAll();
+			temp = assignReonService.findByWaiter_id(u.getId());
+			/*ArrayList<AssignReon> assignReons = assignReonService.findAll();
 			for(int j = 0;j<assignReons.size();j++){
 				if(assignReons.get(j).getWaiter_id().equals(u.getId())){
 					temp.add(assignReons.get(j));
 					break;
 				}
-			}
+			}*/
 		}
 		return new ResponseEntity<ArrayList<AssignReon>>(temp, HttpStatus.OK);
 	}
