@@ -50,6 +50,8 @@ window.onload = function() {
     					window.location.href = "cook.html";
     				}else if(userRole=="barman"){
     					window.location.href = "barman.html";
+    				}else if(userRole=="provider"){
+    					window.location.href = "provider.html";
     				}
     				
     				}

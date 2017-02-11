@@ -154,3 +154,162 @@ $(document).on('click','#submitNewEmployee',function(e){
 });
 
 
+$(document).on('click','#dodajPonudjaca',function(e){
+	e.preventDefault();
+	$('#content').empty();
+	$('#content').append('<div id="wraper"><div class="centered-content-wrap">'+
+			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
+				'<form method="post" id="registracijaPonudjaca">'+
+					'Podaci o ponudjacu:<br/><br/>'+
+					'Ime:<input type = "text" id = "imePonudjaca" class="in-text"/><br/>'+
+					'Prezime:<input type = "text" id = "prezimePonudjaca" class="in-text"/><br/>'+
+					'Adresa:<input type = "text" id = "adresaPonudjaca" class="in-text"/><br/>'+
+					'Email:<input type = "text" id = "emailPonudjaca" class="in-text"/><br/>'+
+					'Kontakt:<input type = "text" id = "kontaktPonudjaca" class="in-text"/><br/>'+
+					'Lozinka:<input type = "password" id = "lozinkaPonudjaca" class="in-text"/><br/>'+
+					'<input type = "submit" id = "submitNewProvider" value="Submit" class="btn orange">'+
+					'</form></div></div></div>');
+});
+
+
+$(document).on('click','#submitNewProvider',function(e){
+	e.preventDefault();
+	var name = $('#imePonudjaca').val();
+	var surname = $('#prezimePonudjaca').val();
+	var address = $('#adresaPonudjaca').val();
+	var email = $('#emailPonudjaca').val();
+	var contact = $('#kontaktPonudjaca').val();
+	var password = $('#lozinkaPonudjaca').val();
+	var restaurant = "";
+	var logFirstTime = "true";
+	var dataa = JSON.stringify({
+		"name" : name,
+		"surname" : surname,
+		"address" : address,
+		"email" : email,
+		"contact" : contact,
+		"password" : password,
+		"restaurant" : restaurant,
+		"role" : "provider",
+		"accept" : "true",
+		"logFirstTime" : logFirstTime
+	});
+	
+	if(name == ""){
+		alert("Ime je prazno");
+	}else if(surname == ""){
+		alert("Prezime je prazno");
+	}else if(address == ""){
+		alert("Adresa je prazna");
+	}else if(email == ""){
+		alert("Email je prazan");
+	}else if(contact == ""){
+		alert("Kontakt je prazan");
+	}else{
+		$.ajax({
+			type : 'POST',
+			url :  '/restaurantManagerController/addProvider',
+			contentType : 'application/json',
+			dataType : 'json',
+			data : dataa,
+			success : function(data){
+				alert(data.id);
+				window.location.reload();
+			},
+
+			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+				alert("AJAX ERROR: " + errorThrown);
+			}
+		});
+	}
+});
+
+$(document).on('click','#dodajPonudu',function(e){
+	e.preventDefault();
+	$('#content').empty();
+	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
+		'<div class="login-page wrapper centered centered-block">'+
+		'<div class = "form-group"><form method="post" id="submitDodajPonudu">'+
+		'Podaci o ponudi:<br/><br/>'+
+		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/><br/>'+
+		'Izaberi jelo:<ul class="cao" id="spisakJela"></ul><br/>'+
+		'Izaberi pice:<ul class="cao" id="spisakPica"></ul><br/><br/>'+
+			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
+			'</form></div></div></div></div>');
+	
+	
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/mealAndDrinkController/uzmiPica',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,pice){
+				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'k" id="'+
+						pice.id+'">'+pice.name+'</li>');
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+	
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/mealAndDrinkController/uzmiObroke',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,jela){
+				$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'k" id="'+
+						jela.id+'">'+jela.name+'</li>');
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});
+
+
+$(document).on('submit','#submitDodajPonudu',function(e){
+	e.preventDefault();
+	
+	var pica = [];
+	var jela = [];
+	var restaurant = "";
+	$("input[type=checkbox]:checked").map(function() {
+		var  cekiran = $(this).val();
+		var id = cekiran.split('_')[1];
+		var oznaka = cekiran.split('_')[0];
+		if(oznaka=="jelo")
+			jela.push(id);
+		else
+			pica.push(id);
+	});
+	
+	var datum = $('#krajPonude').val();
+	
+	var data2 = JSON.stringify({
+		"endDate" : datum,
+		"drinks" : pica,
+		"meals" : jela,
+		"restaurant" : restaurant
+	});
+	$.ajax({
+		type : 'POST',
+		url :  '/mealAndDrinkController/addOffer',
+		contentType : 'application/json',
+		dataType : 'json',
+		data : data2,
+		success : function(data){
+			alert(data.id);
+			window.location.reload();
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+});
+
