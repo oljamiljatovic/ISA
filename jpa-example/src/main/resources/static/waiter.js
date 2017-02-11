@@ -239,7 +239,7 @@ $(document).on('click', '#submitEdit', function(e) {
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("table.edit").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
 					$.each(list, function(index,obrok){
-						$('#comboMeals').append('<option>'+obrok[1]+'</option>');
+						$('#comboMeals').append('<option>'+obrok.name+'</option>');
 					});
 					$('#comboDrinks').val(drinks);
 					$('#comboMeals').val(meals);
@@ -302,9 +302,9 @@ $(document).on('click', '#bill', function(e) {
 					$("table.bill").append('<tr><td>Jela: &nbsp;</td></tr>');
 					$.each(list, function(index1,obrok){
 						$.each(meals, function(index2,meal){
-							if(obrok[1]==meal){
-								$("table.bill ").append('<tr><td>'+obrok[1]+' = '+obrok[2]+'</td></tr>');
-								billSum=billSum + obrok[2];
+							if(obrok.name==meal){
+								$("table.bill ").append('<tr><td>'+obrok.name+' = '+obrok.price+'</td></tr>');
+								billSum=billSum + obrok.price;
 							}
 						});
 					});
@@ -416,7 +416,7 @@ $(document).on('click','#addOrder',function(e){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
 					$.each(list, function(index,obrok){
-						$('#comboMeals').append('<option>'+obrok[1]+'</option>');
+						$('#comboMeals').append('<option>'+obrok.name+'</option>');
 					});
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -432,10 +432,49 @@ $(document).on('click','#addOrder',function(e){
 });
 
 $(document).on('click','#submitOrder',function(e){
+
 	var desk = $(document).find('#desk').val();
 	var drinks = $('#comboDrinks').val();
 	var meals = $('#comboMeals').val();
+	var listOfDrinks = [];
 	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/mealAndDrinkController/uzmiPica',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+			$.each(list, function(index1,pice){
+				$.each(drinks, function(index2,drink){
+					if(pice.name == drink[index2]){
+						listOfDrinks.push(pice)
+					}
+				});
+			});
+			$.ajax({
+				type : 'POST',
+				url :  '/orderController/catchList',
+				contentType : 'application/json',
+				dataType :'json',
+				data : JSON.stringify({
+					"listOfDrinks" : listOfDrinks
+				}),
+				success : function(data){
+					Command: toastr["success"]("Catch list.", "Odlično!")
+					message();
+					showOrders();
+				},
+
+				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+					alert("AJAX ERROR: " + errorThrown);
+				}
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Drink ERROR: " + errorThrown);
+		}	
+	});
+	/*$.ajax({
 		type : 'POST',
 		url :  '/orderController/addOrder',
 		contentType : 'application/json',
@@ -455,7 +494,7 @@ $(document).on('click','#submitOrder',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 			alert("AJAX ERROR: " + errorThrown);
 		}
-	});
+	});*/
 });
 $(document).on('click','#updateProfile',function(e){
 	$.ajax({

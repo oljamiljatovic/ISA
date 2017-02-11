@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
+import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.service.BillService;
 import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
@@ -46,6 +48,18 @@ public class OrderController {
 			@RequestBody Order order) throws Exception {
 		Order addedOrder = orderService.createNew(order);
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/catchList",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Drink>> catchList(
+			@RequestParam(value="listOfDrinks[]") ArrayList<Drink> listOfDrinks	) throws Exception {
+		System.out.println(listOfDrinks.get(0).getName());
+		System.out.println(listOfDrinks.get(0).getPrice());
+		return new ResponseEntity<ArrayList<Drink>>(listOfDrinks, HttpStatus.OK);
 	}
 	
 	@RequestMapping(

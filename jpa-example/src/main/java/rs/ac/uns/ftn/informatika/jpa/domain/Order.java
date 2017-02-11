@@ -32,8 +32,6 @@ public class Order {
 	private String desk;
 	
 	private ArrayList<String> drinks = new ArrayList<String>();
-	
-	
 	private ArrayList<String> meals = new ArrayList<String>();
 	//private ArrayList<Drink> drinks = new ArrayList<Drink>();
 
@@ -45,6 +43,14 @@ public class Order {
 		setDrinks(drinks);
 		setMeals(meals);
 	}
+	
+	/*public Order(String username,String desk,ArrayList<Drink> drinks,ArrayList<String> meals){
+		this.username = username;
+		this.desk = desk;
+		setDrinks(drinks);
+		setMeals(meals);
+	}*/
+	
 	public Order(String username,String desk){
 		this.username = username;
 		this.desk = desk;
@@ -81,8 +87,8 @@ public class Order {
 
 	public void setMeals(ArrayList<String> meals) {
 		this.meals = meals;
-	}
-	/*@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	}/*
+	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinTable(name="drink_order", joinColumns=@JoinColumn(name="order_id"),
 	inverseJoinColumns=@JoinColumn(name="drink_id"))
 	public ArrayList<Drink> getDrinks() {
