@@ -9,7 +9,7 @@ public interface WorkScheduleService {
 	
 	public WorkSchedule createSchedule(WorkSchedule ws);
 	
-	public WorkSchedule findWorkScheduleByWorker_id(Long worker_id);
+	public ArrayList<WorkSchedule> findByWorker_id(Long worker_id);
 	
 	public ArrayList<WorkSchedule> findAll();
 

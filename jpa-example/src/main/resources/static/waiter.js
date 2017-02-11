@@ -464,7 +464,6 @@ $(document).on('click','#updateProfile',function(e){
 		url : '/waiterController/getEmployee',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
 			$.each(list, function(index,employee){
 				$('#content').empty();
 				$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+

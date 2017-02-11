@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="jquery-ui.js"></script>
+<script type="text/javascript" src="jquery-ui.min.js"></script>
+<script type="text/javascript" src="calendar/bootstrap-year-calendar.min.js"></script>
+<script type="text/javascript" src="calendar/bootstrap-year-calendar.js"></script>
+<script type="text/javascript" src="js/toastr.min.js"></script>
+<link href="js/toastr.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="calendar/bootstrap-year-calendar.css">
+<link rel="stylesheet" href="calendar/bootstrap-year-calendar.min.css">
 <script type="text/javascript" src="barman.js"> </script>
 <title>Stranica za sankera</title>
 </head>
 <body>
-<p>Sankeru, nocas budi drug!</p>
+<ul>
+	<li class="dropdown">
+		<a id="calendar" class="dropbtn">Rasporeda rada</a>
+	</li>
+	<li class="dropdown">
+		<a id="drinks" class="dropbtn">Porudžbina pića</a>
+	</li>
+	<li class="dropdown">
+		<a id="updateProfile" class="dropbtn">Ažuriranje profila</a>
+	</li>
+	<li class="dropdown">
+		<a id="logout" class="dropbtn">Odjava</a>
+	</li>
+</ul>
+<div id="content">
+	
+</div>
 
 </body>
 </html>

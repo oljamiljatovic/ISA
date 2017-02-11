@@ -25,4 +25,9 @@ public class AssignReonServiceImpl implements AssignReonService{
 		return assignReonRepository.findAll();
 	}
 
+	@Override
+	public ArrayList<AssignReon> findByWaiter_id(Long waiter_id) {
+		return assignReonRepository.findByWaiter_id(waiter_id);
+	}
+
 }
