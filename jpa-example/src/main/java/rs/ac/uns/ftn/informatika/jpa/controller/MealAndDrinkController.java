@@ -21,8 +21,10 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
+import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OfferService;
@@ -43,6 +45,8 @@ public class MealAndDrinkController {
 	private RestaurantService restaurantService;
 	@Autowired
 	private OfferService offerService;
+	@Autowired
+	private EmployeeService employeeService;
 	
 	@RequestMapping(
 			value = "/uzmiPica",
@@ -53,14 +57,20 @@ public class MealAndDrinkController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
+		ArrayList<Drink> drinks = new ArrayList<Drink>();
 		Restaurant r= null;
 		RestaurantManager rm=null;
+		Employee employee = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
+			drinks = this.drinkService.getDrinksByRestaurant(r.getId());
+		}else if(u.getRole().equals("waiter") || u.getRole().equals("barman")){
+			employee = employeeService.findById(u.getId());
+			drinks = this.drinkService.getDrinksByRestaurant(employee.getRestaurant());
 		}
-		ArrayList<Drink> drinks = this.drinkService.getDrinksByRestaurant(r.getId());
+		
 		return new ResponseEntity<ArrayList<Drink>>(drinks, HttpStatus.OK);
 	}
 	
@@ -120,14 +130,19 @@ public class MealAndDrinkController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
+		ArrayList<Meal> meals = new ArrayList<Meal>();
 		Restaurant r= null;
 		RestaurantManager rm=null;
+		Employee employee = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
+			meals = this.mealService.getDrinksByRestaurant(r.getId());
+		}else if(u.getRole().equals("waiter") || u.getRole().equals("cook")){
+			employee = employeeService.findById(u.getId());
+			meals = this.mealService.getDrinksByRestaurant(employee.getRestaurant());
 		}
-		ArrayList<Meal> meals = this.mealService.getDrinksByRestaurant(r.getId());
 		return new ResponseEntity<ArrayList<Meal>>(meals, HttpStatus.OK);
 	}
 	
