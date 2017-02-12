@@ -245,7 +245,7 @@ $(document).on('click','#dodajPonudu',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,pice){
-				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'k" id="'+
+				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'" id="'+
 						pice.id+'">'+pice.name+'</li>');
 			});
 		},
@@ -261,7 +261,7 @@ $(document).on('click','#dodajPonudu',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,jela){
-				$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'k" id="'+
+				$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'" id="'+
 						jela.id+'">'+jela.name+'</li>');
 			});
 		},
@@ -313,3 +313,77 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 	});
 });
 
+
+
+
+
+$(document).on('click','#aktuelnePonude',function(e){
+	e.preventDefault();
+	$('#content').empty();
+	$('#content').append('<table id="tabelaPrikaz"><tr><th>CENA DOSTAVE</th><th>VREME DOSTAVE</th><th>ID PONUDJACA</th>/tr></table>');
+	
+	$.ajax({
+		type: 'GET',
+		contentType : 'application/json',
+		url : '/providerController/uzmiSvePorudzbeniceAktuelnePonude',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,porudz){
+
+				$('#tabelaPrikaz').append('<tr><td>'+porudz.price+'</td><td>'+porudz.timeDeliver+'</td><td>'+porudz.provider+'</td>'+
+						'<td><form id="formPrihvatiPonudu" method="get" action="">'+
+							'<input type="submit" value="Prihvati ponudu">' +
+							'<input type="hidden" id="porudzId" value='+porudz.id+'>'+
+							'<input type="hidden" id="porudzTime" value='+porudz.timeDeliver+'>'+
+							'<input type="hidden" id="porudzPrice" value='+porudz.price+'>'+
+							'<input type="hidden" id="porudzFlag" value='+porudz.flag+'>'+
+							'<input type="hidden" id="porudzOffer" value='+porudz.offer+'>'+
+							'<input type="hidden" id="porudzRestaurant" value='+porudz.restaurant+'>'+
+							'</form></td></tr>');
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+	
+});
+
+
+$(document).on('submit','#formPrihvatiPonudu',function(e){
+	e.preventDefault();
+	
+	var id = $(this).find("input[id='porudzId']").val();
+	var flag = $(this).find("input[id='porudzId']").val();
+	var timeDeliver = $(this).find("input[id='porudzTime']").val();
+	var price = $(this).find("input[id='porudzPrice']").val();
+	var offer = $(this).find("input[id='porudzOffer']").val();
+	var restaurant= $(this).find("input[id='porudzRestaurant']").val();
+	
+	
+	var data2 = JSON.stringify({
+		"id" : id,
+		"offer" : offer,
+		"restaurant" : restaurant,
+		"timeDeliver" : timeDeliver,
+		"price" : price,
+		"flag" : flag
+	});
+		$.ajax({
+			type : 'POST',
+			url :  '/providerController/izmeniPorudzbenicu',
+			contentType : 'application/json',
+			dataType : 'json',
+			data : data2,
+			success : function(data){
+				alert(data.id);
+				window.location.reload();
+			},
+
+			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+				alert("AJAX ERROR: " + errorThrown);
+			}
+		});
+		
+	
+});

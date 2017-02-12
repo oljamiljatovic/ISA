@@ -226,11 +226,16 @@ $(document).on('click','#aktivnePonude',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,ponuda){
+				var date1 = new Date();
+				var date2 = new Date(ponuda.endDate);
+				if( date1 < date2)
+			    {
+			   
 				$('#tabelaPrikaz').append('<tr><td>'+ponuda.endDate+'</td><td>'+ponuda.restaurant+'</td>'+
 						'<td><form id="formVidiPonudu" method="get" action="">'+
 							'<input type="submit" value="Vidi ponudu/porudzbinu">' +
 							'<input type="hidden" id="idIzmenaId" value='+ponuda.id+'></form></td></tr>');
-				
+			    }
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -245,16 +250,63 @@ $(document).on('submit','#formVidiPonudu',function(e){
 	e.preventDefault();
 	var id = $(this).find("input[type=hidden]").val();
 	$('#content').empty();
+	
+	var data = JSON.stringify({
+		"offer" : id,
+		"restaurant" : "",
+		"timeDeliver" : "",
+		"price" : "",
+		"provider" : "",
+		"flag" : 0
+	});
+	
+	$.ajax({
+		type: 'POST',
+		contentType : 'application/json',
+		dataType : 'json',
+		data : data,
+		url : '/providerController/uzmiPorudzbenicu',
+		success : function(ponuda){
+			
+			if(ponuda==null)
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block">'+
-		'<div class = "form-group"><form method="post" id="submitDodajPonudu">'+
+		'<div class = "form-group"><form method="post" id="submitDodajPorudzbenicu">'+
 		'Podaci o ponudi:<br/><br/>'+
 		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/>'+
 		'Trazena jela:<ul class="cao" id="spisakJela"></ul><br/>'+
 		'Trazena pica:<ul class="cao" id="spisakPica"></ul><br/><br/>'+
-			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
+		'------------------------------------------------------------------------------------:<br/><br/>'+
+
+		'Cena porudzbine:<input type = "text" id = "cenaPorudzbenice" class="in-text"/><br/>'+
+		'Broj dana dostave:<input type = "text" id = "daniPorudzbenice" class="in-text"/><br/>'+
+			'<input type = "submit" id = "submit" value="Dodaj porudzbenicu" class="btn orange">'+
+			'<input type="hidden" id="porudzbenicaId"><input type="hidden" id="porudzbenicaOffer">' +
+			'<input type="hidden" id="porudzbenicaRestoran">'+
 			'</form></div></div></div></div>');
-	
+			
+			else{
+				$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
+						'<div class="login-page wrapper centered centered-block">'+
+						'<div class = "form-group"><form method="post" id="submitIzmeniPorudzbenicu">'+
+						'Podaci o ponudi:<br/><br/>'+
+						'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/>'+
+						'Trazena jela:<ul class="cao" id="spisakJela"></ul><br/>'+
+						'Trazena pica:<ul class="cao" id="spisakPica"></ul><br/><br/>'+
+						'------------------------------------------------------------------------------------:<br/><br/>'+
+
+						'Cena porudzbine:<input type = "text" id = "cenaPorudzbenice" class="in-text"/><br/>'+
+						'Broj dana dostave:<input type = "text" id = "daniPorudzbenice" class="in-text"/><br/>'+
+							'<input type = "submit" id = "submit" value="Izmeni porudzbenicu" class="btn orange">'+
+							'<input type="hidden" id="porudzbenicaId"><input type="hidden" id="porudzbenicaOffer">' +
+							'<input type="hidden" id="porudzbenicaRestoran">'+
+							'</form></div></div></div></div>');
+				
+				$('#porudzbenicaId').val(ponuda.id);
+				$('#cenaPorudzbenice').val(ponuda.price);
+				$('#daniPorudzbenice').val(ponuda.timeDeliver);
+			}
+				
 	var data2 = JSON.stringify({
 		"id" : id,
 		"endDate" : "",
@@ -270,8 +322,8 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,pice){
-				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'k" id="'+
-						pice.id+'">'+pice.name+'</li>');
+				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'" id="drink_'+
+						pice.id+'" readonly="true">'+pice.name+'</li>');
 			});
 			
 			$.ajax({
@@ -281,23 +333,29 @@ $(document).on('submit','#formVidiPonudu',function(e){
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$.each(list, function(index,jela){
-						$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'k" id="'+
-								jela.id+'">'+jela.name+'</li>');
+						$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'" id="'+
+								jela.id+'" readonly="true">'+jela.name+'</li>');
 					});
 					
 					$.ajax({
-						type: 'GET',
+						type: 'POST',
 						contentType : 'application/json',
 						dataType : 'json',
 						data : data2,
 						url : '/providerController/uzmiPonudu',
 						success : function(ponuda){
 							$('#krajPonude').val(ponuda.endDate);
+							$('#porudzbenicaOffer').val(ponuda.id);
+							$('#porudzbenicaRestoran').val(ponuda.restaurant);
 							
 							for(var i=0;i<ponuda.drinks.length;i++) {
-								document.getElementById(ponuda.drinks[i]).checked = true;
-								
+								document.getElementById('drink_'+ponuda.drinks[i]).checked = true;
 							}
+							
+							for(var i=0;i<ponuda.meals.length;i++) {
+								document.getElementById('jelo_'+ponuda.meals[i]).checked = true;
+							}
+							
 						},
 						error : function(XMLHttpRequest, textStatus, errorThrown) {
 							alert("Admin ERROR: " + errorThrown);
@@ -314,7 +372,93 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		}	
 	});
 	
-	
-	
-	
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}
+	});
 });
+
+
+$(document).on('submit','#submitDodajPorudzbenicu',function(e){
+	e.preventDefault();
+	var restaurant = $(this).find("input[id='porudzbenicaRestoran']").val();
+	var offer = $(this).find("input[id='porudzbenicaOffer']").val();
+	var days = $('#daniPorudzbenice').val();
+	var price = $('#cenaPorudzbenice').val();
+	
+	if(days == ""){
+		alert("Morate uneti broj dana potrebnih!");
+	}else if(price == ""){
+		alert("Morate uneti cenu!");
+	}else{
+		
+		var data2 = JSON.stringify({
+			"offer" : offer,
+			"restaurant" : restaurant,
+			"timeDeliver" : days,
+			"price" : price,
+			"provider" : "",
+			"flag" : 0
+		});
+		
+		$.ajax({
+			type : 'POST',
+			url :  '/providerController/dodajPorudzbenicu',
+			contentType : 'application/json',
+			dataType : 'json',
+			data : data2,
+			success : function(data){
+				alert(data.id);
+				window.location.reload();
+			},
+
+			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+				alert("AJAX ERROR: " + errorThrown);
+			}
+		});
+	}
+});
+
+
+$(document).on('submit','#submitIzmeniPorudzbenicu',function(e){
+	e.preventDefault();
+	var id = $(this).find("input[id='porudzbenicaId']").val();
+	var restaurant = $(this).find("input[id='porudzbenicaRestoran']").val();
+	var offer = $(this).find("input[id='porudzbenicaOffer']").val();
+	var days = $('#daniPorudzbenice').val();
+	var price = $('#cenaPorudzbenice').val();
+	
+	if(days == ""){
+		alert("Morate uneti broj dana potrebnih!");
+	}else if(price == ""){
+		alert("Morate uneti cenu!");
+	}else{
+		
+		var data2 = JSON.stringify({
+			"id" : id,
+			"offer" : offer,
+			"restaurant" : restaurant,
+			"timeDeliver" : days,
+			"price" : price,
+			"flag" : 0
+		});
+		
+		$.ajax({
+			type : 'POST',
+			url :  '/providerController/izmeniPorudzbenicu',
+			contentType : 'application/json',
+			dataType : 'json',
+			data : data2,
+			success : function(data){
+				alert(data.id);
+				window.location.reload();
+			},
+
+			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+				alert("AJAX ERROR: " + errorThrown);
+			}
+		});
+	}
+});
+
