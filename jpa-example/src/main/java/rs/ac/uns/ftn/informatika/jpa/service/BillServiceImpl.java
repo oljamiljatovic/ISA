@@ -23,4 +23,8 @@ public class BillServiceImpl implements BillService{
 	public Bill addNew(Bill bill) {
 		return billRepository.save(bill);
 	}
+	@Override
+	public ArrayList<Bill> findByWaiter_id(Long waiter_id) {
+		return billRepository.findByWaiter_id(waiter_id);
+	}
 }

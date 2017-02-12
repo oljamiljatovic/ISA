@@ -8,4 +8,6 @@ public interface BillService {
 	ArrayList<Bill> getBills();
 	
 	Bill addNew(Bill bill);
+	
+	public ArrayList<Bill> findByWaiter_id(Long waiter_id);
 }

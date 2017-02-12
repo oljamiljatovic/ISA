@@ -62,8 +62,9 @@ insert into meal(name, price,description,restaurant) values ('meso',90,'glavno j
 insert into meal(name, price,description,restaurant) values ('grasak',60,'corba',1)
 
 -- narudzbine
-INSERT INTO orderr(username,desk) VALUES ('Desa','2')
-INSERT INTO orderr(username,desk) VALUES ('Mica','3')
+INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (6,1,1)
+INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (6,2,1)
+INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (10,4,2)
 
 -- AUSTRALIA
 

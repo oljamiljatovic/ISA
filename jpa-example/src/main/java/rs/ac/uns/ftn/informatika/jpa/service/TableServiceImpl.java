@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,4 +23,11 @@ public class TableServiceImpl implements TableService {
 		 return this.tableRepository.save(table);
 	}
 
+
+	@Override
+	public ArrayList<Tablee> findByReonAndRestaurant(Long reon, Long restaurant) {
+		return tableRepository.findByReonAndRestaurant(reon, restaurant);
+	}
+	
+	
 }
