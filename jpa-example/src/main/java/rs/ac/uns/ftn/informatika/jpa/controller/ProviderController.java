@@ -144,9 +144,15 @@ public class ProviderController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
-		RestaurantManager rm= this.managerService.getManager(u.getEmail());
-		po.setProvider(rm.getId());
-		po.setRestaurant(rm.getRestaurant());
+		if(u.getRole().equals("restaurantManager")){
+			RestaurantManager rm= this.managerService.getManager(u.getEmail());
+			po.setProvider(rm.getId());
+			po.setRestaurant(rm.getRestaurant());
+		}else if(u.getRole().equals("provider")){
+			Provider rm= this.providerService.getProvider(u.getEmail());
+			po.setProvider(rm.getId());
+			po.setRestaurant(rm.getRestaurant());
+		}
 		this.purchaseService.updatePurchaseOrder(po);
 		
 		return new ResponseEntity<PurchaseOrder>(po, HttpStatus.OK);

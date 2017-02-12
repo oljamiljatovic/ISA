@@ -28,6 +28,10 @@ INSERT INTO user(id,email,password,role,accept) VALUES(8,'dana','danadana','barm
 insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (8,'Dana','Zivan','1972-01-29', 'L','39',1)
 INSERT INTO user(id,email,password,role,accept) VALUES(9,'gavra','gavragavra','waiter','true')
 insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (9,'Gavra','Zivan','1978-02-21', 'XL','44',1)
+INSERT INTO user(id,email,password,role,accept) VALUES(10,'pera','perapera','provider','true')
+insert into provider(id,name,surname,address,contact,restaurant,log_first_time) values (10,'Pera','Peric','Glavna 10','022450', 1,'false')
+
+insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(1,1,1,10,0,'10','10')
 
 insert into reon(id,name,location,restaurant, number_table) values (1,'West','west part',1,3)
 insert into tablee(id,reon,restaurant) values (1,1,1)
