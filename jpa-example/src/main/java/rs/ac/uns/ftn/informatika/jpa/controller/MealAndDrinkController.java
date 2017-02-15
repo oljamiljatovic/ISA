@@ -22,12 +22,14 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OfferService;
+import rs.ac.uns.ftn.informatika.jpa.service.ProviderService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 
 
@@ -47,6 +49,8 @@ public class MealAndDrinkController {
 	private OfferService offerService;
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private ProviderService providerService;
 	
 	@RequestMapping(
 			value = "/uzmiPica",
@@ -61,6 +65,7 @@ public class MealAndDrinkController {
 		Restaurant r= null;
 		RestaurantManager rm=null;
 		Employee employee = null;
+		Provider providerr = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
@@ -69,6 +74,9 @@ public class MealAndDrinkController {
 		}else if(u.getRole().equals("waiter") || u.getRole().equals("barman")){
 			employee = employeeService.findById(u.getId());
 			drinks = this.drinkService.getDrinksByRestaurant(employee.getRestaurant());
+		}else if(u.getRole().equals("provider")){
+			providerr = this.providerService.getProvider(u.getEmail());
+			drinks = this.drinkService.getDrinksByRestaurant(providerr.getRestaurant());
 		}
 		
 		return new ResponseEntity<ArrayList<Drink>>(drinks, HttpStatus.OK);
@@ -134,6 +142,7 @@ public class MealAndDrinkController {
 		Restaurant r= null;
 		RestaurantManager rm=null;
 		Employee employee = null;
+		Provider providerr = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
@@ -142,6 +151,9 @@ public class MealAndDrinkController {
 		}else if(u.getRole().equals("waiter") || u.getRole().equals("cook")){
 			employee = employeeService.findById(u.getId());
 			meals = this.mealService.getMealsByRestaurant(employee.getRestaurant());
+		}else if(u.getRole().equals("provider")){
+			providerr = this.providerService.getProvider(u.getEmail());
+			meals = this.mealService.getMealsByRestaurant(providerr.getRestaurant());
 		}
 		return new ResponseEntity<ArrayList<Meal>>(meals, HttpStatus.OK);
 	}
