@@ -17,7 +17,7 @@ public class MealServiceImpl implements MealService {
 	private MealRepository mealRepository;
 
 	@Override
-	public ArrayList<Meal> getDrinksByRestaurant(Long rest_id) {
+	public ArrayList<Meal> getMealsByRestaurant(Long rest_id) {
 		return this.mealRepository.findByRestaurant(rest_id);
 	}
 
@@ -41,6 +41,11 @@ public class MealServiceImpl implements MealService {
 	@Override
 	public Meal addMeal(Meal dr) {
 		return this.mealRepository.save(dr);
+	}
+
+	@Override
+	public Meal findByName(String name) {
+		return this.mealRepository.findByName(name);
 	}
 	
 

@@ -19,5 +19,7 @@ public interface DrinkRepository extends PagingAndSortingRepository<Drink, Long>
 	public void updateDrink(String name, String desc, float price, Long rest, Long id);
 	
 	public ArrayList<Drink> findByRestaurant(Long restaurant);
+	
+	public Drink findByName(String name);
 
 }

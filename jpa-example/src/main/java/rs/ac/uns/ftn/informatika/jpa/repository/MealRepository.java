@@ -19,6 +19,8 @@ public interface MealRepository extends PagingAndSortingRepository<Meal, Long>  
 	public void updateMeal(String name, String desc, float price, Long rest, Long id);
 	
 	public ArrayList<Meal> findByRestaurant(Long restaurant);
+	
+	public Meal findByName(String name);
 
 
 }

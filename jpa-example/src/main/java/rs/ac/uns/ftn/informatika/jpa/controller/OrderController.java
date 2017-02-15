@@ -13,17 +13,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
+import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
+import rs.ac.uns.ftn.informatika.jpa.domain.OrderSurrogate;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.service.BillService;
+import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
+import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
 
 @Controller 
@@ -35,6 +38,10 @@ public class OrderController {
 	private BillService billService;
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private DrinkService drinkService;
+	@Autowired
+	private MealService mealService;
 	
 	@RequestMapping(
 			value = "/getOrders",
@@ -64,6 +71,7 @@ public class OrderController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
+		System.out.println("Userrrr "+u.getEmail());
 		ArrayList<Order> orders = new ArrayList<Order>();
 		if(u.getRole().equals("cook") || u.getRole().equals("barman")){
 			Employee employee = employeeService.findById(u.getId());
@@ -72,6 +80,46 @@ public class OrderController {
 		return new ResponseEntity<Object>(orders, HttpStatus.OK);
 	}
 	
+	/*@RequestMapping(
+			value = "/addOrder",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Order> addOrder(
+			@RequestBody OrderSurrogate surrogateOrder) throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Employee employee = employeeService.findById(u.getId());
+		surrogateOrder.setWaiter_id(u.getId());
+		surrogateOrder.setRestaurant(employee.getRestaurant());
+		System.out.println("Pice "+surrogateOrder.getDrinks().get(0));
+		ArrayList<Drink> drinks = new ArrayList<Drink>();
+		for(int i=0;i<surrogateOrder.getDrinks().size();i++){
+			String name = surrogateOrder.getDrinks().get(i);
+			System.out.println(name);
+			Drink drink = drinkService.findByName(name);
+			drinks.add(drink);
+		}
+		ArrayList<Meal> meals = new ArrayList<Meal>();
+		for(int i=0;i<surrogateOrder.getMeals().size();i++){
+			String name = surrogateOrder.getMeals().get(i);
+			System.out.println(name);
+			Meal meal = mealService.findByName(name);
+			meals.add(meal);
+		}
+		Order order = new Order();
+		order.setRestaurant(surrogateOrder.getRestaurant());
+		order.setTable_id(surrogateOrder.getTable_id());
+		order.setWaiter_id(surrogateOrder.getWaiter_id());
+		order.setDrinks(drinks);
+		order.setMeals(meals);
+		Order addedOrder = orderService.createNew(order);
+		
+		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
+	}*/
 	@RequestMapping(
 			value = "/addOrder",
 			method = RequestMethod.POST,
@@ -92,18 +140,6 @@ public class OrderController {
 	}
 	
 	@RequestMapping(
-			value = "/catchList",
-			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<Drink>> catchList(
-			@RequestParam(value="listOfDrinks") ArrayList<Drink> listOfDrinks	) throws Exception {
-		System.out.println(listOfDrinks.get(0).getName());
-		System.out.println(listOfDrinks.get(0).getPrice());
-		return new ResponseEntity<ArrayList<Drink>>(listOfDrinks, HttpStatus.OK);
-	}
-	
-	@RequestMapping(
 			value = "/change/{id}",
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -114,14 +150,18 @@ public class OrderController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
-		order.setWaiter_id(u.getId());
-		Employee employee = employeeService.findById(u.getId());
-		order.setRestaurant(employee.getRestaurant());
 		Order foundedOrder = orderService.findOne(id);
-		//foundedOrder.setUsername(order.getUsername());
-		//foundedOrder.setDesk(order.getDesk());
-		foundedOrder.setDrinks(order.getDrinks());
-		foundedOrder.setMeals(order.getMeals());
+		if(u.getRole().equals("waiter")){
+			order.setWaiter_id(u.getId());
+			Employee employee = employeeService.findById(u.getId());
+			order.setRestaurant(employee.getRestaurant());
+			foundedOrder.setDrinks(order.getDrinks());
+			foundedOrder.setMeals(order.getMeals());
+		}else if(u.getRole().equals("cook")){
+			foundedOrder.setCook_state(order.getCook_state());
+		}else if(u.getRole().equals("barman")){
+			foundedOrder.setBarman_state(order.getBarman_state());
+		}
 		Order changedOrder = orderService.update(foundedOrder, id);
 		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);
 	}

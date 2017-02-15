@@ -62,9 +62,13 @@ insert into meal(name, price,description,restaurant) values ('meso',90,'glavno j
 insert into meal(name, price,description,restaurant) values ('grasak',60,'corba',1)
 
 -- narudzbine
-INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (6,1,1)
-INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (6,2,1)
-INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (10,4,2)
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state) VALUES (6,1,1,'kreirana','kreirana')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state) VALUES (6,2,1,'kreirana','kreirana')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state) VALUES (10,4,2,'kreirana','kreirana')
+
+--narucana jela i pica
+--insert into drink_order(order_id,drink_id) values (1,1)
+--insert into meal_order(order_id,meal_id) values (1,1)
 
 -- AUSTRALIA
 
