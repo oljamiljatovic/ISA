@@ -27,6 +27,8 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implemen
 	private String shoeNumber;
 	@Column(nullable = false)
 	private Long restaurant;
+	@Column(name="first_log",nullable = false)
+	private String firstLog;
 	
 	public Employee(){
 		super();
@@ -43,8 +45,15 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implemen
 		this.role = type;
 		this.accept = accept;
 		this.password = password;
-		this.email = email;
-		
+		this.email = email;	
+	}
+
+	public String getFirstLog() {
+		return firstLog;
+	}
+
+	public void setFirstLog(String firstLog) {
+		this.firstLog = firstLog;
 	}
 
 	public String getName() {

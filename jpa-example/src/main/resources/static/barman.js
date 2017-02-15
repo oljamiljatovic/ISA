@@ -32,6 +32,77 @@ $(document).ready(function() {
 			}
 		});
 	});
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/waiterController/getEmployee',
+		success : function(employee){
+				if(employee.firstLog=="true"){
+					
+					$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
+							'<div class="login-page wrapper centered centered-block">'+ 
+							'<div class = "form-group"><form id="submitFirstLog" method="post">'+
+							'Postavite lozinku:<br/><br/>'+
+							'Nova lozinka:<br/><input type = "password" id = "newPassword"  class="in-text"/><br/>'+
+							'Ponovite lozinku:<br/><input type = "password" id = "repeatPassword"  class="in-text"/><br/>'+
+							'<input type = "submit" value="Submit" class="btn orange">'+
+							'<input type="hidden" id="employeeId" value='+employee.id+'>'+
+							'</form></div></div></div></div>');
+				}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("First log ERROR: " + errorThrown);
+		}	
+	});
+});
+$(document).on('submit','#submitFirstLog',function(e){
+	e.preventDefault();
+	var id = $(this).find("input[id='employeeId']").val();
+	var password = $('#newPassword').val();
+	var checkPassword = $('#repeatPassword').val();
+	if(password.trim() == ""){
+		Command: toastr["error"]("Morate unijeti lozinku.", "Greška!")
+		message();
+	}else if(checkPassword.trim() == ""){
+		Command: toastr["error"]("Morate ponoviti lozinku.", "Greška!")
+		message();
+	}else if(password!=checkPassword){
+			Command: toastr["error"]("Lozinke nisu iste.", "Greška!")
+			message();
+	}else{
+		
+		var employeeData = JSON.stringify({
+			"id" : id,
+			"name" : "",
+			"surname" : "",
+			"dateBirth" : "",
+			"confNumber" : "",
+			"shoeNumber" : "",
+			"restaurant" : "1",
+			"firstLog" : "false",
+			"password" : password,
+			"email" : "",
+			"role" : "",
+			"accept" : ""
+		});
+		
+		$.ajax({
+			type : 'PUT',
+			url :  '/waiterController/updateFirstLog',
+			contentType : 'application/json',
+			dataType : 'json',
+			data : employeeData,
+			success : function(data){
+				Command: toastr["success"]("Uspješno su ažurirani podaci.", "Odlično!")
+				message();
+				$('#content').empty();
+			},
+
+			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+				alert("AJAX ERROR: " + errorThrown);
+			}
+		});
+	}
 });
 $(document).on('click','#calendar',function(e){
 	e.preventDefault();
@@ -156,6 +227,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 		"confNumber" : confNumber,
 		"shoeNumber" : shoeNumber,
 		"restaurant" : "1",
+		"firstLog" : "false",
 		"password" : password,
 		"email" : email,
 		"role" : "waiter",
@@ -215,6 +287,7 @@ function showOrders(){
 		      $("#content").append("<th>Sto</th>");
 		      $("#content").append("<th>Pića</th>");
 		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("<th>&nbsp;</th>");
 		      $("#content").append("</tr>");
 		      $("#content").append("</thead>");
 		      $("#content").append("<tbody>");
@@ -250,10 +323,6 @@ function showOrders(){
 	
 			  $("#content").append("</tbody>");
 			  $("#content").append("</table>");
-			  //var table = document.getElementById("tableOrder");
-			  //table.style.border = "thick solid red";
-			  //$("#tableOrder").css("align","center");
-
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
