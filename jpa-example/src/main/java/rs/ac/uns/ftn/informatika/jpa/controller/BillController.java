@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.service.BillService;
+import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
 
 @Controller 
 @RequestMapping("/billController")
 public class BillController {
 	@Autowired
 	private BillService billService;
+	@Autowired
+	private OrderService orderService;
 	
 	@RequestMapping(
 			value = "/getBills",
@@ -31,8 +35,22 @@ public class BillController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getBill() throws Exception {
-		System.out.println("Usao u getBills");
 		ArrayList<Bill> cfw = this.billService.getBills();		
+		return new ResponseEntity<Object>(cfw, HttpStatus.OK);
+	}
+	@RequestMapping(
+			value = "/getMyBills",
+			method = RequestMethod.GET,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> getMyBills() throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		System.out.println("Billl user "+u.getEmail()+"  id"+u.getId());
+		ArrayList<Bill> cfw = this.billService.findByWaiter_id(u.getId());
+		System.out.println("Duzina bills "+cfw.size());
 		return new ResponseEntity<Object>(cfw, HttpStatus.OK);
 	}
 	
@@ -47,8 +65,13 @@ public class BillController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
-		bill.setId(u.getId());
+		bill.setWaiter_id(u.getId());
 		Bill addedBill = billService.addNew(bill);
+		Long orderId = bill.getOrder_id();
+		Order orderForClose = this.orderService.findById(orderId);
+		orderForClose.setBarman_state("kraj");
+		orderForClose.setCook_state("kraj");
+		Order changedOrder = orderService.update(orderForClose, orderId);
 		return new ResponseEntity<Bill>(addedBill, HttpStatus.OK);
 	}
 	

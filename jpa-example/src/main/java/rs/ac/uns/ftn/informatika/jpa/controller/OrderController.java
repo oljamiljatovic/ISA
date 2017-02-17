@@ -167,6 +167,43 @@ public class OrderController {
 	}
 	
 	@RequestMapping(
+			value = "/addOnOrder/{id}",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Order> addOnOrder(
+			@RequestBody Order order, @PathVariable Long id) throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Order foundedOrder = orderService.findOne(id);
+		if(u.getRole().equals("waiter")){
+			order.setWaiter_id(u.getId());
+			Employee employee = employeeService.findById(u.getId());
+			order.setRestaurant(employee.getRestaurant());
+			for(int i=0;i<order.getDrinks().size();i++){
+				foundedOrder.getDrinks().add(order.getDrinks().get(i));
+			}
+			for(int i=0;i<order.getMeals().size();i++){
+				foundedOrder.getMeals().add(order.getMeals().get(i));
+			}
+		}
+		Order changedOrder = orderService.update(foundedOrder, id);
+		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);
+	}
+	@RequestMapping(
+			value = "/getOrder/{id}",
+			method = RequestMethod.GET,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Order> getOrder(@PathVariable Long id) throws Exception {
+		Order foundedOrder = orderService.findOne(id);
+		System.out.println("Founded order "+foundedOrder.getId());
+		return new ResponseEntity<Order>(foundedOrder, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
 			value = "/getBills",
 			method = RequestMethod.GET,
 			consumes = MediaType.APPLICATION_JSON_VALUE,

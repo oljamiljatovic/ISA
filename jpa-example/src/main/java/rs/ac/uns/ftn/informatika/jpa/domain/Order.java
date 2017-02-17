@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.domain;
 import static javax.persistence.InheritanceType.JOINED;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,12 +29,17 @@ public class Order {
 	
 	@Column(name="restaurant",nullable = false)
 	private Long restaurant;
-	//stanja: kreirana, preuzeo_kuvar, preuzeo_sanker, gotovo_jelo,gotovo_pice
+	
+	//stanja: kreirana, preuzeo_sanker, gotovo_pice, kraj
 	@Column(name="barman_state",nullable = false)
 	private String barman_state;
-
+	
+	//stanja: kreirana, preuzeo_kuvar, gotovo_jelo, kraj
 	@Column(name="cook_state",nullable = false)
 	private String cook_state;
+	
+	@Column(name="time_of_order",nullable = false)
+	private Date timeOfOrder;
 	
 	/*private ArrayList<Meal> meals = new ArrayList<Meal>();
 	private ArrayList<Drink> drinks = new ArrayList<Drink>();*/
@@ -70,6 +76,14 @@ public class Order {
 
 	public void setTable_id(Long table_id) {
 		this.table_id = table_id;
+	}
+
+	public Date getTimeOfOrder() {
+		return timeOfOrder;
+	}
+
+	public void setTimeOfOrder(Date timeOfOrder) {
+		this.timeOfOrder = timeOfOrder;
 	}
 
 	/*@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.MERGE)

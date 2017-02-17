@@ -24,10 +24,10 @@ $(document).ready(function() {
 	stompClient.connect({}, function(frame) {
 		stompClient.subscribe("/topic/newOrder", function(data) {
 			var mess = data.body;
-			//messageList.append("<li>" + mess + "</li>");
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
+				$('#content').empty();
 				 showOrders();
 			}
 		});
@@ -324,9 +324,6 @@ function showOrders(){
 	
 			  $("#content").append("</tbody>");
 			  $("#content").append("</table>");
-			  //var table = document.getElementById("tableOrder");
-			  //table.style.border = "thick solid red";
-			  //$("#tableOrder").css("align","center");
 
 		},
 
@@ -357,11 +354,11 @@ $(document).on('click', '#acceptMeal', function(e) {
 		type : 'POST',
 		url :  '/acceptMeal',
 		data : {
-			"acceptMeal" : " prihvatio je "+order_id+" porudzbinu."
+			"acceptMeal" : " prihvatio je porudžbinu za sto "+desk+"."
 		},
 		success : function(data){	
-			Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
-			message();
+			//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
+			//message();
 			$.ajax({
 				type : 'PUT',
 				url :  '/orderController/change/'+order_id,
@@ -377,8 +374,8 @@ $(document).on('click', '#acceptMeal', function(e) {
 					"meals" : meals
 				}),
 				success : function(data){	
-					Command: toastr["success"]("preuzeo_kuvar.", "Odlično!")
-					message();
+					//Command: toastr["success"]("preuzeo_kuvar.", "Odlično!")
+					//message();
 				},
 
 				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -413,11 +410,11 @@ $(document).on('click', '#signalMeal', function(e) {
 		type : 'POST',
 		url :  '/signalMeal',
 		data : {
-			"signalMeal" : "Jelo za porudžbinu "+order_id+" je gotovo!"
+			"signalMeal" : "Gotovo je jelo za sto "+desk+"!"
 		},
 		success : function(data){	
-			Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
-			message();
+			//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
+			///message();
 			$.ajax({
 				type : 'PUT',
 				url :  '/orderController/change/'+order_id,
@@ -433,12 +430,12 @@ $(document).on('click', '#signalMeal', function(e) {
 					"meals" : meals
 				}),
 				success : function(data){	
-					Command: toastr["success"]("gotovo_jelo", "Odlično!")
-					message();
+					//Command: toastr["success"]("gotovo_jelo", "Odlično!")
+					//message();
 				},
 
 				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-					alert("AJAX ERROR: " + errorThrown);
+					alert("Notifikacija jela ERROR: " + errorThrown);
 				}
 			});
 		},

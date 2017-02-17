@@ -28,7 +28,8 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
-				 showOrders();
+				$('#content').empty();
+				showOrders();
 			}
 		});
 	});
@@ -352,11 +353,9 @@ $(document).on('click', '#acceptDrink', function(e) {
 		type : 'POST',
 		url :  '/acceptDrink',
 		data : {
-			"acceptDrink" : " prihvatio je "+order_id+" porudžbinu."
+			"acceptDrink" : " prihvatio je porudžbinu za sto "+desk+"."
 		},
 		success : function(data){	
-			Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
-			message();
 			$.ajax({
 				type : 'PUT',
 				url :  '/orderController/change/'+order_id,
@@ -372,8 +371,8 @@ $(document).on('click', '#acceptDrink', function(e) {
 					"meals" : meals
 				}),
 				success : function(data){	
-					Command: toastr["success"]("preuzeo_sanker.", "Odlično!")
-					message();
+					//Command: toastr["success"]("preuzeo_sanker.", "Odlično!")
+					//message();
 				},
 
 				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -408,11 +407,9 @@ $(document).on('click', '#signalDrink', function(e) {
 		type : 'POST',
 		url :  '/signalDrink',
 		data : {
-			"signalDrink" : "Piće za porudžbinu "+order_id+" je gotovo!"
+			"signalDrink" : "Gotovo je piće za sto "+desk+"!"
 		},
 		success : function(data){	
-			Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
-			message();
 			$.ajax({
 				type : 'PUT',
 				url :  '/orderController/change/'+order_id,
@@ -428,8 +425,8 @@ $(document).on('click', '#signalDrink', function(e) {
 					"meals" : meals
 				}),
 				success : function(data){	
-					Command: toastr["success"]("gotovo_pice", "Odlično!")
-					message();
+					//Command: toastr["success"]("gotovo_pice", "Odlično!")
+					//message();
 				},
 
 				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)

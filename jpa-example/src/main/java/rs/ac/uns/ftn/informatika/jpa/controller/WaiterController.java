@@ -198,4 +198,20 @@ public class WaiterController {
 		Employee changedEmployee = employeeService.update(foundedEmployee, u.getId());
 		return new ResponseEntity<Employee>(changedEmployee, HttpStatus.OK);
 	}
+	
+	@RequestMapping(
+			value = "/getTablesForRestaurant",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Tablee>> getTablesForRestaurant()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		ArrayList<Tablee> temp = new ArrayList<Tablee>();
+		Employee foundedEmployee = employeeService.findById(u.getId());
+		temp = tableService.findByRestaurant(foundedEmployee.getRestaurant());
+		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
+	}
 }
