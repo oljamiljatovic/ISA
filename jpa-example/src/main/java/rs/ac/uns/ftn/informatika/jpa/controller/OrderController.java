@@ -195,7 +195,6 @@ public class OrderController {
 	@RequestMapping(
 			value = "/getOrder/{id}",
 			method = RequestMethod.GET,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Order> getOrder(@PathVariable Long id) throws Exception {
 		Order foundedOrder = orderService.findOne(id);

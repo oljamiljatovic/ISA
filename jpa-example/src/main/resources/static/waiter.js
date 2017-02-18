@@ -134,6 +134,7 @@ $(document).on('submit','#submitFirstLog',function(e){
 			}
 		});
 	}
+	billValues=[];
 });
 
 $(document).on('click','#calendar',function(e){
@@ -1013,6 +1014,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 		});
 	}
 });
+var billValues = [];
 $(document).on('click','#myBills',function(e){
 	e.preventDefault();
 	$("#content").empty();
@@ -1035,9 +1037,12 @@ $(document).on('click','#myBills',function(e){
 		    $("#content").append("</thead>");
 		    $("#content").append("<tbody>");
 			$.each(bills, function(index,bill){
-				var forma = $('<form method="post" class="billForm" action=""></form>');
+				var forma = $('<form method="post" class="billOrdersForm" action=""></form>');
 		        var tr = $('<tr></tr>');
-		        tr.append('<td align="center">' + bill.id + '</td><td align="center">'+date+'</td><td align="center">'+bill.bill+'</td>');
+		        var billValue=  bill.id+";"+bill.order_id;
+		        billValues.push(billValue);
+		        var d = new Date(bill.dateOfBill);
+		        tr.append('<td align="center">' + bill.id + '</td><td align="center">'+d+'</td><td align="center">'+bill.bill+'</td>');
 		        forma.append('<input type="hidden" name="billOrders" id='+index+' value="'+ bill.id+";"+bill.order_id +'">' +
 		                '<input type="submit" id="billOrders" name='+index+' value="Vidi stavke" class="btn green">');
 		        var td = $('<td></td>');
@@ -1059,13 +1064,16 @@ $(document).on('click', '#billOrders', function(e) {
 	$("#content").empty();
 	var name = $(this).attr('name');
 	var zaSplit;
-	$(document).find('input[name="billOrders"]').each(function(e){	
-		  var id = this.id;
+	var id;
+	/*$(document).find('input[name="billOrders"]').each(function(e){	
+		  id = this.id;
 		 if(name == id ){
 			 zaSplit = this.value;
 		 }
 	});
-	var splitovano  = zaSplit.split(";");
+	var splitovano  = zaSplit.split(";");*/
+	var billValue = billValues[name];
+	var splitovano = billValue.split(";");
 	var billId = splitovano[0];
 	var order_id = splitovano[1];
 	$("#content").empty();
@@ -1074,7 +1082,32 @@ $(document).on('click', '#billOrders', function(e) {
 		dataType: 'json',
 		url : '/orderController/getOrder/'+order_id,
 		success : function(data){
-			alert(data);
+			$("#content").append('<p><b>Stavke računa</b></p>');
+			$("#content").append("<table>");
+		    $("#content").append("<thead>");
+		    $("#content").append("<tr>");
+		    $("#content").append("<th>Šifra računa</th>");
+		    $("#content").append("<th>Jela</th>");
+		    $("#content").append("<th>Pića</th>");
+		    $("#content").append("</tr>");
+		    $("#content").append("</thead>");
+		    $("#content").append("<tbody>");
+		    var tr = $('<tr></tr>');
+		    var meals = data.meals;
+		    if(meals == null){
+		    	meals = "nema";
+		    }
+		    var drinks = data.drinks;
+		    if(drinks == null){
+		    	drinks = "nema";
+		    }
+	        tr.append('<td align="center">' + billId + '</td><td align="center">'+
+	        		meals+'</td><td align="center">'+drinks+'</td>');
+	        var td = $('<td></td>');
+	        tr.append(td);
+	        $('#content').append(tr);
+	        $("#content").append("</tbody>");
+	        $("#content").append("</table>");
 			
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
