@@ -3,9 +3,19 @@
 --
 
 -- =================================================================================================
+insert into groceries(id,name ) values (1,'grasak')
+insert into groceries(id,name ) values (2,'pasulj')
+insert into groceries(id,name ) values (3,'luk')
+insert into groceries(id,name ) values (4,'riba')
+insert into groceries(id,name ) values (5,'kupus')
+insert into groceries(id,name ) values (6,'salata')
+insert into groceries(id,name ) values (7,'meso')
+insert into groceries(id,name ) values (8,'krompir')
+insert into groceries(id,name ) values (9,'sargarepa')
+
 
 INSERT INTO user(email,password,role,accept) VALUES('oljka','oljkaoljka','guest','true')
-INSERT INTO user(email,password,role,accept) VALUES('mica','micamica','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('mica','micamica','systemManager','true')
 INSERT INTO user(email,password,role,accept) VALUES('vlado','vladovlado','guest','true')
 INSERT INTO user(email,password,role,accept) VALUES('desa','desadesa','employee','true')
 

@@ -13,8 +13,9 @@ public interface ManagerRepository extends PagingAndSortingRepository<Restaurant
 	//public RestaurantManager save(RestaurantManager manag);
 	
 	public RestaurantManager findByEmail(String email);
-	
+
 	@Modifying
-	@Query("update RestaurantManager set restaurant = ? where id = ? ")
-	public void updateManager(Long rest, Long id);
+	@Query("update RestaurantManager set name = ?, surname = ?,address =?, contact=?, password=? where id = ? ")
+	public void updateManager(String name, String surname, String address, String contact,
+			String password, Long id);
 }

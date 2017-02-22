@@ -32,7 +32,8 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public void updateManager(RestaurantManager rest) {
 		// TODO Auto-generated method stub
-		managerRepository.updateManager(rest.getRestaurant(), rest.getId());
+		managerRepository.updateManager(rest.getName(), rest.getSurname(), rest.getAddress(),
+				rest.getContact(), rest.getPassword(), rest.getId());
 		
 	}
 

@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -87,6 +88,37 @@ public class RestaurantManagerController {
 		rest.setId(id);
 		this.restaurantService.updateRestaurant(rest);
 		return new ResponseEntity<Restaurant>(rest, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/updateRestaurantManager",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RestaurantManager> updateRestaurantManager(@RequestBody RestaurantManager rest)  throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		RestaurantManager rm= this.managerService.getManager(u.getEmail());
+		rest.setId(rm.getId());
+		this.managerService.updateManager(rest);
+		return new ResponseEntity<RestaurantManager>(rest, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/uzmiMenadzera",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RestaurantManager> uzmiMenadzera()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		RestaurantManager rm= this.managerService.getManager(u.getEmail());
+		
+		return new ResponseEntity<RestaurantManager>(rm, HttpStatus.OK);
 	}
 	
 	@RequestMapping(

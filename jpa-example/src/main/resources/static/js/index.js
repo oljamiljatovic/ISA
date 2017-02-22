@@ -35,9 +35,9 @@ window.onload = function() {
     				if(userRole == "guest"){
     			
     					
-    					if(dataUser.email=="mica")
-    						window.location.href= "systemManager.html";
-    					else
+    					//if(dataUser.email=="mica")
+    						//window.location.href= "systemManager.html";
+    					//else
     						window.location.href= "userProfile.html";
     				
     				}else if(userRole == "employee"){
@@ -52,6 +52,8 @@ window.onload = function() {
     					window.location.href = "barman.html";
     				}else if(userRole=="provider"){
     					window.location.href = "provider.html";
+    				}else if(userRole=="systemManager"){
+    					window.location.href = "systemManager.html";
     				}
     				
     				}
