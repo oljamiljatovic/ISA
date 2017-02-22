@@ -21,26 +21,39 @@ insert into restaurant(id,name,type_id,address,contact) values (2,'Kod Zore','do
 INSERT INTO user(id,email,password,role,accept) VALUES(5,'mmica','mica','restaurantManager','true')
 insert into restaurant_manager(id,name,surname,address,contact,restaurant) values (5,'Mica','Milut','Glavna 109', '-',1)
 INSERT INTO user(id,email,password,role,accept) VALUES(6,'zora','zorazora','waiter','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (6,'Zora','Milut','1967-04-23', 'L','38',1)
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (6,'Zora','Milut','1967-04-23', 'L','38',1,'false')
 INSERT INTO user(id,email,password,role,accept) VALUES(7,'sima','simasima','cook','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (7,'Sinisa','Milut','1964-05-29', 'XL','46',1)
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (7,'Sinisa','Milut','1964-05-29', 'XL','46',1,'false')
 INSERT INTO user(id,email,password,role,accept) VALUES(8,'dana','danadana','barman','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (8,'Dana','Zivan','1972-01-29', 'L','39',1)
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (8,'Dana','Zivan','1972-01-29', 'L','39',1,'false')
 INSERT INTO user(id,email,password,role,accept) VALUES(9,'gavra','gavragavra','waiter','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant) values (9,'Gavra','Zivan','1978-02-21', 'XL','44',1)
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (9,'Gavra','Zivan','1978-02-21', 'XL','44',1,'false')
 INSERT INTO user(id,email,password,role,accept) VALUES(10,'pera','perapera','provider','true')
 insert into provider(id,name,surname,address,contact,restaurant,log_first_time) values (10,'Pera','Peric','Glavna 10','022450', 1,'false')
 
 insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(1,1,1,10,0,'10','10')
 
-insert into reon(id,name,location,restaurant, number_table) values (1,'West','west part',1,3)
+insert into reon(id,name,location,restaurant, number_table) values (1,'North','north part',1,6)
 insert into tablee(id,reon,restaurant) values (1,1,1)
 insert into tablee(id,reon,restaurant) values (2,1,1)
 insert into tablee(id,reon,restaurant) values (3,1,1)
-insert into reon(id,name,location,restaurant, number_table) values (2,'East','east part',1,3)
-insert into tablee(id,reon,restaurant) values (4,2,1)
-insert into tablee(id,reon,restaurant) values (5,2,1)
-insert into tablee(id,reon,restaurant) values (6,2,1)
+insert into tablee(id,reon,restaurant) values (4,1,1)
+insert into tablee(id,reon,restaurant) values (5,1,1)
+insert into tablee(id,reon,restaurant) values (6,1,1)
+insert into reon(id,name,location,restaurant, number_table) values (2,'NorthCenter','northcenter part',1,3)
+insert into tablee(id,reon,restaurant) values (7,2,1)
+insert into tablee(id,reon,restaurant) values (8,2,1)
+insert into tablee(id,reon,restaurant) values (9,2,1)
+insert into reon(id,name,location,restaurant, number_table) values (3,'EastCenter','eastcenter part',1,4)
+insert into tablee(id,reon,restaurant) values (10,3,1)
+insert into tablee(id,reon,restaurant) values (11,3,1)
+insert into tablee(id,reon,restaurant) values (12,3,1)
+insert into tablee(id,reon,restaurant) values (13,3,1)
+insert into reon(id,name,location,restaurant, number_table) values (4,'East','east part',1,4)
+insert into tablee(id,reon,restaurant) values (14,4,1)
+insert into tablee(id,reon,restaurant) values (15,4,1)
+insert into tablee(id,reon,restaurant) values (16,4,1)
+insert into tablee(id,reon,restaurant) values (17,4,1)
 
 insert into assign_reon(id,waiter_id,reon_id) values (1,6,1)
 insert into assign_reon(id,waiter_id,reon_id) values (2,9,2)
@@ -66,9 +79,16 @@ insert into meal(name, price,description,restaurant) values ('meso',90,'glavno j
 insert into meal(name, price,description,restaurant) values ('grasak',60,'corba',1)
 
 -- narudzbine
-INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (6,1,1)
-INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (6,2,1)
-INSERT INTO orderr(waiter_id,table_id,restaurant) VALUES (10,4,2)
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (6,1,1,'kreirana','kreirana','2017-02-15 23:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (6,2,1,'kreirana','kreirana','2017-02-16 03:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (6,3,1,'kraj','kraj','2017-02-16 03:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (10,4,2,'kreirana','kreirana','2017-02-16 10:18:41.972')
+
+--racuni 
+insert into bill(bill_id, order_id,waiter_id,date_of_bill,bill) values (1,1,6,'2017-02-17 00:25:09',530)
+--narucana jela i pica
+--insert into drink_order(order_id,drink_id) values (1,1)
+--insert into meal_order(order_id,meal_id) values (1,1)
 
 -- AUSTRALIA
 

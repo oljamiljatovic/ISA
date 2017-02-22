@@ -133,7 +133,8 @@ $(document).on('click','#submitNewEmployee',function(e){
 			"restaurant" : rest,
 			"email" : email,
 			"accept" : accept,
-			"password" : password
+			"password" : password,
+			"firstLog" : "true"
 		});
 		$.ajax({
 			type : 'POST',

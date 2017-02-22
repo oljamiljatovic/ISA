@@ -21,6 +21,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 import rs.ac.uns.ftn.informatika.jpa.service.AssignReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
@@ -175,7 +176,42 @@ public class WaiterController {
 		foundedEmployee.setConfNumber(employee.getConfNumber());
 		foundedEmployee.setShoeNumber(employee.getShoeNumber());
 		foundedEmployee.setPassword(employee.getPassword());
+		foundedEmployee.setFirstLog(employee.getFirstLog());
 		Employee changedEmployee = employeeService.update(foundedEmployee, u.getId());
 		return new ResponseEntity<Employee>(changedEmployee, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/updateFirstLog",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Employee> updateFirstLog(
+			@RequestBody Employee employee) throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Employee foundedEmployee = employeeService.findById(u.getId());
+		foundedEmployee.setPassword(employee.getPassword());
+		foundedEmployee.setFirstLog(employee.getFirstLog());
+		Employee changedEmployee = employeeService.update(foundedEmployee, u.getId());
+		return new ResponseEntity<Employee>(changedEmployee, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/getTablesForRestaurant",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Tablee>> getTablesForRestaurant()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		ArrayList<Tablee> temp = new ArrayList<Tablee>();
+		Employee foundedEmployee = employeeService.findById(u.getId());
+		temp = tableService.findByRestaurant(foundedEmployee.getRestaurant());
+		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
 }

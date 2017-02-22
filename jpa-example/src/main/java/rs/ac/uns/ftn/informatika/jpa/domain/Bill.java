@@ -27,6 +27,9 @@ public class Bill implements Serializable{
 	private Long waiter_id;
 	
 	@Column(nullable = false)
+	private Long order_id;
+	
+	@Column(nullable = false)
 	private int bill;
 	
 	@Column(nullable = false)
@@ -64,6 +67,14 @@ public class Bill implements Serializable{
 
 	public void setWaiter_id(Long waiter_id) {
 		this.waiter_id = waiter_id;
+	}
+
+	public Long getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(Long order_id) {
+		this.order_id = order_id;
 	}
 	
 	

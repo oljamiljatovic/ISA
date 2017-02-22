@@ -12,4 +12,6 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 public interface TableRepository extends PagingAndSortingRepository<Tablee, Long> {
 	
 	public ArrayList<Tablee> findByReonAndRestaurant(Long reon, Long restaurant);
+	
+	public ArrayList<Tablee> findByRestaurant(Long restaurant);
 }

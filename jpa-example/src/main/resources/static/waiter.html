@@ -8,6 +8,11 @@
 <script type="text/javascript" src="calendar/bootstrap-year-calendar.min.js"></script>
 <script type="text/javascript" src="calendar/bootstrap-year-calendar.js"></script>
 <script type="text/javascript" src="js/toastr.min.js"></script>
+<!-- Koristi sockjs biblioteku da se konektuje na /stomp endpoint -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js">
+</script>
+<!-- Koristi stomp biblioteku da se pretplati na brokerov /topic/message endpoint -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <link href="js/toastr.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/style.css">
@@ -16,6 +21,7 @@
 <link rel="stylesheet" href="calendar/bootstrap-year-calendar.min.css">
 <script type="text/javascript" src="waiter.js"> </script>
 <title>Stranica za konobara</title>
+
 </head>
 <body>
 <ul>
@@ -29,14 +35,17 @@
 		<a id="order" class="dropbtn">Porudžbine</a>
 	</li>
 	<li class="dropdown">
+		<a id="myBills" class="dropbtn">Moji računi</a>
+	</li>
+	<li class="dropdown">
 		<a id="updateProfile" class="dropbtn">Ažuriranje profila</a>
 	</li>
 	<li class="dropdown">
 		<a id="logout" class="dropbtn">Odjava</a>
 	</li>
 </ul>
-<div id="content">
-	
+<div id="content" align="center">
+
 </div>
 
 </body>

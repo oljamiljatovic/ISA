@@ -147,13 +147,13 @@ public class MealAndDrinkController {
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
-			meals = this.mealService.getDrinksByRestaurant(r.getId());
+			meals = this.mealService.getMealsByRestaurant(r.getId());
 		}else if(u.getRole().equals("waiter") || u.getRole().equals("cook")){
 			employee = employeeService.findById(u.getId());
-			meals = this.mealService.getDrinksByRestaurant(employee.getRestaurant());
+			meals = this.mealService.getMealsByRestaurant(employee.getRestaurant());
 		}else if(u.getRole().equals("provider")){
 			providerr = this.providerService.getProvider(u.getEmail());
-			meals = this.mealService.getDrinksByRestaurant(providerr.getRestaurant());
+			meals = this.mealService.getMealsByRestaurant(providerr.getRestaurant());
 		}
 		return new ResponseEntity<ArrayList<Meal>>(meals, HttpStatus.OK);
 	}

@@ -17,6 +17,93 @@ function message(){
 			  "hideMethod": "fadeOut"
 			}
 }
+$(document).ready(function() {
+	var messageList = $("#messages");
+	var socket = new SockJS('/stomp');
+	var stompClient = Stomp.over(socket);
+	stompClient.connect({}, function(frame) {
+		stompClient.subscribe("/topic/newOrder", function(data) {
+			var mess = data.body;
+			Command: toastr["info"](mess, "Informacija!")
+			message();
+			if( $('#tableOrder').length ){
+				$('#content').empty();
+				 showOrders();
+			}
+		});
+	});
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/waiterController/getEmployee',
+		success : function(employee){
+				if(employee.firstLog=="true"){
+					
+					$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
+							'<div class="login-page wrapper centered centered-block">'+ 
+							'<div class = "form-group"><form id="submitFirstLog" method="post">'+
+							'Postavite lozinku:<br/><br/>'+
+							'Nova lozinka:<br/><input type = "password" id = "newPassword"  class="in-text"/><br/>'+
+							'Ponovite lozinku:<br/><input type = "password" id = "repeatPassword"  class="in-text"/><br/>'+
+							'<input type = "submit" value="Submit" class="btn orange">'+
+							'<input type="hidden" id="employeeId" value='+employee.id+'>'+
+							'</form></div></div></div></div>');
+				}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("First log ERROR: " + errorThrown);
+		}	
+	});
+});
+$(document).on('submit','#submitFirstLog',function(e){
+	e.preventDefault();
+	var id = $(this).find("input[id='employeeId']").val();
+	var password = $('#newPassword').val();
+	var checkPassword = $('#repeatPassword').val();
+	if(password.trim() == ""){
+		Command: toastr["error"]("Morate unijeti lozinku.", "Greška!")
+		message();
+	}else if(checkPassword.trim() == ""){
+		Command: toastr["error"]("Morate ponoviti lozinku.", "Greška!")
+		message();
+	}else if(password!=checkPassword){
+			Command: toastr["error"]("Lozinke nisu iste.", "Greška!")
+			message();
+	}else{
+		
+		var employeeData = JSON.stringify({
+			"id" : id,
+			"name" : "",
+			"surname" : "",
+			"dateBirth" : "",
+			"confNumber" : "",
+			"shoeNumber" : "",
+			"restaurant" : "1",
+			"firstLog" : "false",
+			"password" : password,
+			"email" : "",
+			"role" : "",
+			"accept" : ""
+		});
+		
+		$.ajax({
+			type : 'PUT',
+			url :  '/waiterController/updateFirstLog',
+			contentType : 'application/json',
+			dataType : 'json',
+			data : employeeData,
+			success : function(data){
+				Command: toastr["success"]("Uspješno su ažurirani podaci.", "Odlično!")
+				message();
+				$('#content').empty();
+			},
+
+			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+				alert("AJAX ERROR: " + errorThrown);
+			}
+		});
+	}
+});
 $(document).on('click','#calendar',function(e){
 	e.preventDefault();
 	$("#content").empty();
@@ -140,6 +227,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 		"confNumber" : confNumber,
 		"shoeNumber" : shoeNumber,
 		"restaurant" : "1",
+		"firstLog" : "false",
 		"password" : password,
 		"email" : email,
 		"role" : "waiter",
@@ -206,28 +294,36 @@ function showOrders(){
 		      $.each(list, function(index, order) {
 						var meals = order.meals;
 						var desk = order.table_id;
-						var forma = $('<form method="post" class="orderForm" action=""></form>');
-						var formaSignal = $('<form method="post" class="signalMeal" action=""></form>');
-				        var tr = $('<tr></tr>');
-				        tr.append('<td align="center">' + desk + '</td><td align="center">' + meals + '</td>');
-				        forma.append('<input type="hidden" name="acceptMeal" id='+index+' value="'+ desk+";"+meals +'">' +
-				                '<input type="submit" id="acceptMeal" name='+index+' value="Prihvati za spremanje" class="btn green">');
-				        var td = $('<td></td>');
-				        td.append(forma);
-				        formaSignal.append('<input type="hidden" name="signalMeal" id='+index+' value="'+ desk+";"+meals +'">' +
-				                '<input type="submit" id="signalMeal" name='+index+' value="Gotovo jelo" class="btn green">');
-				        var tdSignal = $('<td></td>');
-				        tdSignal.append(formaSignal);
-				        tr.append(td);
-				        tr.append(tdSignal);
-				        $('#content').append(tr);
+						if(meals!=null){
+							var forma = $('<form method="post" class="orderForm" action=""></form>');
+							var formaSignal = $('<form method="post" class="signalMeal" action=""></form>');
+					        var tr = $('<tr></tr>');
+					        tr.append('<td align="center">' + desk + '</td><td align="center">' + meals + '</td>');
+					        forma.append('<input type="hidden" name="acceptMeal" id='+index+' value="'+ desk+";"+meals +";"+order.id+'">' +
+					                '<input type="submit" id="acceptMeal" name='+index+' value="Prihvati za spremanje" class="btn green">');
+					        var td = $('<td></td>');
+					        td.append(forma);
+					        formaSignal.append('<input type="hidden" name="signalMeal" id='+index+' value="'+ desk+";"+meals +";"+order.id+'">' +
+					                '<input type="submit" id="signalMeal" name='+index+' value="Gotovo jelo" class="btn green">');
+					        var tdSignal = $('<td></td>');
+					        tdSignal.append(formaSignal);
+					        tr.append(td);
+					        tr.append(tdSignal);
+					        $('#content').append(tr);
+					        if(order.cook_state=="preuzeo_kuvar"){
+					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
+					        }else if(order.cook_state=="gotovo_jelo"){
+					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
+					        	$('input[id="signalMeal"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="signalMeal"][name='+index+']').css('color','gray');
+					        }
+						}
 				});
 	
 			  $("#content").append("</tbody>");
 			  $("#content").append("</table>");
-			  //var table = document.getElementById("tableOrder");
-			  //table.style.border = "thick solid red";
-			  //$("#tableOrder").css("align","center");
 
 		},
 
@@ -238,10 +334,13 @@ function showOrders(){
 }
 $(document).on('click', '#acceptMeal', function(e) {
 	e.preventDefault();
+	$(this).prop('disabled',true);
+	$(this).css('color', 'gray');
 	var name = $(this).attr('name');
 	var zaSplit;
+	var id;
 	$(document).find('input[name="acceptMeal"]').each(function(e){	
-		  var id = this.id;
+		  id = this.id;
 		 if(name == id ){
 			 zaSplit = this.value;
 		 }
@@ -249,10 +348,51 @@ $(document).on('click', '#acceptMeal', function(e) {
 	var splitovano  = zaSplit.split(";");
 	var desk = splitovano[0];
 	var meals = splitovano[1].split(",");
-	alert("acceptMeal");
+	var order_id = splitovano[2];
+	var drinks = [];
+	$.ajax({
+		type : 'POST',
+		url :  '/acceptMeal',
+		data : {
+			"acceptMeal" : " prihvatio je porudžbinu za sto "+desk+"."
+		},
+		success : function(data){	
+			//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
+			//message();
+			$.ajax({
+				type : 'PUT',
+				url :  '/orderController/change/'+order_id,
+				contentType : 'application/json',
+				dataType :'json',
+				data : JSON.stringify({
+					"waiter_id" : "1",
+					"table_id" : desk,
+					"restaurant" : "1",
+					"barman_state" : "kreirana",
+					"cook_state" : "preuzeo_kuvar",
+					"drinks" : drinks,
+					"meals" : meals
+				}),
+				success : function(data){	
+					//Command: toastr["success"]("preuzeo_kuvar.", "Odlično!")
+					//message();
+				},
+
+				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+					alert("AJAX ERROR: " + errorThrown);
+				}
+			});
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("acceptMeal ERROR: " + errorThrown);
+		}
+	});
 });
 $(document).on('click', '#signalMeal', function(e) {
 	e.preventDefault();
+	$(this).prop('disabled',true);
+	$(this).css('color', 'gray');
 	var name = $(this).attr('name');
 	var zaSplit;
 	$(document).find('input[name="signalMeal"]').each(function(e){	
@@ -264,6 +404,45 @@ $(document).on('click', '#signalMeal', function(e) {
 	var splitovano  = zaSplit.split(";");
 	var desk = splitovano[0];
 	var meals = splitovano[1].split(",");
-	alert("signalMeal");
+	var order_id = splitovano[2];
+	var drinks = [];
+	$.ajax({
+		type : 'POST',
+		url :  '/signalMeal',
+		data : {
+			"signalMeal" : "Gotovo je jelo za sto "+desk+"!"
+		},
+		success : function(data){	
+			//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!");
+			///message();
+			$.ajax({
+				type : 'PUT',
+				url :  '/orderController/change/'+order_id,
+				contentType : 'application/json',
+				dataType :'json',
+				data : JSON.stringify({
+					"waiter_id" : "1",
+					"table_id" : desk,
+					"restaurant" : "1",
+					"barman_state" : "kreirana",
+					"cook_state" : "gotovo_jelo",
+					"drinks" : drinks,
+					"meals" : meals
+				}),
+				success : function(data){	
+					//Command: toastr["success"]("gotovo_jelo", "Odlično!")
+					//message();
+				},
+
+				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+					alert("Notifikacija jela ERROR: " + errorThrown);
+				}
+			});
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("signalMeal ERROR: " + errorThrown);
+		}
+	});
 
 });

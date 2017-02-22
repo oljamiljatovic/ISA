@@ -12,4 +12,5 @@ public interface DrinkService {
 	public void deleteDrink(Drink dr);
 	public void updateDrink(Drink dr);
 	public Drink addDrink(Drink dr);
+	public Drink findByName(String name);
 }

@@ -42,4 +42,9 @@ public class DrinkServiceImpl implements DrinkService {
 	public Drink addDrink(Drink dr) {
 		return this.drinkRepository.save(dr);
 	}
+
+	@Override
+	public Drink findByName(String name) {
+		return this.drinkRepository.findByName(name);
+	}
 }

@@ -41,4 +41,8 @@ public class OrderServiceImpl implements OrderService{
 	public ArrayList<Order> findByRestaurant(Long restaurant) {
 		return orderRepository.findByRestaurant(restaurant);
 	}
+	@Override
+	public Order findById(Long id) {
+		return orderRepository.findById(id);
+	}
 }

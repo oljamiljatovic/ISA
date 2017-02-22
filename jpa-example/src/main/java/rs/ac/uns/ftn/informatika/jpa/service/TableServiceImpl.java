@@ -28,6 +28,12 @@ public class TableServiceImpl implements TableService {
 	public ArrayList<Tablee> findByReonAndRestaurant(Long reon, Long restaurant) {
 		return tableRepository.findByReonAndRestaurant(reon, restaurant);
 	}
+
+
+	@Override
+	public ArrayList<Tablee> findByRestaurant(Long restaurant) {
+		return tableRepository.findByRestaurant(restaurant);
+	}
 	
 	
 }

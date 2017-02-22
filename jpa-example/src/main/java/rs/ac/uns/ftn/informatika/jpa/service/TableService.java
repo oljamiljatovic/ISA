@@ -9,5 +9,7 @@ public interface TableService {
 	public Tablee createTable(Tablee table);
 	
 	public ArrayList<Tablee> findByReonAndRestaurant(Long reon, Long restaurant);
+	
+	public ArrayList<Tablee> findByRestaurant(Long restaurant);
 
 }
