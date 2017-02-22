@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Drink implements Serializable{
@@ -24,6 +25,9 @@ public class Drink implements Serializable{
 	private float price;
 	@Column(nullable = false)
 	private Long restaurant;
+	
+	@Column(nullable = true)
+	private Long offer;
 	
 	public Drink(){
 		
@@ -76,5 +80,16 @@ public class Drink implements Serializable{
 	public void setRestaurant(Long restaurant) {
 		this.restaurant = restaurant;
 	}
+
+	@OneToMany(mappedBy="offer_id")
+	public Long getOffer() {
+		return offer;
+	}
+
+	public void setOffer(Long offer) {
+		this.offer = offer;
+	}
+	
+	
 
 }

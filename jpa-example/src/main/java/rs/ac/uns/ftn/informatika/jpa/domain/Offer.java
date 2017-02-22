@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Offer implements Serializable{
@@ -21,10 +24,10 @@ public class Offer implements Serializable{
 	private Long id;
 	@Column(nullable = false)
 	private String endDate;
-	@Column(nullable = false)
-	private ArrayList<String> drinks;
-	@Column(nullable = false)
-	private ArrayList<String> meals;
+	@Column(nullable = true)
+	private ArrayList<Long> drinks;
+	@Column(nullable = true)
+	private ArrayList<Long> meals;
 	@Column(nullable = false)
 	private Long restaurant;
 
@@ -34,7 +37,7 @@ public class Offer implements Serializable{
 	}
 
 
-	public Offer(String endDate, ArrayList<String> drinks, ArrayList<String> meals, Long restaurant) {
+	public Offer(String endDate, ArrayList<Long> drinks, ArrayList<Long> meals, Long restaurant) {
 		super();
 		this.endDate = endDate;
 		this.drinks = drinks;
@@ -62,23 +65,24 @@ public class Offer implements Serializable{
 		this.endDate = endDate;
 	}
 
-
-	public ArrayList<String> getDrinks() {
+	
+	public ArrayList<Long> getDrinks() {
 		return drinks;
 	}
 
 
-	public void setDrinks(ArrayList<String> drinks) {
+	@ManyToMany
+	@JoinColumn(name="offer_drink_id", referencedColumnName="drink_id", nullable=true)
+	public void setDrinks(ArrayList<Long> drinks) {
 		this.drinks = drinks;
 	}
-
-
-	public ArrayList<String> getMeals() {
+	
+	public ArrayList<Long> getMeals() {
 		return meals;
 	}
 
 
-	public void setMeals(ArrayList<String> meals) {
+	public void setMeals(ArrayList<Long> meals) {
 		this.meals = meals;
 	}
 
