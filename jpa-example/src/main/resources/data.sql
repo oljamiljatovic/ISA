@@ -3,43 +3,47 @@
 --
 
 -- =================================================================================================
-insert into groceries(id,name ) values (1,'grasak')
-insert into groceries(id,name ) values (2,'pasulj')
-insert into groceries(id,name ) values (3,'luk')
-insert into groceries(id,name ) values (4,'riba')
-insert into groceries(id,name ) values (5,'kupus')
-insert into groceries(id,name ) values (6,'salata')
-insert into groceries(id,name ) values (7,'meso')
-insert into groceries(id,name ) values (8,'krompir')
-insert into groceries(id,name ) values (9,'sargarepa')
+
 
 
 INSERT INTO user(email,password,role,accept) VALUES('oljka','oljkaoljka','guest','true')
 INSERT INTO user(email,password,role,accept) VALUES('mica','micamica','systemManager','true')
 INSERT INTO user(email,password,role,accept) VALUES('vlado','vladovlado','guest','true')
 INSERT INTO user(email,password,role,accept) VALUES('desa','desadesa','employee','true')
+INSERT INTO user(email,password,role,accept) VALUES('vesna','vesnavesna','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('sladjan','sladjansladjan','guest','true')
 
 INSERT INTO guest(id,name,surname) VALUES('1','Olja','Miljatovic')
 INSERT INTO guest(id,name,surname) VALUES('2','Milica','Milutinovic')
 INSERT INTO guest(id,name,surname) VALUES('3','Vladimir','Stanojevic')
+INSERT INTO guest(id,name,surname) VALUES('5','Vesna','Bujic')
+INSERT INTO guest(id,name,surname) VALUES('6','Sladjan','Jovovic')
 
+INSERT INTO friends(person_id,friend_id) VALUES('1','2')
+INSERT INTO friends(person_id,friend_id) VALUES('1','3')
+INSERT INTO friends(person_id,friend_id) VALUES('2','1')
+INSERT INTO friends(person_id,friend_id) VALUES('3','1')
+INSERT INTO friends(person_id,friend_id) VALUES('1','5')
+INSERT INTO friends(person_id,friend_id) VALUES('1','6')
+INSERT INTO friends(person_id,friend_id) VALUES('5','1')
+INSERT INTO friends(person_id,friend_id) VALUES('6','1')
 
 
 insert into restaurant(id,name,type_id,address,contact) values (1,'Kod Sime','domaca jela','Glavna 20','-')
 insert into restaurant(id,name,type_id,address,contact) values (2,'Kod Zore','domaca jela','Glavna 7','-')
 
-INSERT INTO user(id,email,password,role,accept) VALUES(5,'mmica','mica','restaurantManager','true')
-insert into restaurant_manager(id,name,surname,address,contact,restaurant) values (5,'Mica','Milut','Glavna 109', '-',1)
-INSERT INTO user(id,email,password,role,accept) VALUES(6,'zora','zorazora','waiter','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (6,'Zora','Milut','1967-04-23', 'L','38',1,'false')
-INSERT INTO user(id,email,password,role,accept) VALUES(7,'sima','simasima','cook','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (7,'Sinisa','Milut','1964-05-29', 'XL','46',1,'false')
-INSERT INTO user(id,email,password,role,accept) VALUES(8,'dana','danadana','barman','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (8,'Dana','Zivan','1972-01-29', 'L','39',1,'false')
-INSERT INTO user(id,email,password,role,accept) VALUES(9,'gavra','gavragavra','waiter','true')
-insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (9,'Gavra','Zivan','1978-02-21', 'XL','44',1,'false')
-INSERT INTO user(id,email,password,role,accept) VALUES(10,'pera','perapera','provider','true')
-insert into provider(id,name,surname,address,contact,restaurant,log_first_time) values (10,'Pera','Peric','Glavna 10','022450', 1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('mmica','mica','restaurantManager','true')
+insert into restaurant_manager(id,name,surname,address,contact,restaurant) values (7,'Mica','Milut','Glavna 109', '-',1)
+INSERT INTO user(email,password,role,accept) VALUES('zora','zorazora','waiter','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (8,'Zora','Milut','1967-04-23', 'L','38',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('sima','simasima','cook','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (9,'Sinisa','Milut','1964-05-29', 'XL','46',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('dana','danadana','barman','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (10,'Dana','Zivan','1972-01-29', 'L','39',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('gavra','gavragavra','waiter','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (11,'Gavra','Zivan','1978-02-21', 'XL','44',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('pera','perapera','provider','true')
+insert into provider(id,name,surname,address,contact,restaurant,log_first_time) values (12,'Pera','Peric','Glavna 10','022450', 1,'false')
 
 insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(1,1,1,10,0,'10','10')
 
