@@ -3,15 +3,15 @@
 --
 
 -- =================================================================================================
-insert into groceries(id,name ) values (1,'grasak')
-insert into groceries(id,name ) values (2,'pasulj')
-insert into groceries(id,name ) values (3,'luk')
-insert into groceries(id,name ) values (4,'riba')
-insert into groceries(id,name ) values (5,'kupus')
-insert into groceries(id,name ) values (6,'salata')
-insert into groceries(id,name ) values (7,'meso')
-insert into groceries(id,name ) values (8,'krompir')
-insert into groceries(id,name ) values (9,'sargarepa')
+insert into foodstuff(id,name ) values (1,'grasak')
+insert into foodstuff(id,name ) values (2,'pasulj')
+insert into foodstuff(id,name ) values (3,'luk')
+insert into foodstuff(id,name ) values (4,'riba')
+insert into foodstuff(id,name ) values (5,'kupus')
+insert into foodstuff(id,name ) values (6,'salata')
+insert into foodstuff(id,name ) values (7,'meso')
+insert into foodstuff(id,name ) values (8,'krompir')
+insert into foodstuff(id,name ) values (9,'sargarepa')
 
 
 INSERT INTO user(email,password,role,accept) VALUES('oljka','oljkaoljka','guest','true')

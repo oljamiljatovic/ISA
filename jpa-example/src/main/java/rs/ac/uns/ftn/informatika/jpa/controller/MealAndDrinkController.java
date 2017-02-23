@@ -17,6 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
+import rs.ac.uns.ftn.informatika.jpa.domain.Foodstuff;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
@@ -26,6 +27,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
+import rs.ac.uns.ftn.informatika.jpa.service.FoodstuffService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OfferService;
@@ -41,6 +43,8 @@ public class MealAndDrinkController {
 	private DrinkService drinkService;
 	@Autowired
 	private MealService mealService;
+	@Autowired
+	private FoodstuffService fsService;
 	@Autowired
 	private ManagerService managerService;
 	@Autowired
@@ -225,5 +229,17 @@ public class MealAndDrinkController {
 		offer.setRestaurant(r.getId());
 		this.offerService.addOffer(offer);
 		return new ResponseEntity<Offer>(offer, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/uzmiNamirnice",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Foodstuff>> uzmiNamirnice()  throws Exception {
+		
+		ArrayList<Foodstuff> fs = this.fsService.getFoodstuffs();
+				
+		return new ResponseEntity<ArrayList<Foodstuff>>(fs, HttpStatus.OK);
 	}
 }
