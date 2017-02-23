@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,26 @@ public class GuestServiceImpl implements GuestService {
 	}
 	
 
+	@Override
+	public List<Guest> findByFriends(List friends) {
+		return guestRepository.findByFriends(friends);
+	}
+
+	
+	@Override
+	public List<Guest> findGuestsByName(String name) {
+		return guestRepository.findGuestsByName(name);
+	}
+	
+	@Override
+	public List<Guest> findGuestsBySurname(String surname) {
+		return guestRepository.findGuestsBySurname(surname);
+	}
+	
+	@Override
+	public List<Guest> findGuestsByNameAndSurname(String name,String surname) {
+		return guestRepository.findGuestsByNameAndSurname(name,surname);
+	}
 	
 
 }

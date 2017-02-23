@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.jpa.service;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,14 @@ public interface GuestService {
 	Guest update(Guest guest, Long id);
 
 	Guest findOne(Long id);
+
+	List<Guest> findByFriends(List friends);
+
+	List<Guest> findGuestsByName(String name);
+
+	List<Guest> findGuestsBySurname(String surname);
+
+	List<Guest> findGuestsByNameAndSurname(String name, String surname);
+	
+	
 }

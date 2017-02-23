@@ -13,7 +13,7 @@ window.onload = function() {
 				if(roleData != "guest"){
 					document.location.href="index.html";
 				}else{
-					$.ajax({
+					$.ajax({ //ajax poziv za dobavljanje informacija o guest
 						type : 'POST',
 						url :'/guestController/getGuest/',
 						contentType : 'application/json',
@@ -34,6 +34,36 @@ window.onload = function() {
 					}
 					
 					});	
+					
+					
+					$.ajax({ //ajax poziv za dobijanje ko su prijatelji
+						type : 'POST',
+						url :'/guestController/getFriends/',
+						contentType : 'application/json',
+						dataType : 'json',
+						data :  JSON.stringify({
+		    				"email" : data.email,
+		    				"password" : data.password
+		    			}),
+						success : function(friends){
+							
+							$('#tabelaPrijatelja').empty();
+							for(var i = 0 ; i < friends.length ; i++){
+								 var item = friends[i];
+								$('#tabelaPrijatelja').append('<li>'+item.name +'</li><li> &nbsp;</li><li>'+item.surname +'</li></br>');
+							}
+						},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+						alert("GRESKA kod prijatelja");
+						alert("AJAX ERROR: " + errorThrown);
+					}
+					
+					});	//kraj ajax za prijatelje
+					
+				
+					
+					
+					
 				}
 			
 		},
@@ -112,6 +142,13 @@ window.onload = function() {
     					window.location.href= "userProfile.html"
     	
     };
+    
+    document.getElementById('prijatelji').onclick = function() {
+    	
+		window.location.href= "friendsOfGuest.html"
+
+};
+
     
     
     
