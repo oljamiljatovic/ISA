@@ -329,7 +329,7 @@ $(document).on('submit','#formVidiPonudu',function(e){
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url : '/mealAndDrinkController/uzmiObroke',
+				url : '/mealAndDrinkController/uzmiNamirnice',
 				success : function(data){
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 					$.each(list, function(index,jela){

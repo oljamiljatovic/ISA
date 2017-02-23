@@ -172,7 +172,8 @@ $(document).on('click','#dodajRadnika',function(e){
 			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 				'<form method="post" id="registracijaMenadzera">'+
 					'Podaci o radniku:<br/><br/>Vrsta:'+
-					'<select id="vrstaRadnika"><option value="cook">cook</option>'+
+					'<select id="vrstaRadnika"><option value="saladCook">salad - cook</option>'+
+					'<option value="cook">cooked meals  - cook</option><option value="grilledCook">grilled dish - cook</option>'+
 				'<option value="waiter">waiter</option><option value="barman">barman</option></select>'+
 					'<br/>Ime:<input type = "text" id = "imeRadnika" class="in-text"/>'+
 					'<br/>Prezime:<input type = "text" id = "prezimeRadnika" class="in-text"/>'+
@@ -346,7 +347,7 @@ $(document).on('click','#dodajPonudu',function(e){
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/mealAndDrinkController/uzmiObroke',
+		url : '/mealAndDrinkController/uzmiNamirnice',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,jela){
