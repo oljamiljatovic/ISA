@@ -152,7 +152,7 @@ public class MealAndDrinkController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 			meals = this.mealService.getMealsByRestaurant(r.getId());
-		}else if(u.getRole().equals("waiter") || u.getRole().equals("cook")){
+		}else if(u.getRole().equals("waiter") || u.getRole().equals("cook") || u.getRole().equals("saladCook") || u.getRole().equals("grilledCook")){
 			employee = employeeService.findById(u.getId());
 			meals = this.mealService.getMealsByRestaurant(employee.getRestaurant());
 		}else if(u.getRole().equals("provider")){

@@ -1,28 +1,52 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
 import java.util.ArrayList;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonSerialize
 public class OrderSurrogate {
 
-	private Long waiter_id;
-	
+	private Long waiter_id;	
 	private Long table_id;
-	
-	private Long restaurant;
-	
+	private Long restaurant;	
+	private String barman_state;
+	private String cook_state;	
+	private Date timeOfOrder;
 	private ArrayList<String> drinks = new ArrayList<String>();
 	private ArrayList<String> meals = new ArrayList<String>();
 
 	public OrderSurrogate(){}
 	
+	public String getBarman_state() {
+		return barman_state;
+	}
 
+
+	public void setBarman_state(String barman_state) {
+		this.barman_state = barman_state;
+	}
+
+
+	public String getCook_state() {
+		return cook_state;
+	}
+
+
+	public void setCook_state(String cook_state) {
+		this.cook_state = cook_state;
+	}
+
+
+	public Date getTimeOfOrder() {
+		return timeOfOrder;
+	}
+
+
+	public void setTimeOfOrder(Date timeOfOrder) {
+		this.timeOfOrder = timeOfOrder;
+	}
 	public ArrayList<String> getDrinks() {
 		return drinks;
 	}

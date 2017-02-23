@@ -38,9 +38,13 @@ function showOrders(){
 		      $("#content").append("</thead>");
 		      $("#content").append("<tbody>");
 		      $.each(list, function(index, order) {
-						var meals = order.meals;
+			    	  	var meals = "";
+						$.each(order.meals, function(index, meal) {
+							meals +=meal.name+",";
+		    	  		});
+						var meals = meals.substring(0,meals.length-1);
 						var desk = order.table_id;
-						if(meals!=null){
+						if(meals!=""){
 							var forma = $('<form method="post" class="orderForm" action=""></form>');
 							var formaSignal = $('<form method="post" class="signalMeal" action=""></form>');
 					        var tr = $('<tr></tr>');

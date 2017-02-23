@@ -43,10 +43,15 @@ function showOrders(){
 		      $("#content").append("</tr>");
 		      $("#content").append("</thead>");
 		      $("#content").append("<tbody>");
+		      
 		      $.each(list, function(index, order) {
-						var drinks = order.drinks;
+		    	  		var drinks = "";
+		    	  		$.each(order.drinks, function(index, drink) {
+		    	  			drinks +=drink.name+",";
+		    	  		});
+		    	  		var drinks = drinks.substring(0,drinks.length-1);
 						var drinkStatus = "nema";
-						if(drinks == null){
+						if(drinks == ""){
 							drinks = "nema";
 						}else{
 							if(order.barman_state=="preuzeo_sanker"){
@@ -57,9 +62,13 @@ function showOrders(){
 								drinkStatus = "nepreuzeto";
 							}
 						}
-						var meals = order.meals;
+						var meals = "";
+						$.each(order.meals, function(index, meal) {
+							meals +=meal.name+",";
+		    	  		});
+						var meals = meals.substring(0,meals.length-1);
 						var mealStatus = "nema";
-						if(meals == null){
+						if(meals == ""){
 							meals = "nema";
 						}else{
 							if(order.cook_state=="preuzeo_kuvar"){
@@ -829,47 +838,6 @@ $(document).on('click','#submitOrder',function(e){
 	var drinks = $('#comboDrinks').val();
 	var meals = $('#comboMeals').val();
 	var listOfDrinkss = [];
-	/*$.ajax({
-		type: 'GET',
-		dataType: 'json',
-		url : '/mealAndDrinkController/uzmiPica',
-		success : function(data){
-			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$.each(list, function(index1,pice){
-				$.each(drinks, function(index2,drink){
-					if(pice.name == drink){
-						listOfDrinkss.push(pice)
-					}
-				});
-			});
-			var listOfDrinks = JSON.stringify(listOfDrinkss);
-			/*$.ajax({
-				type : 'POST',
-				url :  '/orderController/addOrder',
-				contentType : 'application/json',
-				dataType :'json',
-				data : JSON.stringify({
-					"waiter_id" :"1",
-					"table_id" : table,
-					"restaurant" : "1",
-					"drinks" : listOfDrinks,
-					"meals" : meals
-				}),
-				success : function(data){
-					Command: toastr["success"]("Uspješno dodata porudžbina.", "Odlično!")
-					message();
-					showOrders();
-				},
-
-				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-					alert("AJAX ERROR: " + errorThrown);
-				}
-			});
-		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Drink ERROR: " + errorThrown);
-		}	
-	});*/
 	var timeOfOrder = new Date().getTime();
 	$.ajax({
 		type : 'POST',

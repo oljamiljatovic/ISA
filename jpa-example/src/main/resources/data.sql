@@ -47,7 +47,7 @@ insert into provider(id,name,surname,address,contact,restaurant,log_first_time) 
 
 insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(1,1,1,10,0,'10','10')
 
-insert into reon(id,name,location,restaurant, number_table) values (1,'North','north part',1,6)
+insert into reon(id,name,location,restaurant, number_table) values (1,'North','north part',1,8)
 insert into tablee(id,reon,restaurant) values (1,1,1)
 insert into tablee(id,reon,restaurant) values (2,1,1)
 insert into tablee(id,reon,restaurant) values (3,1,1)
@@ -69,12 +69,12 @@ insert into tablee(id,reon,restaurant) values (15,4,1)
 insert into tablee(id,reon,restaurant) values (16,4,1)
 insert into tablee(id,reon,restaurant) values (17,4,1)
 
-insert into assign_reon(id,waiter_id,reon_id) values (1,6,1)
+insert into assign_reon(id,waiter_id,reon_id) values (1,8,1)
 insert into assign_reon(id,waiter_id,reon_id) values (2,9,2)
 
-insert into work_schedule(id,worker_id,shift,date_start,date_end) values (1,6,'prva','2017-02-10','2017-03-11')
-insert into work_schedule(id,worker_id,shift,date_start,date_end) values (2,7,'druga','2017-02-10','2017-03-11')
-insert into work_schedule(id,worker_id,shift,date_start,date_end) values (3,8,'prva','2017-02-10','2017-03-11')
+insert into work_schedule(id,worker_id,shift,date_start,date_end) values (1,8,'prva','2017-02-10','2017-03-11')
+insert into work_schedule(id,worker_id,shift,date_start,date_end) values (2,9,'druga','2017-02-10','2017-03-11')
+insert into work_schedule(id,worker_id,shift,date_start,date_end) values (3,10,'prva','2017-02-10','2017-03-11')
 
 
 insert into drink(name,price,description,restaurant) values ('rakija',120,'zestoko',1)
@@ -93,16 +93,21 @@ insert into meal(name, price,description,restaurant) values ('meso',90,'glavno j
 insert into meal(name, price,description,restaurant) values ('grasak',60,'corba',1)
 
 -- narudzbine
-INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (6,1,1,'kreirana','kreirana','2017-02-15 23:18:41.972')
-INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (6,2,1,'kreirana','kreirana','2017-02-16 03:18:41.972')
-INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (6,3,1,'kraj','kraj','2017-02-16 03:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,1,1,'kreirana','kreirana','2017-02-15 23:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,2,1,'kreirana','kreirana','2017-02-16 03:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,3,1,'kraj','kraj','2017-02-16 03:18:41.972')
 INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (10,4,2,'kreirana','kreirana','2017-02-16 10:18:41.972')
 
 --racuni 
-insert into bill(bill_id, order_id,waiter_id,date_of_bill,bill) values (1,1,6,'2017-02-17 00:25:09',530)
+insert into bill(bill_id, order_id,waiter_id,date_of_bill,bill) values (1,1,8,'2017-02-17 00:25:09',530)
 --narucana jela i pica
---insert into drink_order(order_id,drink_id) values (1,1)
---insert into meal_order(order_id,meal_id) values (1,1)
+insert into drink_order(order_id,drink_id) values ('1','1')
+insert into drink_order(order_id,drink_id) values ('1','2')
+insert into meal_order(order_id,meal_id) values ('1','1')
+insert into meal_order(order_id,meal_id) values ('1','2')
+insert into drink_order(order_id,drink_id) values ('2','3')
+insert into drink_order(order_id,drink_id) values ('2','4')
+insert into meal_order(order_id,meal_id) values ('2','4')
 
 -- AUSTRALIA
 

@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,10 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public Order findById(Long id) {
 		return orderRepository.findById(id);
+	}
+	@Override
+	public List<Order> findByDrinks(List drinks) {
+		// TODO Auto-generated method stub
+		return this.orderRepository.findByDrinks(drinks);
 	}
 }

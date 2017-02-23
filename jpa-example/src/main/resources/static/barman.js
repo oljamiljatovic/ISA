@@ -38,33 +38,38 @@ function showOrders(){
 		      $("#content").append("</thead>");
 		      $("#content").append("<tbody>");
 		      $.each(list, function(index, order) {
-						var drinks = order.drinks;
-						var meals = order.meals;
-						var desk = order.table_id;
-				        var forma = $('<form method="post" class="orderForm" action=""></form>');
-						var formaSignal = $('<form method="post" class="signalDrink" action=""></form>');
-				        var tr = $('<tr></tr>');
-				        tr.append('<td align="center">' + desk + '</td><td align="center">' + drinks + '</td>');
-				        forma.append('<input type="hidden" name="acceptDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
-				                '<input type="submit" id="acceptDrink" name='+index+' value="Prihvati za spremanje" class="btn green">');
-				        var td = $('<td></td>');
-				        td.append(forma);
-				        formaSignal.append('<input type="hidden" name="signalDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
-				                '<input type="submit" id="signalDrink" name='+index+' value="Gotovo piće" class="btn green">');
-				        var tdSignal = $('<td></td>');
-				        tdSignal.append(formaSignal);
-				        tr.append(td);
-				        tr.append(tdSignal);
-				        $('#content').append(tr);
-				        if(order.barman_state=="preuzeo_sanker"){
-				        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
-				        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
-				        }else if(order.barman_state=="gotovo_pice"){
-				        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
-				        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
-				        	$('input[id="signalDrink"][name='+index+']').attr('disabled','disabled');
-				        	$('input[id="signalDrink"][name='+index+']').css('color','gray');
-				        }
+			    	  	var drinks = "";
+		    	  		$.each(order.drinks, function(index, drink) {
+		    	  			drinks +=drink.name+",";
+		    	  		});
+		    	  		var drinks = drinks.substring(0,drinks.length-1);
+		    	  		if(drinks != ""){
+							var desk = order.table_id;
+					        var forma = $('<form method="post" class="orderForm" action=""></form>');
+							var formaSignal = $('<form method="post" class="signalDrink" action=""></form>');
+					        var tr = $('<tr></tr>');
+					        tr.append('<td align="center">' + desk + '</td><td align="center">' + drinks + '</td>');
+					        forma.append('<input type="hidden" name="acceptDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
+					                '<input type="submit" id="acceptDrink" name='+index+' value="Prihvati za spremanje" class="btn green">');
+					        var td = $('<td></td>');
+					        td.append(forma);
+					        formaSignal.append('<input type="hidden" name="signalDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
+					                '<input type="submit" id="signalDrink" name='+index+' value="Gotovo piće" class="btn green">');
+					        var tdSignal = $('<td></td>');
+					        tdSignal.append(formaSignal);
+					        tr.append(td);
+					        tr.append(tdSignal);
+					        $('#content').append(tr);
+					        if(order.barman_state=="preuzeo_sanker"){
+					        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
+					        }else if(order.barman_state=="gotovo_pice"){
+					        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
+					        	$('input[id="signalDrink"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="signalDrink"][name='+index+']').css('color','gray');
+					        }
+		    	  		}
 				});
 	
 			  $("#content").append("</tbody>");
