@@ -17,6 +17,65 @@ function message(){
 			  "hideMethod": "fadeOut"
 			}
 }
+function showOrders(){
+	$("#content").empty();
+	$.ajax({
+		type : 'GET',
+		url :  '/orderController/getOrdersForRestaurant',
+		contentType : 'application/json',
+		dataType :'json',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("#content").append('<p><b>Poručena pića</b></p>');
+			$("#content").append("<table id='tableOrder'>");
+		      $("#content").append("<thead>");
+		      $("#content").append("<tr>");
+		      $("#content").append("<th>Sto</th>");
+		      $("#content").append("<th>Pića</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("</tr>");
+		      $("#content").append("</thead>");
+		      $("#content").append("<tbody>");
+		      $.each(list, function(index, order) {
+						var drinks = order.drinks;
+						var meals = order.meals;
+						var desk = order.table_id;
+				        var forma = $('<form method="post" class="orderForm" action=""></form>');
+						var formaSignal = $('<form method="post" class="signalDrink" action=""></form>');
+				        var tr = $('<tr></tr>');
+				        tr.append('<td align="center">' + desk + '</td><td align="center">' + drinks + '</td>');
+				        forma.append('<input type="hidden" name="acceptDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
+				                '<input type="submit" id="acceptDrink" name='+index+' value="Prihvati za spremanje" class="btn green">');
+				        var td = $('<td></td>');
+				        td.append(forma);
+				        formaSignal.append('<input type="hidden" name="signalDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
+				                '<input type="submit" id="signalDrink" name='+index+' value="Gotovo piće" class="btn green">');
+				        var tdSignal = $('<td></td>');
+				        tdSignal.append(formaSignal);
+				        tr.append(td);
+				        tr.append(tdSignal);
+				        $('#content').append(tr);
+				        if(order.barman_state=="preuzeo_sanker"){
+				        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
+				        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
+				        }else if(order.barman_state=="gotovo_pice"){
+				        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
+				        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
+				        	$('input[id="signalDrink"][name='+index+']').attr('disabled','disabled');
+				        	$('input[id="signalDrink"][name='+index+']').css('color','gray');
+				        }
+				});
+	
+			  $("#content").append("</tbody>");
+			  $("#content").append("</table>");
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+}
 $(document).ready(function() {
 	var messageList = $("#messages");
 	var socket = new SockJS('/stomp');
@@ -272,65 +331,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 $(document).on('click','#orderedDrinks',function(e){
 	showOrders();
 });
-function showOrders(){
-	$("#content").empty();
-	$.ajax({
-		type : 'GET',
-		url :  '/orderController/getOrdersForRestaurant',
-		contentType : 'application/json',
-		dataType :'json',
-		success : function(data){
-			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#content").append('<p><b>Poručena pića</b></p>');
-			$("#content").append("<table id='tableOrder'>");
-		      $("#content").append("<thead>");
-		      $("#content").append("<tr>");
-		      $("#content").append("<th>Sto</th>");
-		      $("#content").append("<th>Pića</th>");
-		      $("#content").append("<th>&nbsp;</th>");
-		      $("#content").append("<th>&nbsp;</th>");
-		      $("#content").append("</tr>");
-		      $("#content").append("</thead>");
-		      $("#content").append("<tbody>");
-		      $.each(list, function(index, order) {
-						var drinks = order.drinks;
-						var meals = order.meals;
-						var desk = order.table_id;
-				        var forma = $('<form method="post" class="orderForm" action=""></form>');
-						var formaSignal = $('<form method="post" class="signalDrink" action=""></form>');
-				        var tr = $('<tr></tr>');
-				        tr.append('<td align="center">' + desk + '</td><td align="center">' + drinks + '</td>');
-				        forma.append('<input type="hidden" name="acceptDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
-				                '<input type="submit" id="acceptDrink" name='+index+' value="Prihvati za spremanje" class="btn green">');
-				        var td = $('<td></td>');
-				        td.append(forma);
-				        formaSignal.append('<input type="hidden" name="signalDrink" id='+index+' value="'+ desk+";"+drinks+";"+order.id+'">' +
-				                '<input type="submit" id="signalDrink" name='+index+' value="Gotovo piće" class="btn green">');
-				        var tdSignal = $('<td></td>');
-				        tdSignal.append(formaSignal);
-				        tr.append(td);
-				        tr.append(tdSignal);
-				        $('#content').append(tr);
-				        if(order.barman_state=="preuzeo_sanker"){
-				        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
-				        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
-				        }else if(order.barman_state=="gotovo_pice"){
-				        	$('input[id="acceptDrink"][name='+index+']').attr('disabled','disabled');
-				        	$('input[id="acceptDrink"][name='+index+']').css('color','gray');
-				        	$('input[id="signalDrink"][name='+index+']').attr('disabled','disabled');
-				        	$('input[id="signalDrink"][name='+index+']').css('color','gray');
-				        }
-				});
-	
-			  $("#content").append("</tbody>");
-			  $("#content").append("</table>");
-		},
 
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
-	});
-}
 $(document).on('click', '#acceptDrink', function(e) {
 	e.preventDefault();
 	$(this).prop('disabled',true);

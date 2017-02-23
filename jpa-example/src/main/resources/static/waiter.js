@@ -18,6 +18,119 @@ function message(){
 			  "hideMethod": "fadeOut"
 			}
 }
+function showOrders(){
+	$("#content").empty();
+	$.ajax({
+		type : 'GET',
+		url :  '/orderController/getOrders',
+		contentType : 'application/json',
+		dataType :'json',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("#content").append("</br><button id='addOrder' class='btn orange'>Dodaj porudžbinu</button>");
+			$("#content").append('<p><b>Lista porudžbina</b></p>');
+			$("#content").append("<table id='tableOrder'>");
+		      $("#content").append("<thead>");
+		      $("#content").append("<tr>");
+		      $("#content").append("<th>Sto</th>");
+		      $("#content").append("<th>Pića</th>");
+		      $("#content").append("<th>Priprema pića</th>");
+		      $("#content").append("<th>Jela</th>");
+		      $("#content").append("<th>Priprema jela</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("</tr>");
+		      $("#content").append("</thead>");
+		      $("#content").append("<tbody>");
+		      $.each(list, function(index, order) {
+						var drinks = order.drinks;
+						var drinkStatus = "nema";
+						if(drinks == null){
+							drinks = "nema";
+						}else{
+							if(order.barman_state=="preuzeo_sanker"){
+								drinkStatus = "u toku";
+							}else if(order.barman_state=="gotovo_pice"){
+								drinkStatus = "gotovo";
+							}else{
+								drinkStatus = "nepreuzeto";
+							}
+						}
+						var meals = order.meals;
+						var mealStatus = "nema";
+						if(meals == null){
+							meals = "nema";
+						}else{
+							if(order.cook_state=="preuzeo_kuvar"){
+								mealStatus = "u toku";
+							}else if(order.cook_state=="gotovo_jelo"){
+								mealStatus = "gotovo";
+							}else{
+								mealStatus = "nepreuzeto";
+							}
+						}
+						
+						var desk = order.table_id;
+						var forma = $('<form method="post" class="orderForm" action=""></form>');
+						var formaBill = $('<form method="post" class="orderBill" action=""></form>');
+						var formaAdd = $('<form method="post" class="orderAdd" action=""></form>');
+				        var tr = $('<tr></tr>');
+				        tr.append('<td align="center">' + desk + '</td><td align="center">'+drinks+'</td><td align="center">'+drinkStatus+
+				        		'</td><td align="center">' + meals + '</td><td align="center">'+mealStatus+
+				        		'</td>');
+				        forma.append('<input type="hidden" name="edit" id='+index+' value="'+ desk+";"+drinks+";"+meals +";"+order.id +'">' +
+				                '<input type="submit" id="submitEdit" name='+index+' value="Izmjeni" class="btn green">');
+				        var td = $('<td></td>');
+				        td.append(forma);
+				        formaAdd.append('<input type="hidden" name="add" id='+index+' value="'+ desk+";"+drinks+";"+meals +";"+order.id +'">' +
+				                '<input type="submit" id="add" name='+index+' value="Dodaj na porudžbinu" class="btn green">');
+				        var tdAdd = $('<td></td>');
+				        tdAdd.append(formaAdd);
+				        formaBill.append('<input type="hidden" name="bill" id='+index+' value="'+ desk+";"+drinks+";"+meals +";"+order.id +'">' +
+				                '<input type="submit" id="bill" name='+index+' value="Kreiraj račun" class="btn green">');
+				        var tdBill = $('<td></td>');
+				        tdBill.append(formaBill);
+				        tr.append(td);
+				        tr.append(tdAdd);
+				        tr.append(tdBill);
+				        $('#content').append(tr);
+				        $('input[id="add"][name='+index+']').attr('disabled','disabled');
+			        	$('input[id="add"][name='+index+']').css('color','gray');
+			        	$('input[id="bill"][name='+index+']').attr('disabled','disabled');
+				        $('input[id="bill"][name='+index+']').css('color','gray');
+				        if(mealStatus=="nema" && drinkStatus=="nema"){
+				        }else if(mealStatus=="nepreuzeto" && drinkStatus=="nema"){
+				        	
+				        }else if(mealStatus=="nema" && drinkStatus=="nepreuzeto"){
+				        	
+				        }else if(mealStatus!="nepreuzeto" || drinkStatus!="nepreuzeto"){
+				        	$('input[id="submitEdit"][name='+index+']').attr('disabled','disabled');
+				        	$('input[id="submitEdit"][name='+index+']').css('color','gray');
+				        	$('input[id="add"][name='+index+']').attr('disabled',false);
+					        $('input[id="add"][name='+index+']').css('color','black');
+				        }
+				        if(mealStatus=="gotovo" && drinkStatus=="gotovo"){
+				        	$('input[id="bill"][name='+index+']').attr('disabled',false);
+					        $('input[id="bill"][name='+index+']').css('color','black');
+				        }else if(mealStatus=="gotovo" && drinkStatus=="nema"){
+				        	$('input[id="bill"][name='+index+']').attr('disabled',false);
+					        $('input[id="bill"][name='+index+']').css('color','black');
+				        }else if(mealStatus=="nema" && drinkStatus=="gotovo"){
+				        	$('input[id="bill"][name='+index+']').attr('disabled',false);
+					        $('input[id="bill"][name='+index+']').css('color','black');
+				        }
+		      });
+			  $("#content").append("</tbody>");
+			  $("#content").append("</table>");
+
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+}
 $(document).ready(function() {
 	var messageList = $("#messages");
 	var socket = new SockJS('/stomp');
@@ -29,16 +142,14 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
-				$('#content').empty();
-				$('#order').click();
+				showOrders();
 			}
 		});
 		stompClient.subscribe("/topic/signalMeal", function(data) {
 			var mess = data.body;
 			Command: toastr["info"](mess, "Informacija!")
 			if( $('#tableOrder').length ){
-				$('#content').empty();
-				$('#order').click();
+				showOrders();
 			}
 			
 		});
@@ -47,8 +158,7 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
-				$('#content').empty();
-				$('#order').click();
+				showOrders();
 			}
 		});
 		stompClient.subscribe("/topic/acceptDrink", function(data) {
@@ -56,8 +166,7 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
-				$('#content').empty();
-				$('#order').click();
+				showOrders();
 			}
 		});
 	});
@@ -294,120 +403,6 @@ $(document).on('click','#tables',function(e){
 	});
 	
 });
-
-function showOrders(){
-	$("#content").empty();
-	$.ajax({
-		type : 'GET',
-		url :  '/orderController/getOrders',
-		contentType : 'application/json',
-		dataType :'json',
-		success : function(data){
-			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#content").append("</br><button id='addOrder' class='btn orange'>Dodaj porudžbinu</button>");
-			$("#content").append('<p><b>Lista porudžbina</b></p>');
-			$("#content").append("<table id='tableOrder'>");
-		      $("#content").append("<thead>");
-		      $("#content").append("<tr>");
-		      $("#content").append("<th>Sto</th>");
-		      $("#content").append("<th>Pića</th>");
-		      $("#content").append("<th>Priprema pića</th>");
-		      $("#content").append("<th>Jela</th>");
-		      $("#content").append("<th>Priprema jela</th>");
-		      $("#content").append("<th>&nbsp;</th>");
-		      $("#content").append("<th>&nbsp;</th>");
-		      $("#content").append("<th>&nbsp;</th>");
-		      $("#content").append("</tr>");
-		      $("#content").append("</thead>");
-		      $("#content").append("<tbody>");
-		      $.each(list, function(index, order) {
-						var drinks = order.drinks;
-						var drinkStatus = "nema";
-						if(drinks == null){
-							drinks = "nema";
-						}else{
-							if(order.barman_state=="preuzeo_sanker"){
-								drinkStatus = "u toku";
-							}else if(order.barman_state=="gotovo_pice"){
-								drinkStatus = "gotovo";
-							}else{
-								drinkStatus = "nepreuzeto";
-							}
-						}
-						var meals = order.meals;
-						var mealStatus = "nema";
-						if(meals == null){
-							meals = "nema";
-						}else{
-							if(order.cook_state=="preuzeo_kuvar"){
-								mealStatus = "u toku";
-							}else if(order.cook_state=="gotovo_jelo"){
-								mealStatus = "gotovo";
-							}else{
-								mealStatus = "nepreuzeto";
-							}
-						}
-						
-						var desk = order.table_id;
-						var forma = $('<form method="post" class="orderForm" action=""></form>');
-						var formaBill = $('<form method="post" class="orderBill" action=""></form>');
-						var formaAdd = $('<form method="post" class="orderAdd" action=""></form>');
-				        var tr = $('<tr></tr>');
-				        tr.append('<td align="center">' + desk + '</td><td align="center">'+drinks+'</td><td align="center">'+drinkStatus+
-				        		'</td><td align="center">' + meals + '</td><td align="center">'+mealStatus+
-				        		'</td>');
-				        forma.append('<input type="hidden" name="edit" id='+index+' value="'+ desk+";"+drinks+";"+meals +";"+order.id +'">' +
-				                '<input type="submit" id="submitEdit" name='+index+' value="Izmjeni" class="btn green">');
-				        var td = $('<td></td>');
-				        td.append(forma);
-				        formaAdd.append('<input type="hidden" name="add" id='+index+' value="'+ desk+";"+drinks+";"+meals +";"+order.id +'">' +
-				                '<input type="submit" id="add" name='+index+' value="Dodaj na porudžbinu" class="btn green">');
-				        var tdAdd = $('<td></td>');
-				        tdAdd.append(formaAdd);
-				        formaBill.append('<input type="hidden" name="bill" id='+index+' value="'+ desk+";"+drinks+";"+meals +";"+order.id +'">' +
-				                '<input type="submit" id="bill" name='+index+' value="Kreiraj račun" class="btn green">');
-				        var tdBill = $('<td></td>');
-				        tdBill.append(formaBill);
-				        tr.append(td);
-				        tr.append(tdAdd);
-				        tr.append(tdBill);
-				        $('#content').append(tr);
-				        $('input[id="add"][name='+index+']').attr('disabled','disabled');
-			        	$('input[id="add"][name='+index+']').css('color','gray');
-			        	$('input[id="bill"][name='+index+']').attr('disabled','disabled');
-				        $('input[id="bill"][name='+index+']').css('color','gray');
-				        if(mealStatus=="nema" && drinkStatus=="nema"){
-				        }else if(mealStatus=="nepreuzeto" && drinkStatus=="nema"){
-				        	
-				        }else if(mealStatus=="nema" && drinkStatus=="nepreuzeto"){
-				        	
-				        }else if(mealStatus!="nepreuzeto" || drinkStatus!="nepreuzeto"){
-				        	$('input[id="submitEdit"][name='+index+']').attr('disabled','disabled');
-				        	$('input[id="submitEdit"][name='+index+']').css('color','gray');
-				        	$('input[id="add"][name='+index+']').attr('disabled',false);
-					        $('input[id="add"][name='+index+']').css('color','black');
-				        }
-				        if(mealStatus=="gotovo" && drinkStatus=="gotovo"){
-				        	$('input[id="bill"][name='+index+']').attr('disabled',false);
-					        $('input[id="bill"][name='+index+']').css('color','black');
-				        }else if(mealStatus=="gotovo" && drinkStatus=="nema"){
-				        	$('input[id="bill"][name='+index+']').attr('disabled',false);
-					        $('input[id="bill"][name='+index+']').css('color','black');
-				        }else if(mealStatus=="nema" && drinkStatus=="gotovo"){
-				        	$('input[id="bill"][name='+index+']').attr('disabled',false);
-					        $('input[id="bill"][name='+index+']').css('color','black');
-				        }
-		      });
-			  $("#content").append("</tbody>");
-			  $("#content").append("</table>");
-
-		},
-
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
-	});
-}
 
 $(document).on('click','#order',function(e){
 	showOrders();

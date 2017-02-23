@@ -27,7 +27,15 @@ public class JpaExampleApplicationTests {
 	public void setUp() {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
 	}
+	
+	/*@Test
+	public void testOrder() throws Exception {
 
+		this.mvc.perform(get("/orderr")).andExpect(status().isOk())
+				.andExpect(content().string("kraj"));
+	}*/
+	
+	
 	@Test
 	public void testCity() throws Exception {
 
