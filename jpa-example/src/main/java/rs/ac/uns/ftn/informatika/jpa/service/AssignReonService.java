@@ -11,4 +11,8 @@ public interface AssignReonService {
 	public ArrayList<AssignReon> findAll();
 	
 	public ArrayList<AssignReon> findByWaiter_id(Long waiter_id);
+	
+	public ArrayList<AssignReon> findByRestaurant(Long id);
+	
+	public void delete(Long id);
 }

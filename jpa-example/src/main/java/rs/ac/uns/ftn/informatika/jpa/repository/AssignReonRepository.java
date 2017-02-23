@@ -7,6 +7,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
+import java.lang.Long;
+import java.util.List;
 
 public interface AssignReonRepository extends PagingAndSortingRepository<AssignReon, Long>  {
 	
@@ -14,4 +16,6 @@ public interface AssignReonRepository extends PagingAndSortingRepository<AssignR
 	
 	@Query("select a from AssignReon a where a.waiter_id = ?1")
 	public ArrayList<AssignReon> findByWaiter_id(Long waiter_id);
+	
+	public ArrayList<AssignReon> findByRestaurant(Long restaurant);
 }

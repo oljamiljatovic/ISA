@@ -12,5 +12,11 @@ public interface WorkScheduleService {
 	public ArrayList<WorkSchedule> findByWorker_id(Long worker_id);
 	
 	public ArrayList<WorkSchedule> findAll();
+	
+	public void delete(WorkSchedule ws);
+	
+	public ArrayList<WorkSchedule> findByRest(Long rest);
+	
+	public void update(WorkSchedule ws);
 
 }

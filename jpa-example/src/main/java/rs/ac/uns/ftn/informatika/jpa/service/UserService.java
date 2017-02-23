@@ -12,4 +12,6 @@ public interface UserService {
 	
 
 	public void updateUserPassword(User dr);
+	
+	public User findOne(Long id);
 }
