@@ -46,7 +46,7 @@ window.onload = function() {
     					window.location.href = "restaurantManager.html";
     				}else if(userRole=="waiter"){
     					window.location.href = "waiter.html";
-    				}else if(userRole=="cook"){
+    				}else if(userRole=="cook" || userRole=="saladCook" ||userRole=="grilledCook"){
     					window.location.href = "cook.html";
     				}else if(userRole=="barman"){
     					window.location.href = "barman.html";
