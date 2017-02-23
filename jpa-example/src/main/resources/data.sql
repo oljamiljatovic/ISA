@@ -31,6 +31,9 @@ INSERT INTO friends(person_id,friend_id) VALUES('6','1')
 
 insert into restaurant(id,name,type_id,address,contact) values (1,'Kod Sime','domaca jela','Glavna 20','-')
 insert into restaurant(id,name,type_id,address,contact) values (2,'Kod Zore','domaca jela','Glavna 7','-')
+insert into restaurant(id,name,type_id,address,contact) values (3,'Kod Joke','domaca jela','Glavna 8','-')
+insert into restaurant(id,name,type_id,address,contact) values (4,'Kod Pere','domaca jela','Josipova 9','-')
+insert into restaurant(id,name,type_id,address,contact) values (5,'Kod Mice','domaca jela','Jakova Milovica 16','-')
 
 INSERT INTO user(email,password,role,accept) VALUES('mmica','mica','restaurantManager','true')
 insert into restaurant_manager(id,name,surname,address,contact,restaurant) values (7,'Mica','Milut','Glavna 109', '-',1)
