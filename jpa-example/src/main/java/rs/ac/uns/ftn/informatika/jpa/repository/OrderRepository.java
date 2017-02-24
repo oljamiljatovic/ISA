@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -17,4 +18,6 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Long>
 	public ArrayList<Order> findByRestaurant(Long restaurant);
 	
 	public Order findById(Long id);
+	
+	List<Order> findByDrinks(List drinks);
 }

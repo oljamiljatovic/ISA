@@ -17,6 +17,71 @@ function message(){
 			  "hideMethod": "fadeOut"
 			}
 }
+function showOrders(){
+	$("#content").empty();
+	$.ajax({
+		type : 'GET',
+		url :  '/orderController/getOrdersForRestaurant',
+		contentType : 'application/json',
+		dataType :'json',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$("#content").append('<p><b>Poručena jela</b></p>');
+			$("#content").append("<table id='tableOrder'>");
+		      $("#content").append("<thead>");
+		      $("#content").append("<tr>");
+		      $("#content").append("<th>Sto</th>");
+		      $("#content").append("<th>Jela</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("<th>&nbsp;</th>");
+		      $("#content").append("</tr>");
+		      $("#content").append("</thead>");
+		      $("#content").append("<tbody>");
+		      $.each(list, function(index, order) {
+			    	  	var meals = "";
+						$.each(order.meals, function(index, meal) {
+							meals +=meal.name+",";
+		    	  		});
+						var meals = meals.substring(0,meals.length-1);
+						var desk = order.table_id;
+						if(meals!=""){
+							var forma = $('<form method="post" class="orderForm" action=""></form>');
+							var formaSignal = $('<form method="post" class="signalMeal" action=""></form>');
+					        var tr = $('<tr></tr>');
+					        tr.append('<td align="center">' + desk + '</td><td align="center">' + meals + '</td>');
+					        forma.append('<input type="hidden" name="acceptMeal" id='+index+' value="'+ desk+";"+meals +";"+order.id+'">' +
+					                '<input type="submit" id="acceptMeal" name='+index+' value="Prihvati za spremanje" class="btn green">');
+					        var td = $('<td></td>');
+					        td.append(forma);
+					        formaSignal.append('<input type="hidden" name="signalMeal" id='+index+' value="'+ desk+";"+meals +";"+order.id+'">' +
+					                '<input type="submit" id="signalMeal" name='+index+' value="Gotovo jelo" class="btn green">');
+					        var tdSignal = $('<td></td>');
+					        tdSignal.append(formaSignal);
+					        tr.append(td);
+					        tr.append(tdSignal);
+					        $('#content').append(tr);
+					        if(order.cook_state=="preuzeo_kuvar"){
+					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
+					        }else if(order.cook_state=="gotovo_jelo"){
+					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
+					        	$('input[id="signalMeal"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="signalMeal"][name='+index+']').css('color','gray');
+					        }
+						}
+				});
+	
+			  $("#content").append("</tbody>");
+			  $("#content").append("</table>");
+
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+}
 $(document).ready(function() {
 	var messageList = $("#messages");
 	var socket = new SockJS('/stomp');
@@ -27,7 +92,6 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
-				$('#content').empty();
 				 showOrders();
 			}
 		});
@@ -271,67 +335,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 $(document).on('click','#orderedMeals',function(e){
 	showOrders();
 });
-function showOrders(){
-	$("#content").empty();
-	$.ajax({
-		type : 'GET',
-		url :  '/orderController/getOrdersForRestaurant',
-		contentType : 'application/json',
-		dataType :'json',
-		success : function(data){
-			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#content").append('<p><b>Poručena jela</b></p>');
-			$("#content").append("<table id='tableOrder'>");
-		      $("#content").append("<thead>");
-		      $("#content").append("<tr>");
-		      $("#content").append("<th>Sto</th>");
-		      $("#content").append("<th>Jela</th>");
-		      $("#content").append("<th>&nbsp;</th>");
-		      $("#content").append("<th>&nbsp;</th>");
-		      $("#content").append("</tr>");
-		      $("#content").append("</thead>");
-		      $("#content").append("<tbody>");
-		      $.each(list, function(index, order) {
-						var meals = order.meals;
-						var desk = order.table_id;
-						if(meals!=null){
-							var forma = $('<form method="post" class="orderForm" action=""></form>');
-							var formaSignal = $('<form method="post" class="signalMeal" action=""></form>');
-					        var tr = $('<tr></tr>');
-					        tr.append('<td align="center">' + desk + '</td><td align="center">' + meals + '</td>');
-					        forma.append('<input type="hidden" name="acceptMeal" id='+index+' value="'+ desk+";"+meals +";"+order.id+'">' +
-					                '<input type="submit" id="acceptMeal" name='+index+' value="Prihvati za spremanje" class="btn green">');
-					        var td = $('<td></td>');
-					        td.append(forma);
-					        formaSignal.append('<input type="hidden" name="signalMeal" id='+index+' value="'+ desk+";"+meals +";"+order.id+'">' +
-					                '<input type="submit" id="signalMeal" name='+index+' value="Gotovo jelo" class="btn green">');
-					        var tdSignal = $('<td></td>');
-					        tdSignal.append(formaSignal);
-					        tr.append(td);
-					        tr.append(tdSignal);
-					        $('#content').append(tr);
-					        if(order.cook_state=="preuzeo_kuvar"){
-					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
-					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
-					        }else if(order.cook_state=="gotovo_jelo"){
-					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
-					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
-					        	$('input[id="signalMeal"][name='+index+']').attr('disabled','disabled');
-					        	$('input[id="signalMeal"][name='+index+']').css('color','gray');
-					        }
-						}
-				});
-	
-			  $("#content").append("</tbody>");
-			  $("#content").append("</table>");
 
-		},
-
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
-	});
-}
 $(document).on('click', '#acceptMeal', function(e) {
 	e.preventDefault();
 	$(this).prop('disabled',true);

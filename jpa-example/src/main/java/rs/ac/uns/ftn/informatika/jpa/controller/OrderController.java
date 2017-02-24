@@ -48,7 +48,7 @@ public class OrderController {
 			method = RequestMethod.GET,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> getOrders() throws Exception {
+	public ResponseEntity<ArrayList<Order>> getOrders() throws Exception {
 		//System.out.println("Usao u calendarForWaiterController/proba");
 		ServletRequestAttributes attr = (ServletRequestAttributes) 
 			    RequestContextHolder.currentRequestAttributes();
@@ -58,7 +58,7 @@ public class OrderController {
 		if(u.getRole().equals("waiter")){
 			orders = this.orderService.findByWaiter_id(u.getId());
 		}
-		return new ResponseEntity<Object>(orders, HttpStatus.OK);
+		return new ResponseEntity<ArrayList<Order>>(orders, HttpStatus.OK);
 	}
 	@RequestMapping(
 			value = "/getOrdersForRestaurant",
@@ -73,14 +73,14 @@ public class OrderController {
 		User u = (User) session.getAttribute("korisnik");
 		System.out.println("Userrrr "+u.getEmail());
 		ArrayList<Order> orders = new ArrayList<Order>();
-		if(u.getRole().equals("cook") || u.getRole().equals("barman")){
+		if(u.getRole().equals("cook") || u.getRole().equals("barman") || u.getRole().equals("saladCook") || u.getRole().equals("grilledCook")){
 			Employee employee = employeeService.findById(u.getId());
 			orders = this.orderService.findByRestaurant(employee.getRestaurant());
 		}
 		return new ResponseEntity<Object>(orders, HttpStatus.OK);
 	}
 	
-	/*@RequestMapping(
+	@RequestMapping(
 			value = "/addOrder",
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -95,31 +95,35 @@ public class OrderController {
 		Employee employee = employeeService.findById(u.getId());
 		surrogateOrder.setWaiter_id(u.getId());
 		surrogateOrder.setRestaurant(employee.getRestaurant());
-		System.out.println("Pice "+surrogateOrder.getDrinks().get(0));
 		ArrayList<Drink> drinks = new ArrayList<Drink>();
-		for(int i=0;i<surrogateOrder.getDrinks().size();i++){
-			String name = surrogateOrder.getDrinks().get(i);
-			System.out.println(name);
-			Drink drink = drinkService.findByName(name);
-			drinks.add(drink);
+		if(surrogateOrder.getDrinks()!=null){
+			for(int i=0;i<surrogateOrder.getDrinks().size();i++){
+				String name = surrogateOrder.getDrinks().get(i);
+				Drink drink = drinkService.findByName(name);
+				drinks.add(drink);
+			}
 		}
 		ArrayList<Meal> meals = new ArrayList<Meal>();
-		for(int i=0;i<surrogateOrder.getMeals().size();i++){
-			String name = surrogateOrder.getMeals().get(i);
-			System.out.println(name);
-			Meal meal = mealService.findByName(name);
-			meals.add(meal);
+		if(surrogateOrder.getMeals()!=null){
+			for(int i=0;i<surrogateOrder.getMeals().size();i++){
+				String name = surrogateOrder.getMeals().get(i);
+				Meal meal = mealService.findByName(name);
+				meals.add(meal);
+			}
 		}
 		Order order = new Order();
 		order.setRestaurant(surrogateOrder.getRestaurant());
 		order.setTable_id(surrogateOrder.getTable_id());
 		order.setWaiter_id(surrogateOrder.getWaiter_id());
+		order.setCook_state(surrogateOrder.getCook_state());
+		order.setBarman_state(surrogateOrder.getBarman_state());
+		order.setTimeOfOrder(surrogateOrder.getTimeOfOrder());
 		order.setDrinks(drinks);
 		order.setMeals(meals);
 		Order addedOrder = orderService.createNew(order);
 		
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
-	}*/
+	}/*
 	@RequestMapping(
 			value = "/addOrder",
 			method = RequestMethod.POST,
@@ -137,9 +141,50 @@ public class OrderController {
 		order.setRestaurant(employee.getRestaurant());
 		Order addedOrder = orderService.createNew(order);
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
-	}
-	
+	}*/
 	@RequestMapping(
+			value = "/change/{id}",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Order> update(
+			@RequestBody OrderSurrogate order, @PathVariable Long id) throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Order foundedOrder = orderService.findOne(id);
+		if(u.getRole().equals("waiter")){
+			order.setWaiter_id(u.getId());
+			Employee employee = employeeService.findById(u.getId());
+			order.setRestaurant(employee.getRestaurant());
+			ArrayList<Drink> drinks = new ArrayList<Drink>();
+			if(order.getDrinks()!=null){
+				for(int i=0;i<order.getDrinks().size();i++){
+					String name = order.getDrinks().get(i);
+					Drink drink = drinkService.findByName(name);
+					drinks.add(drink);
+				}
+			}
+			ArrayList<Meal> meals = new ArrayList<Meal>();
+			if(order.getMeals()!=null){
+				for(int i=0;i<order.getMeals().size();i++){
+					String name = order.getMeals().get(i);
+					Meal meal = mealService.findByName(name);
+					meals.add(meal);
+				}
+			}
+			foundedOrder.setDrinks(drinks);
+			foundedOrder.setMeals(meals);
+		}else if(u.getRole().equals("cook") || u.getRole().equals("saladCook") || u.getRole().equals("grilledCook")){
+			foundedOrder.setCook_state(order.getCook_state());
+		}else if(u.getRole().equals("barman")){
+			foundedOrder.setBarman_state(order.getBarman_state());
+		}
+		Order changedOrder = orderService.update(foundedOrder, id);
+		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);
+	}
+	/*@RequestMapping(
 			value = "/change/{id}",
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -164,7 +209,7 @@ public class OrderController {
 		}
 		Order changedOrder = orderService.update(foundedOrder, id);
 		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);
-	}
+	}*/
 	
 	@RequestMapping(
 			value = "/addOnOrder/{id}",
@@ -172,7 +217,7 @@ public class OrderController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Order> addOnOrder(
-			@RequestBody Order order, @PathVariable Long id) throws Exception {
+			@RequestBody OrderSurrogate order, @PathVariable Long id) throws Exception {
 		ServletRequestAttributes attr = (ServletRequestAttributes) 
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
@@ -182,12 +227,30 @@ public class OrderController {
 			order.setWaiter_id(u.getId());
 			Employee employee = employeeService.findById(u.getId());
 			order.setRestaurant(employee.getRestaurant());
-			for(int i=0;i<order.getDrinks().size();i++){
-				foundedOrder.getDrinks().add(order.getDrinks().get(i));
+			ArrayList<Drink> drinks = new ArrayList<Drink>();
+			if(order.getDrinks()!=null){
+				for(int i=0;i<order.getDrinks().size();i++){
+					String name = order.getDrinks().get(i);
+					Drink drink = drinkService.findByName(name);
+					drinks.add(drink);
+				}
+				for(int i=0;i<drinks.size();i++){
+					foundedOrder.getDrinks().add(drinks.get(i));
+				}
 			}
-			for(int i=0;i<order.getMeals().size();i++){
-				foundedOrder.getMeals().add(order.getMeals().get(i));
+			ArrayList<Meal> meals = new ArrayList<Meal>();
+			if(order.getMeals()!=null){
+				for(int i=0;i<order.getMeals().size();i++){
+					String name = order.getMeals().get(i);
+					Meal meal = mealService.findByName(name);
+					meals.add(meal);
+				}
+				for(int i=0;i<meals.size();i++){
+					foundedOrder.getMeals().add(meals.get(i));
+				}
 			}
+			
+			
 		}
 		Order changedOrder = orderService.update(foundedOrder, id);
 		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);
@@ -198,7 +261,6 @@ public class OrderController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Order> getOrder(@PathVariable Long id) throws Exception {
 		Order foundedOrder = orderService.findOne(id);
-		System.out.println("Founded order "+foundedOrder.getId());
 		return new ResponseEntity<Order>(foundedOrder, HttpStatus.OK);
 	}
 	
@@ -208,7 +270,6 @@ public class OrderController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getBill() throws Exception {
-		System.out.println("Usao u getBills");
 		ArrayList<Bill> cfw = this.billService.getBills();		
 		return new ResponseEntity<Object>(cfw, HttpStatus.OK);
 	}

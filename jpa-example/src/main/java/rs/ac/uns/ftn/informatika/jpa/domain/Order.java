@@ -2,14 +2,18 @@ package rs.ac.uns.ftn.informatika.jpa.domain;
 
 import static javax.persistence.InheritanceType.JOINED;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -43,8 +47,18 @@ public class Order {
 	
 	/*private ArrayList<Meal> meals = new ArrayList<Meal>();
 	private ArrayList<Drink> drinks = new ArrayList<Drink>();*/
-	private ArrayList<String> drinks = new ArrayList<String>();
-	private ArrayList<String> meals = new ArrayList<String>();
+
+	@ManyToMany(cascade=CascadeType.ALL) 
+	@JoinTable(name="meal_order", joinColumns=@JoinColumn(name="order_id"),
+	inverseJoinColumns=@JoinColumn(name="meal_id"))
+	public List<Meal> meals;
+	
+	@ManyToMany(cascade=CascadeType.ALL) 
+	@JoinTable(name="drink_order", joinColumns=@JoinColumn(name="order_id"),
+	inverseJoinColumns=@JoinColumn(name="drink_id"))
+	public List<Drink> drinks;
+	//private ArrayList<String> drinks = new ArrayList<String>();
+	//private ArrayList<String> meals = new ArrayList<String>();
 
 	public Order(){}
 	
@@ -107,7 +121,7 @@ public class Order {
 	public void setDrinks(ArrayList<Drink> drinks) {
 		this.drinks = drinks;
 	}*/
-	public ArrayList<String> getDrinks() {
+	/*public ArrayList<String> getDrinks() {
 		return drinks;
 	}
 	
@@ -121,7 +135,7 @@ public class Order {
 
 	public void setMeals(ArrayList<String> meals) {
 		this.meals = meals;
-	}
+	}*/
 
 	public Long getRestaurant() {
 		return restaurant;
@@ -145,6 +159,22 @@ public class Order {
 
 	public void setCook_state(String cook_state) {
 		this.cook_state = cook_state;
+	}
+
+	public List<Meal> getMeals() {
+		return meals;
+	}
+
+	public void setMeals(List<Meal> meals) {
+		this.meals = meals;
+	}
+
+	public List<Drink> getDrinks() {
+		return drinks;
+	}
+
+	public void setDrinks(List<Drink> drinks) {
+		this.drinks = drinks;
 	}
 
 	

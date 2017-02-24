@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 
@@ -18,4 +19,6 @@ public interface OrderService {
 	public ArrayList<Order> findByRestaurant(Long restaurant);
 	
 	public Order findById(Long id);
+	
+	List<Order> findByDrinks(List drinks);
 }

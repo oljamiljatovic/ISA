@@ -137,6 +137,15 @@ window.onload = function() {
     
     
     
+    
+    
+    document.getElementById('restorani').onclick = function() {
+    	
+    	window.location.href= "restaurants.html"
+    		
+    };
+    
+    
     document.getElementById('mojNalog').onclick = function() {
     	
     					window.location.href= "userProfile.html"
