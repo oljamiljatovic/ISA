@@ -11,5 +11,9 @@ public interface TableService {
 	public ArrayList<Tablee> findByReonAndRestaurant(Long reon, Long restaurant);
 	
 	public ArrayList<Tablee> findByRestaurant(Long restaurant);
+	
+	public ArrayList<Tablee> findByReon(Long id);
+	
+	public void delete(Long id);
 
 }

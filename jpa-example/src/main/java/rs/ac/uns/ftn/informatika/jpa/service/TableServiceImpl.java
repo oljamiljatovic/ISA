@@ -34,6 +34,19 @@ public class TableServiceImpl implements TableService {
 	public ArrayList<Tablee> findByRestaurant(Long restaurant) {
 		return tableRepository.findByRestaurant(restaurant);
 	}
+
+
+	@Override
+	public ArrayList<Tablee> findByReon(Long id) {
+		// TODO Auto-generated method stub
+		return this.tableRepository.findByReon(id);
+	}
+
+
+	@Override
+	public void delete(Long id) {
+		this.tableRepository.delete(id);
+	}
 	
 	
 }

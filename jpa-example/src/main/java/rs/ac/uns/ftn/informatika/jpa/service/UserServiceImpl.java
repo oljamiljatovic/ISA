@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
 	public void updateUserPassword(User dr) {
 		this.userRepository.updateUser(dr.getPassword(), dr.getId());
 	}
+
+	@Override
+	public User findOne(Long id) {
+		
+		return this.userRepository.findOne(id);
+	}
 	
 
 }

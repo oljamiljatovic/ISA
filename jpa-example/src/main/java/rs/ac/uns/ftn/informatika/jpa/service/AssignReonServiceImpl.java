@@ -30,4 +30,16 @@ public class AssignReonServiceImpl implements AssignReonService{
 		return assignReonRepository.findByWaiter_id(waiter_id);
 	}
 
+	@Override
+	public ArrayList<AssignReon> findByRestaurant(Long id) {
+		// TODO Auto-generated method stub
+		return this.assignReonRepository.findByRestaurant(id);
+	}
+
+	@Override
+	public void delete(Long id) {
+		
+		this.assignReonRepository.delete(id);
+	}
+
 }

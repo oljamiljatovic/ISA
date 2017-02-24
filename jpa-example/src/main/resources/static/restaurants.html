@@ -9,16 +9,50 @@
 <link rel="stylesheet" href="css/admin.css">
 
 <title>Restaurants</title>
+
+<style type="text/css">
+        table {
+        max-width: 70px;
+            width:  100%;
+         border-collapse: collapse; 
+        }
+        td {
+            border: 1px solid black;
+        }
+        .scrollingTable {
+            width: 100em;
+            overflow-y: auto;
+        }
+    </style>
+
+<script type="text/javascript">
+        function makeTableScroll() {
+            // Constant retrieved from server-side via JSP
+            var maxRows = 3;
+
+            var table = document.getElementById('myTable');
+            var wrapper = table.parentNode;
+            var rowsInTable = table.rows.length;
+            var height = 0;
+            if (rowsInTable > maxRows) {
+                for (var i = 0; i < maxRows; i++) {
+                    height += table.rows[i].clientHeight;
+                }
+                wrapper.style.height = height + "px";
+            }
+        }
+    </script>
+
 </head>
 <body>
-	<div>
-	<table width="500" border="1" cellpadding="3" >
+	<div class="scrollingTable">
+	<table width="500" border="1" cellpadding="3" id="myTable"  >
 	<tr id="listaRestorana">
-
+				
 	</tr>
 	</table>
-	
-	
 	</div>
+	
+	
 </body>
 </html>

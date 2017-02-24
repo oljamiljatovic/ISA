@@ -31,4 +31,21 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
 		return this.workScheduleRepository.findAll();
 	}
 
+	@Override
+	public void delete(WorkSchedule ws) {
+		this.workScheduleRepository.delete(ws.getId());
+	}
+
+	@Override
+	public ArrayList<WorkSchedule> findByRest(Long rest) {
+		return this.workScheduleRepository.findByRest(rest);
+	}
+
+	@Override
+	public void update(WorkSchedule ws) {
+		
+		this.workScheduleRepository.updateMeal(ws.worker_id, ws.dateStart, ws.dateEnd, 
+				ws.shift, ws.getId());
+	}
+
 }
