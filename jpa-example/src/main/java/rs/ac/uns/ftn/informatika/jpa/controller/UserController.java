@@ -94,14 +94,50 @@ public class UserController {
 		
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
-
-		System.out.println("Korisnik u sesiji"+u.getEmail());
+		if(u!=null)
+			System.out.println("Korisnik u sesiji"+u.getEmail());
 
 		return new ResponseEntity<User>(u, HttpStatus.OK);
 	
 	}
 	
+	@RequestMapping(
+			value = "/logout",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> logout() throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		
+		HttpSession session= attr.getRequest().getSession(true);
+		session.invalidate();
+		String ok = "ok";
+		return new ResponseEntity<String>(ok, HttpStatus.OK);
+	}
 	
+	@RequestMapping(
+			value = "/checkSession",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> checkSession() throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		String status = "ok";
+		if(u!=null){
+			System.out.println("Korisnik u sesiji"+u.getEmail());
+		}else{
+			status= "notOk";
+		}
+
+		return new ResponseEntity<String>(status, HttpStatus.OK);
+	
+	}
+
 
 	
 }

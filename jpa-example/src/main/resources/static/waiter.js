@@ -140,6 +140,7 @@ function showOrders(){
 		}
 	});
 }
+
 $(document).ready(function() {
 	var messageList = $("#messages");
 	var socket = new SockJS('/stomp');
@@ -167,6 +168,7 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
+				
 				showOrders();
 			}
 		});
@@ -181,26 +183,40 @@ $(document).ready(function() {
 	});
 	$.ajax({
 		type: 'GET',
-		dataType: 'json',
-		url : '/waiterController/getEmployee',
-		success : function(employee){
-				if(employee.firstLog=="true"){
-					
-					$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
-							'<div class="login-page wrapper centered centered-block">'+ 
-							'<div class = "form-group"><form id="submitFirstLog" method="post">'+
-							'Postavite lozinku:<br/><br/>'+
-							'Nova lozinka:<br/><input type = "password" id = "newPassword"  class="in-text"/><br/>'+
-							'Ponovite lozinku:<br/><input type = "password" id = "repeatPassword"  class="in-text"/><br/>'+
-							'<input type = "submit" value="Submit" class="btn orange">'+
-							'<input type="hidden" id="employeeId" value='+employee.id+'>'+
-							'</form></div></div></div></div>');
-				}
+		dataType: 'text',
+		url : '/userController/checkSession',
+		success : function(data){
+			if(data=="notOk"){
+				window.location.href= "index.html";
+			}else{
+				$.ajax({
+					type: 'GET',
+					dataType: 'json',
+					url : '/waiterController/getEmployee',
+					success : function(employee){
+							if(employee.firstLog=="true"){
+								$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
+										'<div class="login-page wrapper centered centered-block">'+ 
+										'<div class = "form-group"><form id="submitFirstLog" method="post">'+
+										'Postavite lozinku:<br/><br/>'+
+										'Nova lozinka:<br/><input type = "password" id = "newPassword"  class="in-text"/><br/>'+
+										'Ponovite lozinku:<br/><input type = "password" id = "repeatPassword"  class="in-text"/><br/>'+
+										'<input type = "submit" value="Submit" class="btn orange">'+
+										'<input type="hidden" id="employeeId" value='+employee.id+'>'+
+										'</form></div></div></div></div>');
+							}
+					},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+						alert("First log ERROR: " + errorThrown);
+					}	
+				});
+			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("First log ERROR: " + errorThrown);
+			alert("checkSession: " + errorThrown);
 		}	
 	});
+	
 	
 });
 
@@ -1078,6 +1094,21 @@ $(document).on('click', '#billOrders', function(e) {
 		}	
 	});
 
+});
+$(document).on('click', '#logout', function(e) {
+	e.preventDefault();
+	$("#content").empty();
+	$.ajax({
+		type: 'GET',
+		dataType: 'text',
+		url : '/userController/logout',
+		success : function(data){
+			window.location.href= "index.html";
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("billOrders: " + errorThrown);
+		}	
+	});
 });
 /*
  <html>
