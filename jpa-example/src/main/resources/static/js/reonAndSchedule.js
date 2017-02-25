@@ -2,6 +2,8 @@ $(document).on('click','#definisiRaspored',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
 			'<form method="post" id="registracijaSmena">Raspored radnika:<br/><br/>'+
@@ -78,6 +80,8 @@ $(document).on('click','#submitSmene', function(e){
 $(document).on('click','#pregledRasporeda',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID RADNIKA</th><th>NAZIV RADNIKA</th>'+
 		'<th>POCETAK ZADUZENJA</th><th>KRAJ ZADUZENJA</th><th>SMENA</th></tr></table>');
 	
@@ -232,6 +236,8 @@ $(document).on('click','#dodeliReon',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
 			'<form method="post" id="dodelaREONA">Dodela reona:<br/><br/>'+
@@ -316,6 +322,8 @@ $(document).on('click','#submitDodelaReona', function(e){
 $(document).on('click','#pregledDodeleReon',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID KONOBARA</th><th>REON KONOBARA</th>'+
 		'<th>DODELJENI REON</th></tr></table>');
 	
@@ -378,6 +386,8 @@ $(document).on('submit','#formIzbrisiDodelu',function(e){
 $(document).on('click','#konfiguracijaRasporeda',function(e){
 	
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
 			'<form method="post" id="registracijaMenadzera">Podaci o reonu:<br/><br/>'+
@@ -432,6 +442,8 @@ $(document).on('click','#submitDodajKonfiguraciju',function(e){
 $(document).on('click','#pregledKonfiguracijeRasporeda',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID REONA</th><th>NAZIV REONA</th>'+
 		'<th>LOKACIJA REONA</th><th>BROJ STOLOVA</th></tr></table>');
 	

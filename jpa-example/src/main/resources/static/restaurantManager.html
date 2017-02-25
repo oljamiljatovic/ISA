@@ -15,14 +15,17 @@
 	<script type="text/javascript" src="js/changeRestaurant.js"> </script>
 	<script type="text/javascript" src="js/mealAndDrink.js"> </script>
 	<script type="text/javascript" src="js/reonAndSchedule.js"> </script>
-	
+	<!--  <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ33BzRE4Zfr_vixXLmX-4wY0l-RJAwJc">
+    </script> -->
 	<style type="text/css">
    		.cao { list-style-type: none; margin: 0; padding: 0; overflow-x: hidden; color: black;
    		height: 70px; overflow: auto; width: 300px; border: 1px solid #000; background-color: #ffeee6}
    		.caocao { margin: 0; padding: 0; display: inline-block; text-align: center; float: left;}
+   		#mica_mapa {text-align : center; position: aboluste;  width: 50%; height: 300px; left: 50%; top:110px; margin: 0 0 0 -25%}
   	</style>
 </head>
-<body>
+<body id="body">
 	
 	<ul>
 	<li class="dropdown">
@@ -66,23 +69,34 @@
 	  </li>
 	  
 	  <li class="dropdown">
-	  	<a class="dropbtn">Izvestaj</a>
+	  	<a class="dropbtn">Ocene</a>
 	  		<div class="dropdown-content">
 		      <a id="prikazAkcija">Ocena restorana</a>
 		      <a id="zavrseneAkcije">Ocena jela</a>
 		      <a id="zavrseneAkcije">Ocena konobara</a>
+		    </div>
+	  </li>
+	  
+	  <li class="dropdown">
+	  	<a class="dropbtn">Izvestaj</a>
+	  		<div class="dropdown-content">
 		      <a id="prikazAkcija">Graficki prikaz posecenosti</a>
 		      <a id="zavrseneAkcije">Prihod restorana</a>
 		      <a id="zavrseneAkcije">Prihod konobara</a>
 		    </div>
 	  </li>
-	  
 	  <li><a id="dugmeOdjava">Odjavi se</a></li>
 	</ul>
 	
 	<div id="content"></div>
+	<div id="mica_mapa"></div>
+    <script id="ubaci_mapu">
+      
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ33BzRE4Zfr_vixXLmX-4wY0l-RJAwJc"
+    async defer></script>
     
-    <!--  <div id="wraper">
+    <!--  <div id="wraper">											&callback=initMap
 	<div class="centered-content-wrap" id="first">
 	<div class="login-page wrapper centered centered-block"> 
 	<div class = "form-group">
