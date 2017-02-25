@@ -32,4 +32,15 @@ public class OfferServiceImpl implements OfferService {
 		return this.offerRepository.findOne(id);
 	}
 
+	@Override
+	public ArrayList<Offer> getOffersByRestaurant(Long id) {
+		// TODO Auto-generated method stub
+		return this.offerRepository.findByRestaurant(id);
+	}
+
+	@Override
+	public void delete(Long id) {
+		this.offerRepository.delete(id);
+	}
+
 }

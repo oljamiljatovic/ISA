@@ -59,6 +59,15 @@ public class WebSocketController {
 		return "OK-signalDrink";
 	}
 	
-
+	@RequestMapping("/acceptOffer")
+	public String senderAcceptOffer(@RequestParam Long acceptOffer){
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Long message =  acceptOffer;
+		producer.sendAcceptSignalFromManagerToProvider("acceptOffer",message);
+		return "OK-acceptOffer";
+	}
 
 }
