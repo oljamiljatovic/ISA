@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
-import rs.ac.uns.ftn.informatika.jpa.domain.User;
-import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.repository.OrderRepository;
 
 @Service
-@Transactional
+@Transactional(isolation=Isolation.SERIALIZABLE)
 public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private OrderRepository orderRepository;

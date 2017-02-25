@@ -1,7 +1,9 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rs.ac.uns.ftn.informatika.jpa.JpaExampleApplication;
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
@@ -58,6 +61,29 @@ public class OrderController {
 		if(u.getRole().equals("waiter")){
 			orders = this.orderService.findByWaiter_id(u.getId());
 		}
+       /* try {
+            EntityManager em = JpaExampleApplication.createEntityManager();
+            em.getTransaction().begin();
+            
+            // ucitaj objekat
+            System.out.println("[Thread 1] Ucitavam objekat...");
+            Order account = em.find(Order.class, 1);
+
+            // cekaj 10 sekundi
+            System.out.println("[Thread 1] Cekam 10 sekundi...");
+            try { Thread.sleep(10000); } catch (InterruptedException e) { }
+
+            // dodaj 10000 na racun
+            System.out.println("[Thread 1] Dodajem 10000 na racun...");
+            account.deposit(new BigDecimal(10000));
+            
+            System.out.println("[Thread 1] Zavrsavam transakciju...");
+            em.getTransaction().commit();
+            em.close();
+          } catch (Exception e) {
+            System.out.println("[Thread 1] " + e.getMessage());
+            e.printStackTrace();
+          }*/
 		return new ResponseEntity<ArrayList<Order>>(orders, HttpStatus.OK);
 	}
 	@RequestMapping(
