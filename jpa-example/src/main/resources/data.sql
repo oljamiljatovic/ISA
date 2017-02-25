@@ -4,7 +4,13 @@
 
 -- =================================================================================================
 
-
+insert into foodstuff(name) values ('grasak')
+insert into foodstuff(name) values ('pasulj')
+insert into foodstuff(name) values ('sargarepa')
+insert into foodstuff(name) values ('jagoda')
+insert into foodstuff(name) values ('luk')
+insert into foodstuff(name) values ('jabuka')
+insert into foodstuff(name) values ('sljiva')
 
 INSERT INTO user(email,password,role,accept) VALUES('oljka','oljkaoljka','guest','true')
 INSERT INTO user(email,password,role,accept) VALUES('mica','micamica','systemManager','true')
@@ -47,8 +53,22 @@ INSERT INTO user(email,password,role,accept) VALUES('gavra','gavragavra','waiter
 insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (11,'Gavra','Zivan','1978-02-21', 'XL','44',1,'false')
 INSERT INTO user(email,password,role,accept) VALUES('pera','perapera','provider','true')
 insert into provider(id,name,surname,address,contact,restaurant,log_first_time) values (12,'Pera','Peric','Glavna 10','022450', 1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('jova','jova','waiter','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (13,'Jovan','Nikolic','1967-04-23', 'L','38',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('misa','misa','saladCook','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (14,'Misa','Peric','1964-05-29', 'XL','46',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('zeljko','zeljko','grilledCook','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (15,'Zeljko','Maric','1972-01-29', 'L','39',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('nema','nema','cook','true')
+insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaurant,first_log) values (16,'Nemanja','Ratkovic','1978-02-21', 'XL','44',1,'false')
+INSERT INTO user(email,password,role,accept) VALUES('zivka','zivka','provider','true')
+insert into provider(id,name,surname,address,contact,restaurant,log_first_time) values (17,'Zivka','Milutinovic','Glavna 10','022450', 1,'false')
 
-insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(1,1,1,10,0,'10','10')
+insert into offer(id,end_date,food_or_drink,flag,restaurant,amount) values (1,'2017-03-03',1,'pice',1,10)
+insert into offer(id,end_date,food_or_drink,flag,restaurant,amount) values (2,'2017-04-04',2,'jelo',1,30)
+
+insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(1,1,1,12,0,'10','10')
+insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(2,1,1,17,0,'10','10')
 
 insert into reon(id,name,location,restaurant, number_table) values (1,'North','north part',1,8)
 insert into tablee(id,reon,restaurant) values (1,1,1)
@@ -71,8 +91,6 @@ insert into tablee(id,reon,restaurant) values (14,4,1)
 insert into tablee(id,reon,restaurant) values (15,4,1)
 insert into tablee(id,reon,restaurant) values (16,4,1)
 insert into tablee(id,reon,restaurant) values (17,4,1)
-
-
 insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (1,8,'Zora','North',1,1)
 insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (2,11,'Gavra','NorthCenter',2,1)
 

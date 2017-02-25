@@ -11,4 +11,8 @@ public interface OfferService {
 	public ArrayList<Offer> getOffers();
 	
 	public Offer getOffer(Long id);
+	
+	public ArrayList<Offer> getOffersByRestaurant(Long id);
+	
+	public void delete(Long id);
 }
