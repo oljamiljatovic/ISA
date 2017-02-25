@@ -32,9 +32,12 @@ public class Order {
 	@Column(name="table_id",nullable = false)
 	private Long table_id;
 	
+	@Column(name="reservation",nullable = true)
+	private Long reservation;
+	
 	@Column(name="restaurant",nullable = false)
 	private Long restaurant;
-	
+
 	//stanja: kreirana, preuzeo_sanker, gotovo_pice, kraj
 	@Column(name="barman_state",nullable = false)
 	private String barman_state;
@@ -67,6 +70,14 @@ public class Order {
 		this.waiter_id = waiter_id;
 		this.table_id = table_id;
 		this.restaurant = restaurant;
+	}
+	
+	public Long getReservation() {
+		return reservation;
+	}
+
+	public void setReservation(Long reservation) {
+		this.reservation = reservation;
 	}
 	
 	public Long getId() {

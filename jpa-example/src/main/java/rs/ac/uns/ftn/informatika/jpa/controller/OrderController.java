@@ -1,9 +1,10 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
-import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import rs.ac.uns.ftn.informatika.jpa.JpaExampleApplication;
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.OrderSurrogate;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.service.BillService;
@@ -31,6 +32,7 @@ import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
+import rs.ac.uns.ftn.informatika.jpa.service.ReservationService;
 
 @Controller 
 @RequestMapping("/orderController")
@@ -45,6 +47,8 @@ public class OrderController {
 	private DrinkService drinkService;
 	@Autowired
 	private MealService mealService;
+	@Autowired
+	private ReservationService reservationService;
 	
 	@RequestMapping(
 			value = "/getOrders",
@@ -146,6 +150,7 @@ public class OrderController {
 		order.setTimeOfOrder(surrogateOrder.getTimeOfOrder());
 		order.setDrinks(drinks);
 		order.setMeals(meals);
+		order.setReservation(surrogateOrder.getReservation());
 		Order addedOrder = orderService.createNew(order);
 		
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);

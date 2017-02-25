@@ -157,6 +157,9 @@ window.onload = function() {
 		window.location.href= "friendsOfGuest.html"
 
 };
+	document.getElementById('istorija').onclick = function() {
+		window.location.href= "history.html"
+	};
 
     
     

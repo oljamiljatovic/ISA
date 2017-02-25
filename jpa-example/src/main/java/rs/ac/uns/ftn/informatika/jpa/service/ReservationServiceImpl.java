@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,16 @@ public class ReservationServiceImpl implements ReservationService {
 	public Reservation findReservationByAll(Long idGuest, Long idRestaurant,String date, String time) {
 		
 		return reservationRepository.findReservationByAll(idGuest,idRestaurant,date,time);
+	}
+
+	@Override
+	public ArrayList<Reservation> findByIdGuest(Long idGuest) {
+		return reservationRepository.findByIdGuest(idGuest);
+	}
+
+	@Override
+	public ArrayList<Reservation> findByIdRestaurantAndDate(Long idRestaurant, String date) {
+		return reservationRepository.findByIdRestaurantAndDate(idRestaurant, date);
 	}
 	
 	

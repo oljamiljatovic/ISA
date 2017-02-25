@@ -99,7 +99,15 @@ insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) v
 insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) values (1,2,7,'2017-02-06','02:00',3)
 insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) values (1,4,17,'2017-02-06','01:00',2)
 
+-------------desanka je ovo dodala
+insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-10','02:00',2)
+insert into reservation_reserved_tables(reservation_id,reserved_tables_id) values (1,1)
+insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-25','12:00',2)
+insert into reservation_reserved_tables(reservation_id,reserved_tables_id) values (2,3)
+insert into reservation_reserved_tables(reservation_id,reserved_tables_id) values (2,4)
+insert into reservation_reserved_tables(reservation_id,reserved_tables_id) values (2,5)
 
+-------------
 
 insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (1,8,'Zora','North',1,1)
 insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (2,11,'Gavra','NorthCenter',2,1)
@@ -124,10 +132,10 @@ insert into meal(name, price,description,restaurant) values ('meso',90,'glavno j
 insert into meal(name, price,description,restaurant) values ('grasak',60,'corba',1)
 
 -- narudzbine
-INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,1,1,'kreirana','kreirana','2017-02-15 23:18:41.972')
-INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,2,1,'kreirana','kreirana','2017-02-16 03:18:41.972')
-INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,3,1,'kraj','kraj','2017-02-16 03:18:41.972')
-INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (10,4,2,'kreirana','kreirana','2017-02-16 10:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,1,1,'kreirana','kreirana','2017-02-10 03:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,3,1,'kreirana','kreirana','2017-02-26 12:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (8,4,1,'kraj','kraj','2017-02-26 13:18:41.972')
+INSERT INTO orderr(waiter_id,table_id,restaurant,barman_state,cook_state,time_of_order) VALUES (10,5,2,'kreirana','kreirana','2017-02-26 13:31:41.972')
 
 --racuni 
 insert into bill(bill_id, order_id,waiter_id,date_of_bill,bill) values (1,1,8,'2017-02-17 00:25:09',530)

@@ -1,8 +1,11 @@
 package rs.ac.uns.ftn.informatika.jpa;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,9 +35,7 @@ public class JpaExampleApplicationTests {
 	
 	/*@Test
 	public void testOrder() throws Exception {
-
-		this.mvc.perform(get("/orderr")).andExpect(status().isOk())
-				.andExpect(content().string("kraj"));
+		this.mvc.perform(get("/orderController/getOrders")).andExpect(status().isOk());
 	}*/
 	
 	
