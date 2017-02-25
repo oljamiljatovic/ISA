@@ -3,12 +3,18 @@ package rs.ac.uns.ftn.informatika.jpa.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 
 @Entity
@@ -30,8 +36,17 @@ public class Reservation {
 	
 	private int duration;
 	
-	@OneToMany
-	private List<Tablee> reservedTables =new ArrayList<Tablee>();
+	
+	@ManyToMany(cascade=CascadeType.ALL) 
+	@JoinTable(name="reservation_reserved_tables", joinColumns=@JoinColumn(name="reservation_id"),
+	inverseJoinColumns=@JoinColumn(name="table_id"))
+	private List<Tablee> reservedTables ;
+	
+	
+	@ManyToMany(cascade=CascadeType.ALL) 
+	@JoinTable(name="accepted_friends", joinColumns=@JoinColumn(name="reservation_id"),
+	inverseJoinColumns=@JoinColumn(name="friend_id"))
+	private List<Guest> acceptedFriends ;
 	
 	public Reservation(){
 		
@@ -45,6 +60,7 @@ public class Reservation {
 		this.time = time;
 		this.duration = duration;
 		this.reservedTables = new ArrayList<Tablee>();
+		this.acceptedFriends = new ArrayList<Guest>();
 	}
 	
 	
@@ -58,6 +74,19 @@ public class Reservation {
 		this.time = time;
 		this.duration = duration;
 		this.reservedTables = reservedTables;
+	}
+
+	
+	public Reservation(Long idGuest, Long idRestaurant, String date, String time, int duration,
+			List<Tablee> reservedTables, List<Guest> acceptedFriends) {
+		super();
+		this.idGuest = idGuest;
+		this.idRestaurant = idRestaurant;
+		this.date = date;
+		this.time = time;
+		this.duration = duration;
+		this.reservedTables = reservedTables;
+		this.acceptedFriends = acceptedFriends;
 	}
 
 	public Long getId() {
@@ -115,6 +144,15 @@ public class Reservation {
 	public void setReservedTables(List<Tablee> reservedTables) {
 		this.reservedTables = reservedTables;
 	}
+
+	public List<Guest> getAcceptedFriends() {
+		return acceptedFriends;
+	}
+
+	public void setAcceptedFriends(List<Guest> acceptedFriends) {
+		this.acceptedFriends = acceptedFriends;
+	}
+	
 	
 	
 }
