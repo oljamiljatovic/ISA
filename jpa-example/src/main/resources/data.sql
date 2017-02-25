@@ -91,13 +91,13 @@ insert into tablee(id,reon,restaurant) values (14,4,1)
 insert into tablee(id,reon,restaurant) values (15,4,1)
 insert into tablee(id,reon,restaurant) values (16,4,1)
 insert into tablee(id,reon,restaurant) values (17,4,1)
-
 insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (1,8,'Zora','North',1,1)
 insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (2,11,'Gavra','NorthCenter',2,1)
 
 insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (1,8,'Zora','prva','2017-02-10','2017-03-11',1)
 insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (2,9,'Sinisa','druga','2017-02-10','2017-03-11',1)
 insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (3,10,'Dana','prva','2017-02-10','2017-03-11',1)
+
 
 insert into drink(name,price,description,restaurant) values ('rakija',120,'zestoko',1)
 insert into drink(name, price,description,restaurant) values ('votka',180,'zestoko',1)

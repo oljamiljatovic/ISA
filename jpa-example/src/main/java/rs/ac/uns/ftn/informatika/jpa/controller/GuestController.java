@@ -31,10 +31,6 @@ public class GuestController {
 	@Autowired
 	private GuestService guestService;
 	
-
-	
-	
-	
 	 @Autowired
 	 private JavaMailSender mailSender;
 
@@ -55,21 +51,6 @@ public class GuestController {
 		return guestEmails;
 	}
 	
-	
-	/*@RequestMapping(
-			value = "/findGuestByEmail",
-			method = RequestMethod.POST,
-			consumes = MediaType.TEXT_PLAIN_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Guest> findGuestByEmail(
-			@RequestBody String email) throws Exception {
-		
-		Guest foundGuest = guestService.findGuestByEmail(email);
-		System.out.println("guestController"+ foundGuest.getEmail()+"fas"+foundGuest.getName());
-		
-		return new ResponseEntity<Guest>(foundGuest, HttpStatus.OK);
-	}
-	*/
 
 	@RequestMapping(
 			value = "/regIn",
@@ -187,17 +168,27 @@ public class GuestController {
 	public void update(
 			 @PathVariable Long id) throws Exception {
 	
-		System.out.println("Usao je u potvrdu");
 		Guest foundedGuest = guestService.findOne(id);
 		foundedGuest.setAccept("true");
 		
 		guestService.update(foundedGuest, id);
-		/*foundedGuest.setName(guest.getName());
-		foundedGuest.setSurname(guest.getSurname());
-		Guest changedGuest = guestService.update(foundedGuest, id);
-		*/
 	
 	
+		
+	}
+	
+	
+	
+	@RequestMapping(
+			value = "/findById/{id}",
+			method = RequestMethod.PUT,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Guest findById(
+			 @PathVariable Long id) throws Exception {
+	
+		Guest foundedGuest = guestService.findOne(id);
+		
+		return foundedGuest;
 		
 	}
 	
@@ -278,19 +269,7 @@ public class GuestController {
 		
 		foundedGuest.getFriendOf().add(guestToAdd);
 		foundedGuest.getFriends().add(guestToAdd);
-	/*	
-		for(int i = 0; i< foundedGuest.getFriendOf().size() ; i++){
-			if(foundedGuest.getFriendOf().get(i).getId().equals(idFriend)){
-				
-				foundedGuest.getFriendOf().remove(i);
-			}
-		}
-		
-		for(int i = 0; i< foundedGuest.getFriends().size() ; i++){
-			if(foundedGuest.getFriends().get(i).getId().equals(idFriend)){
-				foundedGuest.getFriends().remove(i);
-			}
-		}*/
+	
 		
 	foundedGuest.setFriends(foundedGuest.getFriends());
 		
@@ -300,6 +279,9 @@ public class GuestController {
 		 
 		return foundedGuest.getFriends();
 	}
+	
+	
+	
 	
 	
 }

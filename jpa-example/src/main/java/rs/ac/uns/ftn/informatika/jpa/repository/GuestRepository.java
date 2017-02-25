@@ -22,7 +22,7 @@ public interface GuestRepository extends PagingAndSortingRepository<Guest, Long>
 	List<Guest> findByFriends(List friends);
 
 	 @Query("select r from User r where r.email = ?1 and r.password = ?2")
-	    User findUserByEmailAndPassword(String email, String password);
+	 User findUserByEmailAndPassword(String email, String password);
 	  
 	 @Query("select r from Guest r where r.name = ?1")
 	 List<Guest> findGuestsByName(String name);

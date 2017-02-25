@@ -48,6 +48,55 @@ window.onload = function() {
 					
 					});	//kraj ajax za prijatelje
 					
+					
+					$.ajax({ //ajax poziv za zahtjeve
+						type : 'POST',
+						url :'/invitationController/getRequests/'+ data.id,
+						dataType : 'json',
+						success : function(requests){
+						if(requests.accept.equals("false")){
+							var table = document.getElementById("zahtjevi");
+							$('#zahtjevi').empty();
+							for(var i = 0 ; i < requests.length ; i++){
+								 var item = requests[i];
+								 var row = table.insertRow(i);
+								 
+								 var cell0 = row.insertCell(0);
+								 var cell1 = row.insertCell(1);
+								 var cell2 = row.insertCell(2);
+								 var cell3 = row.insertCell(3);
+								 var cell4 = row.insertCell(4);
+								 
+									$.ajax({ //ajax poziv za zahtjeve
+										type : 'PUT',
+										url :'/guestController/findById/'+ item.sender,
+										dataType : 'json',
+										success : function(guest){
+											
+											cell1.innerHTML = guest.name;
+											cell2.innerHTML = guest.surname;
+										},
+									error : function(XMLHttpRequest, textStatus, errorThrown) {
+										alert("GRESKA kod prijatelja");
+										alert("AJAX ERROR: " + errorThrown);
+									}
+									
+									});	
+									
+								 cell0.innerHTML = "Zahtjev od : ";
+								 cell3.innerHTML = '<input type = "button" class="btn green" onclick="Prihvati()" id ="'+requests[i].sender+'/'+ requests[i].recipient+'"value="Prihvati"></td> ';
+								 cell4.innerHTML = '<input type = "button" class="btn green" onclick="Odbij()" id ="'+requests[i].sender+'/'+ requests[i].recipient+'"value="Odbij"></td> ';
+								
+							}
+							}
+						},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+						alert("GRESKA kod prijatelja");
+						alert("AJAX ERROR: " + errorThrown);
+					}
+					
+					});	//kraj ajax za zahtjeve
+					
 				}
 			
 		},
@@ -75,8 +124,8 @@ window.onload = function() {
 			   };
 		
 		 $.ajax({
-		      type: 'POST',
-		      contentType : 'application/json',
+		      type: 'POST',contentType : 'application/json',
+		      
 		      dataType : 'json',
 		      url: '/guestController/search/',
 		      data: name, // Note it is important
@@ -95,8 +144,9 @@ window.onload = function() {
 					 
 					 var itemID = item.id;
 					 cell1.innerHTML = item.name;
+					 
 					 cell2.innerHTML = item.surname;
-					 cell3.innerHTML =  '<input type = "button" class="btn green" onclick="DodajPrijatelja()" id ="'+itemID+'"value="Dodaj"></td> ';
+					 cell3.innerHTML =  '<input type = "button" class="btn green" onclick="PosaljiZahtjev()" id ="'+itemID+'"value="Dodaj"></td> ';
 					 
 					
 				}
@@ -117,10 +167,6 @@ window.onload = function() {
   
     
 };
-
-
-
-
 
 
 function IzbrisiPrijatelja(){
@@ -166,10 +212,10 @@ function IzbrisiPrijatelja(){
 
 
 
-function DodajPrijatelja(){
+function PosaljiZahtjev(){
 	
 	    
-	    var idFriend = DodajPrijatelja.caller.arguments[0].target.id; //njega dodajem
+	    var idFriend = PosaljiZahtjev.caller.arguments[0].target.id; //njega dodajem
 	  	
 	    var idToChange = -1;
 
@@ -180,21 +226,30 @@ function DodajPrijatelja(){
     		success : function(data){
     			idToChange = data.id;
     		
+    			
     			$.ajax({
-        			type : 'PUT',
-        			url :  '/guestController/changeAddFriend/'+ idToChange + '/'+ idFriend,
+        			type : 'POST',
+        			url :  '/invitationController/sendRequest/'+ idToChange + '/'+ idFriend,
         			dataType :'json',
         			success : function(dataa){
         			
-        				document.location.href="friendsOfGuest.html";
-        			
+        				 var buttonAdd = document.getElementById(idFriend);
+        				 buttonAdd.value="Poslat zahtjev";
+        				
+        				 var element = document.getElementById(idFriend);
+        				 
+        				var elem = element.parentNode.parentNode;
+        				$(elem).append('<td><input type = "button" class="btn green" onclick="PrekiniZahtjev()" id ="'+idFriend+'"value="Otkazi zahtjev"></td>');
+        				
         			},
 
         			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
         				alert("AJAX ERROR: " + errorThrown);
         			}
         		
-        		});
+        		})
+    			
+    		
     		},
     			
     		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -206,6 +261,157 @@ function DodajPrijatelja(){
 	
     
 }
+
+
+function PrekiniZahtjev(){
+	
+    
+    var idFriend = PrekiniZahtjev.caller.arguments[0].target.id; //njega dodajem
+  	
+    var idToChange = -1;
+
+	$.ajax({
+		type : 'GET',
+		dataType : 'json',
+		url :'/userController/isValidate',
+		success : function(data){
+			idToChange = data.id;
+		
+			
+			$.ajax({
+    			type : 'PUT',
+    			url :  '/invitationController/cancelRequest/'+ idToChange + '/'+ idFriend,
+    			dataType :'json',
+    			success : function(dataa){
+    			
+    				 /*var buttonAdd = document.getElementById(idFriend);
+    				 buttonAdd.value="Posalji zahtjev";
+    				
+    				 var element = document.getElementById(idFriend);
+    				 
+    				var elem = element.parentNode.parentNode;
+    				$(elem).append('<td><input type = "button" class="btn green" onclick="PrekiniZahtjev()" id ="'+idFriend+'"value="Otkazi zahtjev"></td>');*/
+    			},
+
+    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    				alert("AJAX ERROR: " + errorThrown);
+    			}
+    		
+    		})
+		},
+			
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	
+	});
+
+
+
+}
+
+
+function Prihvati(){
+	
+    var idFriend = Prihvati.caller.arguments[0].target.id; //njega dodajem
+  	alert("Kod prihvatanja"+ idFriend);
+  	
+  	 var substr = idFriend.split("/");
+     
+     var sender =  substr[0];
+     var recipient = substr[1];
+     
+     
+			$.ajax({
+    			type : 'POST',
+    			url :  '/invitationController/changeInvitation/'+ sender + '/'+ recipient,
+    			contentType : 'application/json',
+    			dataType :'json',
+    			data : "true",
+    			success : function(invitation){ //vraca invitation
+    			
+    				var idToChange = invitation.sender;
+    				var idFriend = invitation.recipient;
+    				//Ovdje je prihvacen zahtjev 
+    				$.ajax({
+            			type : 'PUT',
+            			url :  '/guestController/changeAddFriend/'+ idToChange + '/'+ idFriend,
+            			dataType :'json',
+            			success : function(friends){ //vraca sada listu prijatelja
+            			//ali oljinih umjesto vesninih
+            			/*	var table = document.getElementById("tabelaPrijatelji");
+							$('#tabelaPrijatelji').empty();
+							for(var i = 0 ; i < friends.length ; i++){
+								 var item = friends[i];
+								 var row = table.insertRow(i);
+								 
+								 
+								 var cell1 = row.insertCell(0);
+								 var cell2 = row.insertCell(1);
+								 var cell3 = row.insertCell(2);
+								 
+								 var itemID = item.id;
+								 cell1.innerHTML = item.name;
+								 cell2.innerHTML = item.surname;
+								 cell3.innerHTML =  '<input type = "button" class="btn green" onclick="IzbrisiPrijatelja()" id ="'+itemID+'"value="Obrisi"></td> ';
+								 
+								
+							}*/
+            			
+            			},
+
+            			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+            				alert("AJAX ERROR: " + errorThrown);
+            			}
+            		
+            		});
+
+    			},
+
+    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    				alert("AJAX ERROR: " + errorThrown);
+    			}
+    		
+    		});
+
+}
+
+
+function Odbij(){
+	 
+    var idFriend = Odbij.caller.arguments[0].target.id; //njega dodajem
+  	alert("Kod prihvatanja"+ idFriend);
+  	
+  	 var substr = idFriend.split("/");
+     
+     var sender =  substr[0];
+     var recipient = substr[1];
+     
+     
+			$.ajax({
+    			type : 'POST',
+    			url :  '/invitationController/changeInvitation/'+ sender + '/'+ recipient,
+    			contentType : 'application/json',
+    			dataType :'json',
+    			data : "false",
+    			success : function(dataa){
+    			
+    				//Ovdje je odbijen zahtjev zahtjev 
+    				
+    				
+    			},
+
+    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+    				alert("AJAX ERROR: " + errorThrown);
+    			}
+    		
+    		});
+		
+}
+
+
+
+
 
 
 
