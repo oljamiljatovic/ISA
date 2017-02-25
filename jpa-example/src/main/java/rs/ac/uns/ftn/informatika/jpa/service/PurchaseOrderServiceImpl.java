@@ -48,4 +48,15 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		return this.purchaseOrderRepository.findByRestaurant(id);
 	}
 
+	@Override
+	public void updateFlag(Long flag, Long id) {
+		this.purchaseOrderRepository.updateFlag(flag, id);
+	}
+
+	@Override
+	public ArrayList<PurchaseOrder> getPurchaseOrderByProvider(Long id) {
+		
+		return this.purchaseOrderRepository.findByProvider(id);
+	}
+
 }

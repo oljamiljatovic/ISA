@@ -78,7 +78,25 @@ public class ProviderController {
 		
 		return new ResponseEntity<ArrayList<Offer>>(offers, HttpStatus.OK);
 	}
-
+	@RequestMapping(
+			value = "/uzmiSveAktuelnePonude",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Offer>> uzmiSveAktuelnePonude()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		RestaurantManager rm = null;
+		if(u.getRole().equals("restaurantManager")){
+			rm= this.managerService.getManager(u.getEmail());
+		}
+		ArrayList<Offer> offers = this.offerService.getOffersByRestaurant(rm.getRestaurant());
+		
+		return new ResponseEntity<ArrayList<Offer>>(offers, HttpStatus.OK);
+	}
+	
 	@RequestMapping(
 			value = "/uzmiPonudu",
 			method = RequestMethod.POST,
@@ -153,23 +171,29 @@ public class ProviderController {
 			po.setProvider(rm.getId());
 			po.setRestaurant(rm.getRestaurant());
 		}
-		this.purchaseService.updatePurchaseOrder(po);
 		
+		if(u.getRole().equals("restaurantManager")){
+			ArrayList<PurchaseOrder> por = this.purchaseService.getPurchaseOrderByOffer(po.getOffer());
+			
+			for(int i=0; i<por.size(); i++){
+				this.purchaseService.updateFlag(po.getFlag(), por.get(i).getId());
+			}
+			
+			this.offerService.delete(po.getOffer());
+		}else if(u.getRole().equals("provider")){
+			this.purchaseService.updatePurchaseOrder(po);
+		}
 		return new ResponseEntity<PurchaseOrder>(po, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
 			value = "/uzmiSvePorudzbeniceAktuelnePonude",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<PurchaseOrder>> uzmiAktivnePoruzbenice()  throws Exception {
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<PurchaseOrder>> uzmiAktivnePoruzbenice(@RequestBody Offer off)  throws Exception {
 
-		ServletRequestAttributes attr = (ServletRequestAttributes) 
-			    RequestContextHolder.currentRequestAttributes();
-		HttpSession session= attr.getRequest().getSession(true);
-		User u = (User) session.getAttribute("korisnik");
-		RestaurantManager provider= this.managerService.getManager(u.getEmail());
-		ArrayList<PurchaseOrder> po = this.purchaseService.getPurchaseOrderByRestaurant(provider.getRestaurant());
+		ArrayList<PurchaseOrder> po = this.purchaseService.getPurchaseOrderByOffer(off.getId());
 		ArrayList<PurchaseOrder> temp = new ArrayList<PurchaseOrder>();
 		
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -188,4 +212,18 @@ public class ProviderController {
 		return new ResponseEntity<ArrayList<PurchaseOrder>>(temp, HttpStatus.OK);
 	}
 	
+	@RequestMapping(
+			value = "/uzmiSvePorudzbenicePonudjaca",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<PurchaseOrder>> uzmisvePoruzbenice()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Provider rm= this.providerService.getProvider(u.getEmail());
+		ArrayList<PurchaseOrder> temp = this.purchaseService.getPurchaseOrderByProvider(rm.getId());
+		return new ResponseEntity<ArrayList<PurchaseOrder>>(temp, HttpStatus.OK);
+	}
 }

@@ -19,4 +19,11 @@ public interface PurchaseOrderRepository extends PagingAndSortingRepository<Purc
 	@Modifying
 	@Query("update PurchaseOrder set price = ?, timeDeliver = ?, flag=? where id = ? ")
 	public void updatePuchaseOrder(String price, String days, Long flag, Long id);
+	
+
+	@Modifying
+	@Query("update PurchaseOrder set  flag=? where id = ? ")
+	public void updateFlag(Long flag, Long id);
+	
+	public ArrayList<PurchaseOrder> findByProvider(Long provider);
 }

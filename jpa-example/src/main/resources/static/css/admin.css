@@ -122,7 +122,7 @@ th, td {
     color: #000000;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr{background-color: #f2f2f2}
 
 th {
     background-color: #000000;

@@ -322,8 +322,8 @@ $(document).on('click','#dodajPonudu',function(e){
 		'<div class = "form-group"><form method="post" id="submitDodajPonudu">'+
 		'Podaci o ponudi:<br/><br/>'+
 		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/><br/>'+
-		'Izaberi jelo:<ul class="cao" id="spisakJela"></ul><br/>'+
-		'Izaberi pice:<ul class="cao" id="spisakPica"></ul><br/><br/>'+
+		'Izaberi namirnicu ili pice:<select id="foodAndDrink"> </select><br/><br/><br/>'+
+		'Potrebna kolicina:<input type = "text" id = "kolicina" class="in-text"/><br/>'+
 			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
 			'</form></div></div></div></div>');
 	
@@ -335,8 +335,11 @@ $(document).on('click','#dodajPonudu',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,pice){
-				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'" id="'+
-						pice.id+'">'+pice.name+'</li>');
+				/*$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'" id="'+
+						pice.id+'">'+pice.name+'</li>');*/
+
+				$('#foodAndDrink').append('<option value = "pice_' +pice.id
+						+'" >' + pice.name + '</option>');
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -351,8 +354,11 @@ $(document).on('click','#dodajPonudu',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,jela){
-				$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'" id="'+
-						jela.id+'">'+jela.name+'</li>');
+				/*$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'" id="'+
+						jela.id+'">'+jela.name+'</li>');*/
+				
+				$('#foodAndDrink').append('<option value = "jelo_' +jela.id
+						+'" >' + jela.name + '</option>');
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -364,11 +370,13 @@ $(document).on('click','#dodajPonudu',function(e){
 
 $(document).on('submit','#submitDodajPonudu',function(e){
 	e.preventDefault();
-	
-	var pica = [];
-	var jela = [];
+
+	var parts = $('#foodAndDrink option:selected').val();
+	var flag = parts.split('_')[0];
+	var foodAndDrink = parts.split('_')[1];
 	var restaurant = "";
-	$("input[type=checkbox]:checked").map(function() {
+	var amount = $('#kolicina').val();
+	/*$("input[type=checkbox]:checked").map(function() {
 		var  cekiran = $(this).val();
 		var id = cekiran.split('_')[1];
 		var oznaka = cekiran.split('_')[0];
@@ -376,15 +384,16 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 			jela.push(id);
 		else
 			pica.push(id);
-	});
+	});*/
 	
 	var datum = $('#krajPonude').val();
 	
 	var data2 = JSON.stringify({
 		"endDate" : datum,
-		"drinks" : pica,
-		"meals" : jela,
-		"restaurant" : restaurant
+		"foodOrDrink" : foodAndDrink,
+		"flag" : flag,
+		"restaurant" : restaurant,
+		"amount" : amount
 	});
 	$.ajax({
 		type : 'POST',
@@ -404,17 +413,59 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 });
 
 
-
-
-
 $(document).on('click','#aktuelnePonude',function(e){
 	e.preventDefault();
 	$('#content').empty();
-	$('#content').append('<table id="tabelaPrikaz"><tr><th>CENA DOSTAVE</th><th>VREME DOSTAVE</th><th>ID PONUDJACA</th>/tr></table>');
+	$('#content').append('<table id="tabelaPrikaz"><tr><th>NAMIRNICA/PICE</th><th>FLAG</th><th>KOLICINA</th>'+
+			'<th>KRAJNJI ROK</th></tr></table>');
 	
 	$.ajax({
 		type: 'GET',
 		contentType : 'application/json',
+		url : '/providerController/uzmiSveAktuelnePonude',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,ponuda){
+				var date1 = new Date();
+				var date2 = new Date(ponuda.endDate);
+				if( date1 < date2)
+			    {
+				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td><td>'
+						+ponuda.amount+'</td><td>'+ponuda.endDate+'</td><td><form id="formVidiPonude" method="get" action="">'+
+							'<input type="submit" value="Vidi sve ponude">' +
+							'<input type="hidden" id="ponudaId" value='+ponuda.id+'>'+
+							'</form></td></tr>');
+			    }
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+	
+});
+
+
+
+$(document).on('submit','#formVidiPonude',function(e){
+	e.preventDefault();
+	$('#content').empty();
+	$('#content').append('<table id="tabelaPrikaz"><tr><th>CENA DOSTAVE</th><th>VREME DOSTAVE</th><th>ID PONUDJACA</th>/tr></table>');
+	var id = $(this).find("input[type=hidden]").val();
+	var data = JSON.stringify({
+		"id" : id,
+		"endDate" : "",
+		"foodOrDrink" : 0,
+		"flag" : "",
+		"restaurant" : 0,
+		"amount" : 0
+	});
+	
+	$.ajax({
+		type: 'POST',
+		contentType : 'application/json',
+		dataType : 'json',
+		data : data,
 		url : '/providerController/uzmiSvePorudzbeniceAktuelnePonude',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
@@ -429,6 +480,7 @@ $(document).on('click','#aktuelnePonude',function(e){
 							'<input type="hidden" id="porudzFlag" value='+porudz.flag+'>'+
 							'<input type="hidden" id="porudzOffer" value='+porudz.offer+'>'+
 							'<input type="hidden" id="porudzRestaurant" value='+porudz.restaurant+'>'+
+							'<input type="hidden" id="porudzProvider" value='+porudz.provider+'>'+
 							'</form></td></tr>');
 			});
 		},
@@ -444,7 +496,7 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 	e.preventDefault();
 	
 	var id = $(this).find("input[id='porudzId']").val();
-	var flag = $(this).find("input[id='porudzId']").val();
+	var flag = $(this).find("input[id='porudzProvider']").val();
 	var timeDeliver = $(this).find("input[id='porudzTime']").val();
 	var price = $(this).find("input[id='porudzPrice']").val();
 	var offer = $(this).find("input[id='porudzOffer']").val();
@@ -468,6 +520,17 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 			success : function(data){
 				alert(data.id);
 				window.location.reload();
+				
+				$.ajax({
+					type : 'POST',
+					url :  '/acceptOffer',
+					data : {
+						"acceptOffer" : flag
+					},
+					error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+						alert("AJAX ERROR: " + errorThrown);
+					}
+				});
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)

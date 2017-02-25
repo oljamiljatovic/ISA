@@ -42,5 +42,9 @@ public class Producer {
 	public void sendPreparedSignalFromBarmanToWaiter(String topic, String message) {
 		this.template.convertAndSend("/topic/" + topic, message);
 	}
+	
+	public void sendAcceptSignalFromManagerToProvider(String topic, Long message) {
+		this.template.convertAndSend("/topic/" + topic, message);
+	}
 
 }

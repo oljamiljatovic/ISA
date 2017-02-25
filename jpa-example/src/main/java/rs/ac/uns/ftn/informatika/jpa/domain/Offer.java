@@ -25,9 +25,11 @@ public class Offer implements Serializable{
 	@Column(nullable = false)
 	private String endDate;
 	@Column(nullable = true)
-	private ArrayList<Long> drinks;
+	private Long foodOrDrink;
 	@Column(nullable = true)
-	private ArrayList<Long> meals;
+	private String flag;
+	@Column(nullable = false)
+	private int amount;
 	@Column(nullable = false)
 	private Long restaurant;
 
@@ -37,12 +39,13 @@ public class Offer implements Serializable{
 	}
 
 
-	public Offer(String endDate, ArrayList<Long> drinks, ArrayList<Long> meals, Long restaurant) {
+	public Offer(String endDate, Long foodOrDrink, String flag, Long restaurant, int amount) {
 		super();
 		this.endDate = endDate;
-		this.drinks = drinks;
-		this.meals = meals;
 		this.restaurant = restaurant;
+		this.flag = flag;
+		this.foodOrDrink = foodOrDrink;
+		this.amount = amount;
 	}
 
 
@@ -65,28 +68,6 @@ public class Offer implements Serializable{
 		this.endDate = endDate;
 	}
 
-	
-	public ArrayList<Long> getDrinks() {
-		return drinks;
-	}
-
-
-	@ManyToMany
-	@JoinColumn(name="offer_drink_id", referencedColumnName="drink_id", nullable=true)
-	public void setDrinks(ArrayList<Long> drinks) {
-		this.drinks = drinks;
-	}
-	
-	public ArrayList<Long> getMeals() {
-		return meals;
-	}
-
-
-	public void setMeals(ArrayList<Long> meals) {
-		this.meals = meals;
-	}
-
-
 	public Long getRestaurant() {
 		return restaurant;
 	}
@@ -94,6 +75,36 @@ public class Offer implements Serializable{
 
 	public void setRestaurant(Long restaurant) {
 		this.restaurant = restaurant;
+	}
+
+
+	public Long getFoodOrDrink() {
+		return foodOrDrink;
+	}
+
+
+	public void setFoodOrDrink(Long foodOrDrink) {
+		this.foodOrDrink = foodOrDrink;
+	}
+
+
+	public String getFlag() {
+		return flag;
+	}
+
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
+
+	public int getAmount() {
+		return amount;
+	}
+
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 }

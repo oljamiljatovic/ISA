@@ -1,7 +1,59 @@
+function message(){
+	toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "100",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+}
+
 $(document).ready(function(){
-	
+	var messageList = $("#messages");
+	var socket = new SockJS('/stomp');
+	var stompClient = Stomp.over(socket);
+	stompClient.connect({}, function(frame) {
+		stompClient.subscribe("/topic/acceptOffer", function(data) {
+
+			var mess = data.body;
+			
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url : '/providerController/uzmiPonudjaca',
+				success : function(ponudjac){
+					
+					if(ponudjac.id==mess){
+						Command: toastr["info"]("Prihvacena je vasa ponuda!", "Info!")
+						message();
+					
+					}else{
+						Command: toastr["error"]("Odbijena je vasa ponuda za restoran!", "Info!")
+						message();
+					}
+			
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Admin ERROR: " + errorThrown);
+				}
+			});
+			
+		});
+		
+	});
 	$('#content').empty();
 	$('#start').empty();
+	
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
@@ -37,9 +89,8 @@ $(document).ready(function(){
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Admin ERROR: " + errorThrown);
-		}	
+		}
 	});
-	
 });
 
 
@@ -217,7 +268,8 @@ $(document).on('submit','#izmenaPonudjaca',function(e){
 $(document).on('click','#aktivnePonude',function(e){
 	e.preventDefault();
 	$('#content').empty();
-	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID</th><th>RESTORAN</th><th></th>/tr></table>');
+	$('#content').append('<table id="tabelaPrikaz"><tr><th>NAMIRNICA/PICE</th><th>FLAG</th><th>KOLICINA</th>'+
+			'<th>KRAJNI DATUM</th><th>RESTORAN</th><th></th></tr></table>');
 	
 	$.ajax({
 		type: 'GET',
@@ -231,7 +283,8 @@ $(document).on('click','#aktivnePonude',function(e){
 				if( date1 < date2)
 			    {
 			   
-				$('#tabelaPrikaz').append('<tr><td>'+ponuda.endDate+'</td><td>'+ponuda.restaurant+'</td>'+
+				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td>'+
+						+ponuda.amount+'</td><td>'+ponuda.endDrink+'</td><td>'+ponuda.restaurant+'</td>'+
 						'<td><form id="formVidiPonudu" method="get" action="">'+
 							'<input type="submit" value="Vidi ponudu/porudzbinu">' +
 							'<input type="hidden" id="idIzmenaId" value='+ponuda.id+'></form></td></tr>');
@@ -273,9 +326,11 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		'<div class="login-page wrapper centered centered-block">'+
 		'<div class = "form-group"><form method="post" id="submitDodajPorudzbenicu">'+
 		'Podaci o ponudi:<br/><br/>'+
+		'Namirnica/pice: <input type = "text" id = "foodDrinkPonude" class="in-text"/ readonly="true"><br/>'+
+		'Flag pica/namirnice: <input type = "text" id = "flagPonude" class="in-text"/ readonly="true"><br/>'+
 		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/>'+
-		'Trazena jela:<ul class="cao" id="spisakJela"></ul><br/>'+
-		'Trazena pica:<ul class="cao" id="spisakPica"></ul><br/><br/>'+
+		'Potrebna kolicina:<input type = "text" id = "kolicinaPonude" class="in-text"/ readonly="true"><br/>'+
+		
 		'------------------------------------------------------------------------------------:<br/><br/>'+
 
 		'Cena porudzbine:<input type = "text" id = "cenaPorudzbenice" class="in-text"/><br/>'+
@@ -290,9 +345,10 @@ $(document).on('submit','#formVidiPonudu',function(e){
 						'<div class="login-page wrapper centered centered-block">'+
 						'<div class = "form-group"><form method="post" id="submitIzmeniPorudzbenicu">'+
 						'Podaci o ponudi:<br/><br/>'+
+						'Namirnica/pice: <input type = "text" id = "foodDrinkPonude" class="in-text"/ readonly="true"><br/>'+
+						'Flag pica/namirnice: <input type = "text" id = "flagPonude" class="in-text"/ readonly="true"><br/>'+
 						'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/>'+
-						'Trazena jela:<ul class="cao" id="spisakJela"></ul><br/>'+
-						'Trazena pica:<ul class="cao" id="spisakPica"></ul><br/><br/>'+
+						'Potrebna kolicina:<input type = "text" id = "kolicinaPonude" class="in-text"/ readonly="true"><br/>'+
 						'------------------------------------------------------------------------------------:<br/><br/>'+
 
 						'Cena porudzbine:<input type = "text" id = "cenaPorudzbenice" class="in-text"/><br/>'+
@@ -310,12 +366,33 @@ $(document).on('submit','#formVidiPonudu',function(e){
 	var data2 = JSON.stringify({
 		"id" : id,
 		"endDate" : "",
-		"meals" : [],
-		"drinks" : [],
-		"restaurant" : 0
+		"foodOrDrink" : 0,
+		"flag" : "",
+		"restaurant" : 0,
+		"amount" : 0
 	});
 	
 	$.ajax({
+		type: 'POST',
+		contentType : 'application/json',
+		dataType : 'json',
+		data : data2,
+		url : '/providerController/uzmiPonudu',
+		success : function(ponuda){
+			$('#krajPonude').val(ponuda.endDate);
+			$('#porudzbenicaOffer').val(ponuda.id);
+			$('#porudzbenicaRestoran').val(ponuda.restaurant);
+			$('#foodDrinkPonude').val(ponuda.foodOrDrink);
+			$('#flagPonude').val(ponuda.flag);
+			$('#kolicinaPonude').val(ponuda.amount);
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+	
+	/*$.ajax({
 		type: 'GET',
 		dataType: 'json',
 		url : '/mealAndDrinkController/uzmiPica',
@@ -370,7 +447,7 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Admin ERROR: " + errorThrown);
 		}	
-	});
+	});*/
 	
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -462,3 +539,37 @@ $(document).on('submit','#submitIzmeniPorudzbenicu',function(e){
 	}
 });
 
+
+$(document).on('click','#spisakPonuda', function(e){
+	e.preventDefault();
+	
+	$('#content').empty();
+	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID PONUDE</th><th>ID RESTORANA</th><th>VREME ISPORUKE</th>'+
+			'<th>CENA</th><th>STANJE</th></tr></table>');
+	
+	$.ajax({
+		type: 'GET',
+		contentType : 'application/json',
+		url : '/providerController/uzmiSvePorudzbenicePonudjaca',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,ponuda){
+				
+				$('#tabelaPrikaz').append('<tr id="nesto"><td>'+ponuda.offer+'</td><td>'+ponuda.restaurant+'</td><td>'
+						+ponuda.timeDeliver+'</td><td>'+ponuda.price+'</td></tr>');
+				
+				if(ponuda.flag==ponuda.provider){
+					$('#nesto').append('<td>prihvacena</td>');
+				}else if( ponuda.flag!=ponuda.provider && ponuda.flag!=0)
+			    {
+					$('#nesto').append('<td>odbijena</td>');
+			    }else{
+			    	$('#nesto').append('<td>cekanje</td>');
+			    }
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});
