@@ -14,7 +14,7 @@ insert into foodstuff(name) values ('sljiva')
 
 INSERT INTO user(email,password,role,accept) VALUES('oljka','oljkaoljka','guest','true')
 INSERT INTO user(email,password,role,accept) VALUES('mica','micamica','systemManager','true')
-INSERT INTO user(email,password,role,accept) VALUES('vlado','vladovlado','guest','true')
+INSERT INTO user(email,password,role,accept) VALUES('oljicamiljatovic@gmail.com','vladovlado','guest','true')
 INSERT INTO user(email,password,role,accept) VALUES('desa','desadesa','employee','true')
 INSERT INTO user(email,password,role,accept) VALUES('olja.miljatovic@yahoo.com','vesnavesna','guest','true')
 INSERT INTO user(email,password,role,accept) VALUES('sladjan','sladjansladjan','guest','true')

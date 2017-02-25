@@ -34,8 +34,8 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	@Override
 	public Reservation findReservationByAll(Long idGuest, Long idRestaurant,String date, String time) {
-		
 		return reservationRepository.findReservationByAll(idGuest,idRestaurant,date,time);
+	
 	}
 
 	@Override

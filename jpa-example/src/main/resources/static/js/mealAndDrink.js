@@ -1,6 +1,8 @@
 $(document).on('click','#pica',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz" ><tr><th>ID</th><th>NAZIV</th><th>OPIS</th>'+
 			'<th>CENA</th><th></th><th></th>/tr></table>');
 	
@@ -74,6 +76,8 @@ $(document).on('submit','#formIzmeniPice',function(e){
 	var restoran = $(this).find("input[id='idIzmenaRestoran']").val();
 	
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 		'<div class="login-page wrapper centered centered-block">'+ 
@@ -140,6 +144,8 @@ $(document).on('click','#novoPice',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 		'<div class="login-page wrapper centered centered-block">'+ 
@@ -197,6 +203,8 @@ $(document).on('submit','#submitDodajPice',function(e){
 $(document).on('click','#jelovnik',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz" ><tr><th>ID</th><th>NAZIV</th><th>OPIS</th>'+
 			'<th>CENA</th><th></th><th></th>/tr></table>');
 	
@@ -336,6 +344,8 @@ $(document).on('click','#novoJelo',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 		'<div class="login-page wrapper centered centered-block">'+ 

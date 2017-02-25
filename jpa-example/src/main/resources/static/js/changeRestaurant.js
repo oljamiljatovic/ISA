@@ -2,7 +2,8 @@ $(document).on('click','#restoran',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
-	
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 		'<div class="login-page wrapper centered centered-block">'+ 
 		'<div class = "form-group"><form method="post" id="registracijaRestorana">'+
@@ -11,6 +12,7 @@ $(document).on('click','#restoran',function(e){
 		'Vrsta restorana:<input type = "text" id = "vrstaRestorana" class="in-text"/><br/>'+
 		'Adresa:<input type = "text" id = "adresaRestorana" class="in-text"/><br/>'+
 		'Kontakt:<input type = "text" id = "kontaktRestorana" class="in-text"/><br/>'+
+		'<input type = "button" id = "lokacijaRestorana" value="izaberi lokacija" >'+
 		'<input type = "submit" id = "submitIzmenaRestorana" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 	
@@ -34,6 +36,26 @@ $(document).on('click','#restoran',function(e){
 	
 });
 
+
+$(document).on('click','#lokacijaRestorana',function(e){
+	e.preventDefault();
+	
+	$('#content').empty();	
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
+	var uluru = {lat: 45.239630, lng: 19.840992};
+	var map = new google.maps.Map(document.getElementById('mica_mapa'), {
+        center: uluru,
+        zoom: 8
+      });
+	
+	var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+	
+    $('#ubaci_mapu').append(map);
+});
 
 $(document).on('click','#submitIzmenaRestorana',function(e){
 	e.preventDefault();
@@ -80,7 +102,8 @@ $(document).on('click','#izmeniPodatke',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
-	
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap">'+
 			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 			'<form method="post" id="izmenaMenadzera">'+
@@ -168,6 +191,8 @@ $(document).on('click','#dodajRadnika',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 				'<form method="post" id="registracijaMenadzera">'+
@@ -247,6 +272,8 @@ $(document).on('click','#submitNewEmployee',function(e){
 $(document).on('click','#dodajPonudjaca',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap">'+
 			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 				'<form method="post" id="registracijaPonudjaca">'+
@@ -317,6 +344,8 @@ $(document).on('click','#submitNewProvider',function(e){
 $(document).on('click','#dodajPonudu',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block">'+
 		'<div class = "form-group"><form method="post" id="submitDodajPonudu">'+
@@ -416,6 +445,8 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 $(document).on('click','#aktuelnePonude',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>NAMIRNICA/PICE</th><th>FLAG</th><th>KOLICINA</th>'+
 			'<th>KRAJNJI ROK</th></tr></table>');
 	
@@ -450,6 +481,8 @@ $(document).on('click','#aktuelnePonude',function(e){
 $(document).on('submit','#formVidiPonude',function(e){
 	e.preventDefault();
 	$('#content').empty();
+	$('#mica_mapa').empty();
+	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>CENA DOSTAVE</th><th>VREME DOSTAVE</th><th>ID PONUDJACA</th>/tr></table>');
 	var id = $(this).find("input[type=hidden]").val();
 	var data = JSON.stringify({
