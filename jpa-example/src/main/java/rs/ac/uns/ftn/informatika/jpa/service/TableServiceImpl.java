@@ -49,4 +49,9 @@ public class TableServiceImpl implements TableService {
 	}
 	
 	
+
+	@Override
+	public Tablee findById(Long id) {
+		return tableRepository.findOne(id);
+	}
 }

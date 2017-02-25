@@ -254,6 +254,8 @@ public class GuestController {
 		
 	
 		return listOfGuests;
+		
+		
 		}
 	
 	

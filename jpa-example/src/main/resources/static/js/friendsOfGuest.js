@@ -54,11 +54,15 @@ window.onload = function() {
 						url :'/invitationController/getRequests/'+ data.id,
 						dataType : 'json',
 						success : function(requests){
-						if(requests.accept.equals("false")){
+						//if(requests.accept.equals("false")){
+							//alert("Usao u ispis zahtjeva");
 							var table = document.getElementById("zahtjevi");
 							$('#zahtjevi').empty();
 							for(var i = 0 ; i < requests.length ; i++){
+								
 								 var item = requests[i];
+								if(requests[i].accept.valueOf() == "false"){
+									
 								 var row = table.insertRow(i);
 								 
 								 var cell0 = row.insertCell(0);
@@ -86,9 +90,9 @@ window.onload = function() {
 								 cell0.innerHTML = "Zahtjev od : ";
 								 cell3.innerHTML = '<input type = "button" class="btn green" onclick="Prihvati()" id ="'+requests[i].sender+'/'+ requests[i].recipient+'"value="Prihvati"></td> ';
 								 cell4.innerHTML = '<input type = "button" class="btn green" onclick="Odbij()" id ="'+requests[i].sender+'/'+ requests[i].recipient+'"value="Odbij"></td> ';
-								
 							}
 							}
+							//}
 						},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
 						alert("GRESKA kod prijatelja");
@@ -148,6 +152,11 @@ window.onload = function() {
 					 cell2.innerHTML = item.surname;
 					 cell3.innerHTML =  '<input type = "button" class="btn green" onclick="PosaljiZahtjev()" id ="'+itemID+'"value="Dodaj"></td> ';
 					 
+					 
+					 /*var button = document.getElementById(item.id)
+					 button.disabled = "true";
+					 
+					 button.className ="btn red";*/
 					
 				}
 		       
