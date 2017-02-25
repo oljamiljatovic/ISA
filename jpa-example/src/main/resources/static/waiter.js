@@ -26,6 +26,7 @@ function showOrders(){
 		contentType : 'application/json',
 		dataType :'json',
 		success : function(data){
+			console.log("Usaoooo");
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("#content").append("</br><button id='addOrder' class='btn orange'>Dodaj porudžbinu</button>");
 			$("#content").append('<p><b>Lista porudžbina</b></p>');
@@ -168,7 +169,8 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
-				
+				showOrders();
+				$("#content").empty();
 				showOrders();
 			}
 		});
@@ -177,6 +179,8 @@ $(document).ready(function() {
 			Command: toastr["info"](mess, "Informacija!")
 			message();
 			if( $('#tableOrder').length ){
+				showOrders();
+				$("#content").empty();
 				showOrders();
 			}
 		});
@@ -1212,4 +1216,3 @@ function formToJSON(username,password){
 		"username" : username,
 		"password" : password
 	});
-}

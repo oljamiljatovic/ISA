@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,14 +18,16 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
 import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
-import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 import rs.ac.uns.ftn.informatika.jpa.service.AssignReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
+import rs.ac.uns.ftn.informatika.jpa.service.ReservedTablesService;
 import rs.ac.uns.ftn.informatika.jpa.service.TableService;
 import rs.ac.uns.ftn.informatika.jpa.service.WorkScheduleService;
 
@@ -41,6 +44,8 @@ public class WaiterController {
 	private EmployeeService employeeService;
 	@Autowired
 	private TableService tableService;
+	@Autowired
+	private ReservedTablesService reservedTablesService;
 	
 	@RequestMapping(
 			value = "/getWorkSchedules",
@@ -214,4 +219,77 @@ public class WaiterController {
 		temp = tableService.findByRestaurant(foundedEmployee.getRestaurant());
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(
+			value = "/getTablesForReservation",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Tablee>> getTablesForReservation(
+			@RequestBody Reservation reservation)  throws Exception {
+		
+	
+		ArrayList<Tablee> temp = new ArrayList<Tablee>();
+	
+		temp = tableService.findByRestaurant(reservation.getIdRestaurant());
+		System.out.println("Pronasao je stolove "+temp.size() );
+		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/getReonsForReservation",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Reon>> getReonsForReservation(
+			@RequestBody Reservation reservation)  throws Exception {
+	
+		ArrayList<Reon> temp = reonService.getReonsOfRestorans(reservation.getIdRestaurant());
+		System.out.println("Broj vracenih reona"+temp.size());
+		
+		return new ResponseEntity<ArrayList<Reon>>(temp, HttpStatus.OK);
+	}
+	
+	
+	
+	@RequestMapping(
+			value = "/getReservedTables",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<ReservedTables>> getReservedTables(
+			@RequestBody Reservation reservation)  throws Exception {
+		
+		String wantedDate = reservation.getDate();
+		String wantedTime = reservation.getTime();
+		
+		String[] time = wantedTime.split(":");
+		
+		int hour = Integer.parseInt(time[0]);
+		int minut = Integer.parseInt(time[1]);
+		
+		
+		List<ReservedTables> datetables = reservedTablesService.findReservedTablesByDate(wantedDate);
+		List<ReservedTables> timetables = new ArrayList<ReservedTables>();
+		System.out.println("Broj zauzetih"+ datetables.size());
+		
+		for(int i = 0; i<datetables.size(); i++){
+			String[] time2 = datetables.get(i).getTime().split(":");
+			int hour2 = Integer.parseInt(time2[0]);
+			int minut2 = Integer.parseInt(time2[1]);
+			
+			if((hour >= hour2 && hour<hour2+datetables.get(i).getDuration()) || 
+			(hour + reservation.getDuration() > hour2 && hour + reservation.getDuration()<=hour2+datetables.get(i).getDuration())){
+				timetables.add(datetables.get(i));
+			}
+		}
+		
+		System.out.println("Sa vremenom kao problem"+ timetables.size());
+		return new ResponseEntity<ArrayList<ReservedTables>>((ArrayList<ReservedTables>) timetables, HttpStatus.OK);
+	
+	}
+	
+	
 }
