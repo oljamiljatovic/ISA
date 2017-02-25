@@ -158,13 +158,24 @@ public class ReservationController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Reservation>> getReservations() throws Exception {
-		//System.out.println("Usao u calendarForWaiterController/proba");
 		ServletRequestAttributes attr = (ServletRequestAttributes) 
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+		ArrayList<Reservation> resFromAccept = new ArrayList<Reservation>();
 		reservations = this.reservationService.findByIdGuest(u.getId());
+		resFromAccept = this.reservationService.findByAcceptedFriends_Id(u.getId());
+		if(reservations.isEmpty()){
+			reservations = resFromAccept;
+		}else{
+			if(!resFromAccept.isEmpty()){
+				//System.out.println("Ima Accepted ");
+				reservations.addAll(resFromAccept);
+			}
+		}
+		/*if(!resFromAccept.isEmpty())
+			System.out.println("Accepted "+resFromAccept.get(0).getId());*/
 		return new ResponseEntity<ArrayList<Reservation>>(reservations, HttpStatus.OK);
 	}
 		
@@ -218,6 +229,5 @@ public class ReservationController {
 		return new ResponseEntity<Reservation>( updatedReservation, HttpStatus.OK);
 	
 	}
-	
 
 }

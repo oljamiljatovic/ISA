@@ -47,6 +47,11 @@ public class ReservationServiceImpl implements ReservationService {
 	public ArrayList<Reservation> findByIdRestaurantAndDate(Long idRestaurant, String date) {
 		return reservationRepository.findByIdRestaurantAndDate(idRestaurant, date);
 	}
+
+	@Override
+	public ArrayList<Reservation> findByAcceptedFriends_Id(Long id) {
+		return reservationRepository.findByAcceptedFriends_Id(id);
+	}
 	
 	
 }
