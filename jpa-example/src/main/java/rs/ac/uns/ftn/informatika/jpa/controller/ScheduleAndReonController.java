@@ -30,7 +30,6 @@ import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 import rs.ac.uns.ftn.informatika.jpa.service.TableService;
-import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 import rs.ac.uns.ftn.informatika.jpa.service.WorkScheduleService;
 
 
@@ -72,11 +71,11 @@ public class ScheduleAndReonController {
 			r = restaurantService.getRestaurant(idRest);
 		}
 		
-		reon.setRestaurant(r.getId());
+		reon.setRestaurant(r);
 		this.reonService.createReon(reon);
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee table = new Tablee(reon.getId(),r.getId());
+			Tablee table = new Tablee(reon,r);
 			this.tableService.createTable(table);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
@@ -100,7 +99,7 @@ public class ScheduleAndReonController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<Reon> ar = this.reonService.findByRestaurant(r.getId());
+		ArrayList<Reon> ar = this.reonService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<Reon>>(ar, HttpStatus.OK);
 	}
 	
@@ -111,7 +110,8 @@ public class ScheduleAndReonController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteReon(@RequestBody Reon r)  throws Exception {
 		
-		ArrayList<Tablee> table = this.tableService.findByReon(r.getId());
+		Reon reon = this.reonService.findOne(r.getId());
+		ArrayList<Tablee> table = this.tableService.findByReon(reon);
 		for(int i=0; i<table.size(); i++){
 			Long idd = table.get(i).getId();
 			this.tableService.delete(idd);
@@ -138,17 +138,17 @@ public class ScheduleAndReonController {
 			r = restaurantService.getRestaurant(idRest);
 		}
 		
-		reon.setRestaurant(r.getId());
+		reon = this.reonService.findOne(reon.getId());
 		this.reonService.update(reon);
 		
-		ArrayList<Tablee> table = this.tableService.findByReon(r.getId());
+		ArrayList<Tablee> table = this.tableService.findByReon(reon);
 		for(int i=0; i<table.size(); i++){
 			Long idd = table.get(i).getId();
 			this.tableService.delete(idd);
 		}
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee tablee = new Tablee(reon.getId(),r.getId());
+			Tablee tablee = new Tablee(reon,r);
 			this.tableService.createTable(tablee);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
@@ -161,8 +161,21 @@ public class ScheduleAndReonController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> scheduleEmpolyee(@RequestBody WorkSchedule ws)  throws Exception {
 		
-		Employee e = this.employeeService.findById(ws.getWorker_id());
-		ws.setWorker_name(e.getName());
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Restaurant r= null;
+		RestaurantManager rm=null;
+		if(u.getRole().equals("restaurantManager")){
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
+		}
+		
+		Employee e = this.employeeService.findById(ws.getWorker().getId());
+		ws.setWorker(e);
+		ws.setRestaurant(r);
 		
 		this.workScheduleService.createSchedule(ws);
 		return new ResponseEntity<WorkSchedule>(ws, HttpStatus.OK);
@@ -185,7 +198,7 @@ public class ScheduleAndReonController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<WorkSchedule> fs = this.workScheduleService.findByRest(r.getId());
+		ArrayList<WorkSchedule> fs = this.workScheduleService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<WorkSchedule>>(fs, HttpStatus.OK);
 	}
 	
@@ -205,6 +218,7 @@ public class ScheduleAndReonController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> updateSchedule(@RequestBody WorkSchedule ws)  throws Exception {
+
 		this.workScheduleService.update(ws);
 		return new ResponseEntity<WorkSchedule>(ws, HttpStatus.OK);
 	}

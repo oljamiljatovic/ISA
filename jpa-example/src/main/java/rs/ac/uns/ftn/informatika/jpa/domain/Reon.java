@@ -1,12 +1,13 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Reon implements Serializable {
@@ -23,14 +24,15 @@ public class Reon implements Serializable {
 	private String location;
 	@Column(nullable = false)
 	private int numberTable;
-	@Column(nullable = false)
-	private Long restaurant;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 	
 	public Reon(){
 		
 	}
 	
-	public Reon(String name, String location, Long rest, int numberTable) {
+	public Reon(String name, String location, Restaurant rest, int numberTable) {
 		super();
 		this.name = name;
 		this.location = location;
@@ -70,11 +72,11 @@ public class Reon implements Serializable {
 		this.numberTable = numberTable;
 	}
 
-	public Long getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(Long restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 	

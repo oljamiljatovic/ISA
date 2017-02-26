@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.repository.TableRepository;
 
@@ -25,21 +27,21 @@ public class TableServiceImpl implements TableService {
 
 
 	@Override
-	public ArrayList<Tablee> findByReonAndRestaurant(Long reon, Long restaurant) {
+	public ArrayList<Tablee> findByReonAndRestaurant(Reon reon, Restaurant restaurant) {
 		return tableRepository.findByReonAndRestaurant(reon, restaurant);
 	}
 
 
 	@Override
-	public ArrayList<Tablee> findByRestaurant(Long restaurant) {
+	public ArrayList<Tablee> findByRestaurant(Restaurant restaurant) {
 		return tableRepository.findByRestaurant(restaurant);
 	}
 
 
 	@Override
-	public ArrayList<Tablee> findByReon(Long id) {
+	public ArrayList<Tablee> findByReon(Reon reon) {
 		// TODO Auto-generated method stub
-		return this.tableRepository.findByReon(id);
+		return this.tableRepository.findByReon(reon);
 	}
 
 

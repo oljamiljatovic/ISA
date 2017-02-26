@@ -234,7 +234,7 @@ public class RestaurantManagerController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<Reon> t= this.reonService.getReonsOfRestorans(r.getId());
+		ArrayList<Reon> t= this.reonService.getReonsOfRestorans(r);
 		
 		
 		return new ResponseEntity<ArrayList<Reon>>(t, HttpStatus.OK);

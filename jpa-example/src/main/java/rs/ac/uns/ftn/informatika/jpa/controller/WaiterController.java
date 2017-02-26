@@ -20,6 +20,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
@@ -28,6 +29,7 @@ import rs.ac.uns.ftn.informatika.jpa.service.AssignReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReservedTablesService;
+import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 import rs.ac.uns.ftn.informatika.jpa.service.TableService;
 import rs.ac.uns.ftn.informatika.jpa.service.WorkScheduleService;
 
@@ -46,6 +48,8 @@ public class WaiterController {
 	private TableService tableService;
 	@Autowired
 	private ReservedTablesService reservedTablesService;
+	@Autowired
+	private RestaurantService restService;
 	
 	@RequestMapping(
 			value = "/getWorkSchedules",
@@ -97,7 +101,8 @@ public class WaiterController {
 					break;
 				}
 			}*/
-			temp = reonService.getReonsOfRestorans(employee.getRestaurant());
+			Restaurant rest = this.restService.getRestaurant(employee.getRestaurant());
+			temp = reonService.getReonsOfRestorans(rest);
 
 		}
 		return new ResponseEntity<ArrayList<Reon>>(temp, HttpStatus.OK);
@@ -116,11 +121,13 @@ public class WaiterController {
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 		if(u.getRole().equals("waiter")){
 			Employee employee = employeeService.findById(u.getId());
-			ArrayList<Reon> reons= reonService.getReonsOfRestorans(employee.getRestaurant());
+			Restaurant rest = this.restService.getRestaurant(employee.getRestaurant());
+			ArrayList<Reon> reons= reonService.getReonsOfRestorans(rest);
 			Long reonId = reons.get(0).getId();
+			Restaurant restt = this.restService.getRestaurant(employee.getRestaurant());
 			Long restaurantId = employee.getRestaurant();
 			System.out.println("reonId" + reonId);
-			temp = tableService.findByReonAndRestaurant(reonId, restaurantId);
+			temp = tableService.findByReonAndRestaurant(reons.get(0), restt);
 		}
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
@@ -217,7 +224,8 @@ public class WaiterController {
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 		Employee foundedEmployee = employeeService.findById(u.getId());
-		temp = tableService.findByRestaurant(foundedEmployee.getRestaurant());
+		Restaurant restt = this.restService.getRestaurant(foundedEmployee.getRestaurant());
+		temp = tableService.findByRestaurant(restt);
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
 	
@@ -232,8 +240,9 @@ public class WaiterController {
 		
 	
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
-	
-		temp = tableService.findByRestaurant(reservation.getIdRestaurant());
+
+		Restaurant restt = this.restService.getRestaurant(reservation.getIdRestaurant());
+		temp = tableService.findByRestaurant(restt);
 		System.out.println("Pronasao je stolove "+temp.size() );
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
@@ -246,8 +255,9 @@ public class WaiterController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Reon>> getReonsForReservation(
 			@RequestBody Reservation reservation)  throws Exception {
-	
-		ArrayList<Reon> temp = reonService.getReonsOfRestorans(reservation.getIdRestaurant());
+
+		Restaurant rest = this.restService.getRestaurant(reservation.getIdRestaurant());
+		ArrayList<Reon> temp = reonService.getReonsOfRestorans(rest);
 		System.out.println("Broj vracenih reona"+temp.size());
 		
 		return new ResponseEntity<ArrayList<Reon>>(temp, HttpStatus.OK);

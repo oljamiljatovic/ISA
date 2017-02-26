@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
@@ -41,7 +42,7 @@ public class AssignReon implements Serializable{
 	@OneToOne
 	@JoinColumn(name="reon")
 	private Reon reon;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="restaurant")
 	private Restaurant restaurant;
 	

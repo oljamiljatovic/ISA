@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.repository.ReonRepository;
 
 @Service
@@ -22,7 +23,7 @@ public class ReonServiceImpl implements ReonService {
 	}
 
 	@Override
-	public ArrayList<Reon> getReonsOfRestorans(Long rest) {
+	public ArrayList<Reon> getReonsOfRestorans(Restaurant rest) {
 		return this.reonRepository.findByRestaurant(rest);
 	}
 
@@ -38,8 +39,8 @@ public class ReonServiceImpl implements ReonService {
 	}
 
 	@Override
-	public ArrayList<Reon> findByRestaurant(Long id) {
-		return this.reonRepository.findByRestaurant(id);
+	public ArrayList<Reon> findByRestaurant(Restaurant rest) {
+		return this.reonRepository.findByRestaurant(rest);
 	}
 
 	@Override
