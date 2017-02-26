@@ -331,3 +331,32 @@ $(document).on('click','#grafikaPosecenostiDan',function(e){
 	});
 	
 });
+
+
+
+$(document).on('click','#ocenaRestoran',function(e){
+	e.preventDefault();
+	
+	$('#content').empty();
+	$('#ubaci_mapu').empty();
+	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
+		'<div class="login-page wrapper centered centered-block">'+ 
+		'<div class = "form-group"><form method="post" id="prihodiRest">'+
+		'Ocena restorana:<br/><br/>'+
+		'Prihod:<input type = "text" id = "ocenaRest" class="in-text" readonly="true" /><br/>'+
+		'</form></div></div></div></div>');
+	
+	
+	
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/ratingAllController/takeMarks',
+		success : function(data){
+			$('#ocenaRest').val(data);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});

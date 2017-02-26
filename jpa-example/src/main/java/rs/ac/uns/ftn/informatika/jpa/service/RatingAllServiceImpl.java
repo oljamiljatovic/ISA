@@ -31,4 +31,9 @@ public class RatingAllServiceImpl implements RatingAllService{
 		return ratingAllRepository.findByGuestIdAndReservationId(guestId, reservationId);
 	}
 
+	@Override
+	public ArrayList<RatingAll> findByRestaurant(Long id) {
+		return this.ratingAllRepository.findByRestaurantId(id);
+	}
+
 }
