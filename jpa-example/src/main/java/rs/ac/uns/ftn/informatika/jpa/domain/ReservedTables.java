@@ -1,9 +1,14 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,9 +20,15 @@ public class ReservedTables {
 	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 	
-	private Long idRestaurant;
-	private Long idReon;
-	private Long idTable;
+	@ManyToOne
+	@JoinColumn(name="idRestaurant")
+	private Restaurant idRestaurant;
+	
+	@ManyToOne
+	@JoinColumn(name="idTable")
+	private Tablee idTable;
+	
+	
 	private String date;
 	private String time;
 	private int duration; 
@@ -34,29 +45,22 @@ public class ReservedTables {
 		this.id = id;
 	}
 
-	public Long getIdRestaurant() {
+	public Restaurant getIdRestaurant() {
 		return idRestaurant;
 	}
 
-	public void setIdRestaurant(Long idRestaurant) {
+	public void setIdRestaurant(Restaurant idRestaurant) {
 		this.idRestaurant = idRestaurant;
 	}
 
 
 
-	public Long getIdReon() {
-		return idReon;
-	}
 
-	public void setIdReon(Long idReon) {
-		this.idReon = idReon;
-	}
-
-	public Long getIdTable() {
+	public Tablee getIdTable() {
 		return idTable;
 	}
 
-	public void setIdTable(Long idTable) {
+	public void setIdTable(Tablee idTable) {
 		this.idTable = idTable;
 	}
 
@@ -84,10 +88,9 @@ public class ReservedTables {
 		this.duration = duration;
 	}
 
-	public ReservedTables(Long idRestaurant, Long idReon, Long idTable, String date, String time, int duration) {
+	public ReservedTables(Restaurant idRestaurant,Tablee idTable, String date, String time, int duration) {
 		super();
 		this.idRestaurant = idRestaurant;
-		this.idReon = idReon;
 		this.idTable = idTable;
 		this.date = date;
 		this.time = time;

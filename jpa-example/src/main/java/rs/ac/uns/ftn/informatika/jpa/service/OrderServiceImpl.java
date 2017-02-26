@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.repository.OrderRepository;
 
 @Service
@@ -33,21 +35,21 @@ public class OrderServiceImpl implements OrderService{
 	public Order findOne(Long id) {
 		return orderRepository.findOne(id);
 	}
-	@Override
-	public ArrayList<Order> findByWaiter_id(Long waiter_id) {
-		return orderRepository.findByWaiter_id(waiter_id);
-	}
-	@Override
-	public ArrayList<Order> findByRestaurant(Long restaurant) {
-		return orderRepository.findByRestaurant(restaurant);
-	}
+
 	@Override
 	public Order findById(Long id) {
 		return orderRepository.findById(id);
 	}
 	@Override
 	public List<Order> findByDrinks(List drinks) {
-		// TODO Auto-generated method stub
 		return this.orderRepository.findByDrinks(drinks);
+	}
+	@Override
+	public ArrayList<Order> findByWaiter(Employee waiter) {
+		return this.orderRepository.findByWaiter(waiter);
+	}
+	@Override
+	public ArrayList<Order> findByRestaurant(Restaurant restaurant) {
+		return this.orderRepository.findByRestaurant(restaurant);
 	}
 }

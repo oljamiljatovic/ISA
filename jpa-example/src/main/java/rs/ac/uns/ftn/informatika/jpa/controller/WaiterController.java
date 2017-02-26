@@ -132,6 +132,7 @@ public class WaiterController {
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
 	
+	
 	@RequestMapping(
 			value = "/getAssignReons",
 			method = RequestMethod.GET,
@@ -236,17 +237,13 @@ public class WaiterController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Tablee>> getTablesForReservation(
 			@RequestBody Reservation reservation)  throws Exception {
-		
+		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 	
-		ArrayList<Tablee> temp = null;
-
-		//Restaurant restt = this.restService.getRestaurant(reservation.getIdRestaurant());
-		//temp = tableService.findByRestaurant(restt);
+		temp = tableService.findByRestaurant(reservation.getIdRestaurant());
 		System.out.println("Pronasao je stolove "+temp.size() );
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
-	
-	
+	/*
 	@RequestMapping(
 			value = "/getReonsForReservation",
 			method = RequestMethod.POST,
@@ -260,7 +257,7 @@ public class WaiterController {
 		System.out.println("Broj vracenih reona"+temp.size());
 		
 		return new ResponseEntity<ArrayList<Reon>>(temp, HttpStatus.OK);
-	}
+	}*/
 	
 	
 	
@@ -272,6 +269,9 @@ public class WaiterController {
 	public ResponseEntity<ArrayList<ReservedTables>> getReservedTables(
 			@RequestBody Reservation reservation)  throws Exception {
 		
+		System.out.println("Sta sam dobila u kontroleru"+ reservation.getIdGuest().getName() + "  "+ reservation.getIdRestaurant().getName());
+		
+		
 		String wantedDate = reservation.getDate();
 		String wantedTime = reservation.getTime();
 		
@@ -280,7 +280,7 @@ public class WaiterController {
 		int hour = Integer.parseInt(time[0]);
 		int minut = Integer.parseInt(time[1]);
 		
-		
+		System.out.println("Datum koji sam poslal"+ wantedDate);
 		List<ReservedTables> datetables = reservedTablesService.findReservedTablesByDate(wantedDate);
 		List<ReservedTables> timetables = new ArrayList<ReservedTables>();
 		System.out.println("Broj zauzetih"+ datetables.size());
@@ -300,6 +300,7 @@ public class WaiterController {
 		return new ResponseEntity<ArrayList<ReservedTables>>((ArrayList<ReservedTables>) timetables, HttpStatus.OK);
 	
 	}
+	
 	
 	
 }

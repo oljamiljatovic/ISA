@@ -66,7 +66,7 @@ public class ReservationController {
 		Long idChange = (long) -1;
 		Reservation neww = null;
 		
-		if(reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()) == null){
+		if(reservationService.findReservationByAll(reservation.getIdGuest().getId(),reservation.getIdRestaurant().getId(),reservation.getDate(),reservation.getTime()) == null){
 			if(reservation.getReservedTables() == null){
 				List<Tablee> pomocna = new ArrayList<Tablee>();
 				pomocna.add(foundTable);
@@ -79,7 +79,7 @@ public class ReservationController {
 			}
 			 newReservation = reservationService.createNew(reservation);
 		}else {
-			neww = reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()); 
+			neww = reservationService.findReservationByAll(reservation.getIdGuest().getId(),reservation.getIdRestaurant().getId(),reservation.getDate(),reservation.getTime()); 
 			
 			List<Tablee> res = neww.getReservedTables();
 			res.add(foundTable);
@@ -104,7 +104,7 @@ public class ReservationController {
 			@PathVariable Long idRezervacije)  throws Exception {
 		
 		Reservation foundReservation = reservationService.findOne(idRezervacije);
-		Long senderId = foundReservation.getIdGuest();
+		Long senderId = foundReservation.getIdGuest().getId();
 		
 		Guest sender = guestService.findOne(senderId);
 		

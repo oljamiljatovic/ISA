@@ -1,9 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,6 +22,8 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.OrderSurrogate;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.service.BillService;
@@ -33,6 +32,8 @@ import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReservationService;
+import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
+import rs.ac.uns.ftn.informatika.jpa.service.TableService;
 
 @Controller 
 @RequestMapping("/orderController")
@@ -49,6 +50,10 @@ public class OrderController {
 	private MealService mealService;
 	@Autowired
 	private ReservationService reservationService;
+	@Autowired 
+	private RestaurantService restaurantService;
+	@Autowired 
+	private TableService tableService;
 	
 	@RequestMapping(
 			value = "/getOrders",
@@ -63,7 +68,8 @@ public class OrderController {
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<Order> orders = new ArrayList<Order>();
 		if(u.getRole().equals("waiter")){
-			orders = this.orderService.findByWaiter_id(u.getId());
+			Employee employee = employeeService.findById(u.getId());
+			orders = this.orderService.findByWaiter(employee);
 		}
        /* try {
             EntityManager em = JpaExampleApplication.createEntityManager();
@@ -105,7 +111,11 @@ public class OrderController {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		if(u.getRole().equals("cook") || u.getRole().equals("barman") || u.getRole().equals("saladCook") || u.getRole().equals("grilledCook")){
 			Employee employee = employeeService.findById(u.getId());
-			//orders = this.orderService.findByRestaurant(employee.getRestaurant());
+			System.out.println(employee.getEmail());
+			Restaurant rest = restaurantService.getRestaurant(employee.getRestaurant().getId());
+			System.out.println(rest.getName());
+			orders = this.orderService.findByRestaurant(rest);
+			System.out.println(orders.size());
 		}
 		return new ResponseEntity<Object>(orders, HttpStatus.OK);
 	}
@@ -131,6 +141,7 @@ public class OrderController {
 				String name = surrogateOrder.getDrinks().get(i);
 				Drink drink = drinkService.findByName(name);
 				drinks.add(drink);
+				System.out.println(drink.getName());
 			}
 		}
 		ArrayList<Meal> meals = new ArrayList<Meal>();
@@ -139,20 +150,32 @@ public class OrderController {
 				String name = surrogateOrder.getMeals().get(i);
 				Meal meal = mealService.findByName(name);
 				meals.add(meal);
+				System.out.println(meal.getName());
 			}
 		}
 		Order order = new Order();
-		order.setRestaurant(surrogateOrder.getRestaurant());
-		order.setTable_id(surrogateOrder.getTable_id());
-		order.setWaiter_id(surrogateOrder.getWaiter_id());
+		Restaurant rest = restaurantService.getRestaurant(surrogateOrder.getRestaurant());
+		System.out.println(surrogateOrder.getRestaurant());
+		System.out.println(rest.getName());
+		order.setRestaurant(rest);
+		Tablee tablee = tableService.findById(surrogateOrder.getTable_id());
+		System.out.println(surrogateOrder.getTable_id());
+		System.out.println(tablee.getId());
+		order.setTablee(tablee);
+		Employee e = employeeService.findById(surrogateOrder.getWaiter_id());
+		System.out.println(surrogateOrder.getWaiter_id());
+		order.setWaiter(e);
 		order.setCook_state(surrogateOrder.getCook_state());
 		order.setBarman_state(surrogateOrder.getBarman_state());
 		order.setTimeOfOrder(surrogateOrder.getTimeOfOrder());
 		order.setDrinks(drinks);
 		order.setMeals(meals);
-		order.setReservation(surrogateOrder.getReservation());
+		Reservation reservation = reservationService.findOne(surrogateOrder.getReservation());
+		System.out.println(surrogateOrder.getReservation());
+		System.out.println(reservation.getId());
+		order.setReservation(reservation);
 		Order addedOrder = orderService.createNew(order);
-		
+		System.out.println(addedOrder.getId());
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
 	}/*
 	@RequestMapping(

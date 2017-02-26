@@ -77,23 +77,12 @@ public class BillController {
 		User u = (User) session.getAttribute("korisnik");		
 		Long orderId = bill.getOrder_id();
 		Order orderForClose = this.orderService.findById(orderId);
-		//////////////////////////
+		Bill addedBill = null;
+		bill.setWaiter_id(u.getId());
+		addedBill = billService.addNew(bill);
 		orderForClose.setBarman_state("kraj");
 		orderForClose.setCook_state("kraj");
 		Order changedOrder = orderService.update(orderForClose, orderId);
-		/////////////////////////
-		Long waiterIdFromOrder = orderForClose.getWaiter_id();
-		Long waiterIdFromSession = u.getId();
-		///ako onaj ko kreira racun i onaj na kome je porudzbina nisu isti
-		//provjeri da li je se onom sa porudzbine zavrsila smjena
-		//ako jest onda provjeri koje je duze opsluzivao
-		if(!waiterIdFromOrder.equals(waiterIdFromSession)){
-			//ArrayList<WorkSchedule> 
-			bill.setWaiter_id(waiterIdFromSession);
-		}else{
-			bill.setWaiter_id(waiterIdFromSession);
-		}
-		Bill addedBill = billService.addNew(bill);
 		return new ResponseEntity<Bill>(addedBill, HttpStatus.OK);
 	}
 	

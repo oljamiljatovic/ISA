@@ -44,7 +44,7 @@ function showOrders(){
 		    	  		});
 		    	  		var drinks = drinks.substring(0,drinks.length-1);
 		    	  		if(drinks != ""){
-							var desk = order.table_id;
+							var desk = order.tablee.id;
 					        var forma = $('<form method="post" class="orderForm" action=""></form>');
 							var formaSignal = $('<form method="post" class="signalDrink" action=""></form>');
 					        var tr = $('<tr></tr>');

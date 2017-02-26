@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,9 +27,13 @@ public class Reservation {
 	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 	
-	private Long idGuest;
+	@ManyToOne
+	@JoinColumn(name="idGuest")
+	private Guest idGuest;
 	
-	private Long idRestaurant;
+	@ManyToOne
+	@JoinColumn(name="idRestaurant")
+	private Restaurant idRestaurant;
 	
 	private String date;
 	
@@ -52,7 +57,7 @@ public class Reservation {
 		
 	}
 
-	public Reservation(Long idGuest, Long idRestaurant, String date, String time, int duration) {
+	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration) {
 		super();
 		this.idGuest = idGuest;
 		this.idRestaurant = idRestaurant;
@@ -65,7 +70,7 @@ public class Reservation {
 	
 	
 
-	public Reservation(Long idGuest, Long idRestaurant, String date, String time, int duration,
+	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration,
 			List<Tablee> reservedTables) {
 		super();
 		this.idGuest = idGuest;
@@ -77,7 +82,7 @@ public class Reservation {
 	}
 
 	
-	public Reservation(Long idGuest, Long idRestaurant, String date, String time, int duration,
+	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration,
 			List<Tablee> reservedTables, List<Guest> acceptedFriends) {
 		super();
 		this.idGuest = idGuest;
@@ -97,19 +102,19 @@ public class Reservation {
 		this.id = id;
 	}
 
-	public Long getIdGuest() {
+	public Guest getIdGuest() {
 		return idGuest;
 	}
 
-	public void setIdGuest(Long idGuest) {
+	public void setIdGuest(Guest idGuest) {
 		this.idGuest = idGuest;
 	}
 
-	public Long getIdRestaurant() {
+	public Restaurant getIdRestaurant() {
 		return idRestaurant;
 	}
 
-	public void setIdRestaurant(Long idRestaurant) {
+	public void setIdRestaurant(Restaurant idRestaurant) {
 		this.idRestaurant = idRestaurant;
 	}
 

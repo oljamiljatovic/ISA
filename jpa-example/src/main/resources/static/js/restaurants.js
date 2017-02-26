@@ -67,6 +67,7 @@ function OtvoriRestoran(){
 					'</form></div></div></div></div>');
 			
 		
+			
 		},
 	error : function(XMLHttpRequest, textStatus, errorThrown) {
 		alert("Problem sa pronalazenjem id-ja");
@@ -90,29 +91,34 @@ $(document).on('click','#submitSmene', function(e){
 	var smene = $('#radneSmene option:selected').val();
 	
 	
-	
+	alert("ispis id guest"+ idGuest + "id restorana"+idRestorana);
 	//alert("id restorana"+ idRestorana + " idGuest "+idGuest+ "datum"+ dateStart +" vrijeme :"+ timeStart+ " smene "+ smene);
 	
-	
-	
 	$('#listaRestorana').empty();
-	  	
 	$('#datum').empty();
 	
-	if(idRestorana == ""){
-		alert("Ime je prazno");
-	}else if(idGuest == ""){
-		alert("Pocetni datum je prazan");
-	}else if(dateStart == ""){
-		alert("Datum rodjenja je prazan");
-	}else if(timeStart ==""){
-		alert("Smena je prazna");
-	}else if(smene == ""){
-		alert("Smjene prazna");
-	}else{
+	var guest = JSON.stringify({
+		"id" : idGuest,
+		"name" : "",
+		"surname" : "",
+	});
+	var obj1 = JSON.parse(guest);
+
+	
+	
+	var restaurant = JSON.stringify({
+		"id" : idRestorana,
+		"name" : "",
+		"type" : "",
+		"address" : "",
+		"contact" : "",
+	});
+	var obj2 = JSON.parse(restaurant);
+	
+
 		var data2 = JSON.stringify({
-			"idGuest" : idGuest,
-			"idRestaurant" : idRestorana,
+			"idGuest" : obj1,
+			"idRestaurant" : obj2,
 			"date" : dateStart,
 			"time" : timeStart,
 			"duration" : parseInt(smene)
@@ -158,7 +164,7 @@ $(document).on('click','#submitSmene', function(e){
 						
 						for(var i = 0 ; i < zauzeti.length ; i++){
 							
-							 var idStola = zauzeti[i].idTable;
+							 var idStola = zauzeti[i].idTable.id;
 							
 							document.getElementById(idStola).disabled="true";
 							document.getElementById(idStola).value="Zauzet";
@@ -187,7 +193,7 @@ $(document).on('click','#submitSmene', function(e){
 			}	
 		});
 		
-	}
+	
 });
 
 
