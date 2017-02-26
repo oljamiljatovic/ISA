@@ -123,7 +123,7 @@ $(document).on('submit','#submitIzmeniLozinku',function(e){
 			"surname" : surname,
 			"address" : address,
 			"contact" : contact,
-			"restaurant" : "",
+			"restaurant" : null,
 			"logFirstTime" : "false"
 		});
 		
@@ -242,7 +242,7 @@ $(document).on('submit','#izmenaPonudjaca',function(e){
 			"surname" : surname,
 			"address" : address,
 			"contact" : contact,
-			"restaurant" : "",
+			"restaurant" : null,
 			"logFirstTime" : "false"
 		});
 		
@@ -284,7 +284,7 @@ $(document).on('click','#aktivnePonude',function(e){
 			    {
 			   
 				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td>'+
-						+ponuda.amount+'</td><td>'+ponuda.endDrink+'</td><td>'+ponuda.restaurant+'</td>'+
+						+ponuda.amount+'</td><td>'+ponuda.endDrink+'</td><td>'+ponuda.restaurant.name+'</td>'+
 						'<td><form id="formVidiPonudu" method="get" action="">'+
 							'<input type="submit" value="Vidi ponudu/porudzbinu">' +
 							'<input type="hidden" id="idIzmenaId" value='+ponuda.id+'></form></td></tr>');
@@ -303,13 +303,24 @@ $(document).on('submit','#formVidiPonudu',function(e){
 	e.preventDefault();
 	var id = $(this).find("input[type=hidden]").val();
 	$('#content').empty();
+	/*Offer offer, Restaurant restaurant, Provider provider, Long flag,
+			String timeDeliver, String price*/
+	var data2 = JSON.stringify({
+		"id" : id,
+		"endDate" : "",
+		"foodOrDrink" : "",
+		"flag" : "",
+		"restaurant" : null,
+		"amount" : 0
+	});
 	
+	var obj = JSON.parse(data2);
 	var data = JSON.stringify({
-		"offer" : id,
-		"restaurant" : "",
+		"offer" : obj,
+		"restaurant" : null,
 		"timeDeliver" : "",
-		"price" : "",
-		"provider" : "",
+		"price" : 0,
+		"provider" : null,
 		"flag" : 0
 	});
 	
@@ -368,7 +379,7 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		"endDate" : "",
 		"foodOrDrink" : 0,
 		"flag" : "",
-		"restaurant" : 0,
+		"restaurant" : null,
 		"amount" : 0
 	});
 	
@@ -381,7 +392,7 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		success : function(ponuda){
 			$('#krajPonude').val(ponuda.endDate);
 			$('#porudzbenicaOffer').val(ponuda.id);
-			$('#porudzbenicaRestoran').val(ponuda.restaurant);
+			$('#porudzbenicaRestoran').val(ponuda.restaurant.id);
 			$('#foodDrinkPonude').val(ponuda.foodOrDrink);
 			$('#flagPonude').val(ponuda.flag);
 			$('#kolicinaPonude').val(ponuda.amount);
@@ -391,63 +402,6 @@ $(document).on('submit','#formVidiPonudu',function(e){
 			alert("Admin ERROR: " + errorThrown);
 		}	
 	});
-	
-	/*$.ajax({
-		type: 'GET',
-		dataType: 'json',
-		url : '/mealAndDrinkController/uzmiPica',
-		success : function(data){
-			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$.each(list, function(index,pice){
-				$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'" id="drink_'+
-						pice.id+'" readonly="true">'+pice.name+'</li>');
-			});
-			
-			$.ajax({
-				type: 'GET',
-				dataType: 'json',
-				url : '/mealAndDrinkController/uzmiNamirnice',
-				success : function(data){
-					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-					$.each(list, function(index,jela){
-						$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'" id="'+
-								jela.id+'" readonly="true">'+jela.name+'</li>');
-					});
-					
-					$.ajax({
-						type: 'POST',
-						contentType : 'application/json',
-						dataType : 'json',
-						data : data2,
-						url : '/providerController/uzmiPonudu',
-						success : function(ponuda){
-							$('#krajPonude').val(ponuda.endDate);
-							$('#porudzbenicaOffer').val(ponuda.id);
-							$('#porudzbenicaRestoran').val(ponuda.restaurant);
-							
-							for(var i=0;i<ponuda.drinks.length;i++) {
-								document.getElementById('drink_'+ponuda.drinks[i]).checked = true;
-							}
-							
-							for(var i=0;i<ponuda.meals.length;i++) {
-								document.getElementById('jelo_'+ponuda.meals[i]).checked = true;
-							}
-							
-						},
-						error : function(XMLHttpRequest, textStatus, errorThrown) {
-							alert("Admin ERROR: " + errorThrown);
-						}	
-					});
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Admin ERROR: " + errorThrown);
-				}	
-			});
-		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
-		}	
-	});*/
 	
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -469,13 +423,24 @@ $(document).on('submit','#submitDodajPorudzbenicu',function(e){
 	}else if(price == ""){
 		alert("Morate uneti cenu!");
 	}else{
+		/*String endDate, Long foodOrDrink, String flag, Restaurant restaurant, int amount*/
+		var offer = JSON.stringify({
+			"id" : offer,
+			"endDate" : "",
+			"foodOrDrink" : 0,
+			"flag" : "",
+			"restaurant" : null,
+			"amount" : 0
+		});
+		
+		var obj = JSON.parse(offer);
 		
 		var data2 = JSON.stringify({
-			"offer" : offer,
-			"restaurant" : restaurant,
+			"offer" : obj,
+			"restaurant" : null,
 			"timeDeliver" : days,
 			"price" : price,
-			"provider" : "",
+			"provider" : null,
 			"flag" : 0
 		});
 		
@@ -514,11 +479,12 @@ $(document).on('submit','#submitIzmeniPorudzbenicu',function(e){
 		
 		var data2 = JSON.stringify({
 			"id" : id,
-			"offer" : offer,
-			"restaurant" : restaurant,
+			"offer" : null,
+			"restaurant" : null,
 			"timeDeliver" : days,
 			"price" : price,
-			"flag" : 0
+			"flag" : 0,
+			"provider" : null
 		});
 		
 		$.ajax({
@@ -555,17 +521,16 @@ $(document).on('click','#spisakPonuda', function(e){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,ponuda){
 				
-				$('#tabelaPrikaz').append('<tr id="nesto"><td>'+ponuda.offer+'</td><td>'+ponuda.restaurant+'</td><td>'
-						+ponuda.timeDeliver+'</td><td>'+ponuda.price+'</td></tr>');
-				
 				if(ponuda.flag==ponuda.provider){
-					$('#nesto').append('<td>prihvacena</td>');
+				$('#tabelaPrikaz').append('<tr id="nesto"><td>'+ponuda.offer.id+'</td><td>'+ponuda.restaurant.name+'</td><td>'
+						+ponuda.timeDeliver+'</td><td>'+ponuda.price+'</td><td>prihvacena</td></tr>');
 				}else if( ponuda.flag!=ponuda.provider && ponuda.flag!=0)
 			    {
-					$('#nesto').append('<td>odbijena</td>');
+					$('#tabelaPrikaz').append('<tr id="nesto"><td>'+ponuda.offer.id+'</td><td>'+ponuda.restaurant.name+'</td><td>'
+						+ponuda.timeDeliver+'</td><td>'+ponuda.price+'</td><td>odbijeno</td></tr>');
 			    }else{
-			    	$('#nesto').append('<td>cekanje</td>');
-			    }
+					$('#tabelaPrikaz').append('<tr id="nesto"><td>'+ponuda.offer.id+'</td><td>'+ponuda.restaurant.name+'</td><td>'
+							+ponuda.timeDeliver+'</td><td>'+ponuda.price+'</td><td>cekanje</td></tr>');}
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {

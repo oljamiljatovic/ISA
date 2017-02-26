@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.service;
 import java.util.ArrayList;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 
 public interface OfferService {
 
@@ -12,7 +13,7 @@ public interface OfferService {
 	
 	public Offer getOffer(Long id);
 	
-	public ArrayList<Offer> getOffersByRestaurant(Long id);
+	public ArrayList<Offer> getOffersByRestaurant(Restaurant id);
 	
 	public void delete(Long id);
 }

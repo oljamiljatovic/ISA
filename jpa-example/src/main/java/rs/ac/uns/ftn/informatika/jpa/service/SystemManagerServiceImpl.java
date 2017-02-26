@@ -22,4 +22,9 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 		return this.smRepository.save(manag);
 	}
 
+	@Override
+	public SystemManager getManager(Long id) {
+		return this.smRepository.findOne(id);
+	}
+
 }

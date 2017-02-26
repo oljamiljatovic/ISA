@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.repository.OfferRepository;
 
 
@@ -33,7 +34,7 @@ public class OfferServiceImpl implements OfferService {
 	}
 
 	@Override
-	public ArrayList<Offer> getOffersByRestaurant(Long id) {
+	public ArrayList<Offer> getOffersByRestaurant(Restaurant id) {
 		// TODO Auto-generated method stub
 		return this.offerRepository.findByRestaurant(id);
 	}

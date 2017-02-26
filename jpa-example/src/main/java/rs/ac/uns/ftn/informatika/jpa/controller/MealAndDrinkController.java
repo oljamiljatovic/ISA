@@ -74,17 +74,14 @@ public class MealAndDrinkController {
 		Provider providerr = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = rm.getRestaurant();
 			drinks = this.drinkService.getDrinksByRestaurant(r);
 		}else if(u.getRole().equals("waiter") || u.getRole().equals("barman")){
 			employee = employeeService.findById(u.getId());
-			Restaurant rest = this.restaurantService.getRestaurant(employee.getRestaurant());
-			drinks = this.drinkService.getDrinksByRestaurant(rest);
+			drinks = this.drinkService.getDrinksByRestaurant(employee.getRestaurant());
 		}else if(u.getRole().equals("provider")){
 			providerr = this.providerService.getProvider(u.getEmail());
-			Restaurant rest = this.restaurantService.getRestaurant(providerr.getRestaurant());
-			drinks = this.drinkService.getDrinksByRestaurant(rest);
+			drinks = this.drinkService.getDrinksByRestaurant(providerr.getRestaurant());
 		}
 		
 		return new ResponseEntity<ArrayList<Drink>>(drinks, HttpStatus.OK);
@@ -127,8 +124,7 @@ public class MealAndDrinkController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		drink.setRestaurant(r);
 		this.drinkService.addDrink(drink);
@@ -153,17 +149,14 @@ public class MealAndDrinkController {
 		Provider providerr = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = rm.getRestaurant();
 			meals = this.mealService.getMealsByRestaurant(r);
 		}else if(u.getRole().equals("waiter") || u.getRole().equals("cook") || u.getRole().equals("saladCook") || u.getRole().equals("grilledCook")){
 			employee = employeeService.findById(u.getId());
-			Restaurant rest = this.restaurantService.getRestaurant(employee.getRestaurant());
-			meals = this.mealService.getMealsByRestaurant(rest);
+			meals = this.mealService.getMealsByRestaurant(employee.getRestaurant());
 		}else if(u.getRole().equals("provider")){
 			providerr = this.providerService.getProvider(u.getEmail());
-			Restaurant rest = this.restaurantService.getRestaurant(providerr.getRestaurant());
-			meals = this.mealService.getMealsByRestaurant(rest);
+			meals = this.mealService.getMealsByRestaurant(providerr.getRestaurant());
 		}
 		return new ResponseEntity<ArrayList<Meal>>(meals, HttpStatus.OK);
 	}
@@ -206,8 +199,7 @@ public class MealAndDrinkController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		meal.setRestaurant(r);
 		this.mealService.addMeal(meal);
@@ -230,10 +222,9 @@ public class MealAndDrinkController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
-		offer.setRestaurant(r.getId());
+		offer.setRestaurant(r);
 		this.offerService.addOffer(offer);
 		return new ResponseEntity<Offer>(offer, HttpStatus.OK);
 	}

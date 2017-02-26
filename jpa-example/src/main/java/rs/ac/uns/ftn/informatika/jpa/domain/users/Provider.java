@@ -7,8 +7,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 
 @Entity
@@ -27,8 +30,9 @@ public class Provider extends User implements Serializable{
 	private String address;
 	@Column(nullable = false)
 	private String contact;
-	@Column(nullable = false)
-	private Long restaurant;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 	@Column(nullable = false)
 	private String logFirstTime;
 	
@@ -36,7 +40,7 @@ public class Provider extends User implements Serializable{
 	}
 	
 	public Provider(String name, String surname, String role, String address, String email, 
-		String contact, String password, Long restaurant, String accept, String logFirstTime) {
+		String contact, String password, Restaurant restaurant, String accept, String logFirstTime) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -90,12 +94,11 @@ public class Provider extends User implements Serializable{
 		this.contact = contact;
 	}
 
-	public Long getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
-
-	@OneToOne
-	public void setRestaurant(Long restaurant) {
+	
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 

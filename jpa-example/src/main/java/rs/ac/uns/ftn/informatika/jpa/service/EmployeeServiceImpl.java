@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
-import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.repository.EmployeeRepository;
-import rs.ac.uns.ftn.informatika.jpa.repository.GuestRepository;
 
 @Service
 @Transactional
@@ -30,13 +29,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public ArrayList<Employee> getEmployeesOfRestaurant(Long rest) {
+	public ArrayList<Employee> getEmployeesOfRestaurant(Restaurant rest) {
 		
 		return this.employeeRepository.findByRestaurant(rest);
 	}
 
 	@Override
-	public ArrayList<Employee> getWaitersOfRestaurant(String role, Long id) {
+	public ArrayList<Employee> getWaitersOfRestaurant(String role, Restaurant id) {
 		return this.employeeRepository.findByRoleAndRestaurant(role, id);
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
-import rs.ac.uns.ftn.informatika.jpa.repository.ManagerRepository;
+import rs.ac.uns.ftn.informatika.jpa.repository.RestaurantManagerRepository;
 import rs.ac.uns.ftn.informatika.jpa.repository.RestaurantRepository;
 
 @Service
@@ -17,7 +17,7 @@ import rs.ac.uns.ftn.informatika.jpa.repository.RestaurantRepository;
 public class ManagerServiceImpl implements ManagerService {
 	
 	@Autowired
-	private ManagerRepository managerRepository;
+	private RestaurantManagerRepository managerRepository;
 	
 	@Override
 	public RestaurantManager addManager(RestaurantManager manag) {

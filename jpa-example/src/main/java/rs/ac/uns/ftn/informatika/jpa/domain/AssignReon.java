@@ -22,20 +22,6 @@ public class AssignReon implements Serializable{
 	@Id
     @GeneratedValue
 	private Long id;
-	
-	
-	/*@Column(nullable = false)
-	private Long waiter_id;
-	@Column(nullable = false)
-	private String waiter_name;
-	@Column(nullable = false)
-	private Long reon_id;
-	@Column(nullable = false)
-	private String reon_name;
-	@Column(nullable = false)
-	private Long restaurant;*/
-	
-
 	@OneToOne
 	@JoinColumn(name="waiter")
 	private Employee waiter;
@@ -49,8 +35,6 @@ public class AssignReon implements Serializable{
 	public AssignReon() {
 		
 	}
-	
-	
 
 	public AssignReon(Long id, Employee waiter, Reon reon, Restaurant restaurant) {
 		super();

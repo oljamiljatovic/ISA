@@ -67,8 +67,7 @@ public class ScheduleAndReonController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		
 		reon.setRestaurant(r);
@@ -96,8 +95,7 @@ public class ScheduleAndReonController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		ArrayList<Reon> ar = this.reonService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<Reon>>(ar, HttpStatus.OK);
@@ -134,8 +132,7 @@ public class ScheduleAndReonController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		
 		reon = this.reonService.findOne(reon.getId());
@@ -169,8 +166,7 @@ public class ScheduleAndReonController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		
 		Employee e = this.employeeService.findById(ws.getWorker().getId());
@@ -195,8 +191,7 @@ public class ScheduleAndReonController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		ArrayList<WorkSchedule> fs = this.workScheduleService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<WorkSchedule>>(fs, HttpStatus.OK);
@@ -239,8 +234,7 @@ public class ScheduleAndReonController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 			reon.setRestaurant(r);
 		}
 		Employee e = this.employeeService.findById(reon.getWaiter().getId());
@@ -266,8 +260,7 @@ public class ScheduleAndReonController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		ArrayList<AssignReon> ar = this.assignReonService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<AssignReon>>(ar, HttpStatus.OK);

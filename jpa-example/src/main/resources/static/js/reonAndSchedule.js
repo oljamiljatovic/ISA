@@ -57,7 +57,7 @@ $(document).on('click','#submitSmene', function(e){
 			"type" : "",
 			"confNumber" : "",
 			"shoeNumber" : "",
-			"restaurant" : "",
+			"restaurant" : null,
 			"email" : "",
 			"accept" : "",
 			"password" : ""
@@ -308,7 +308,7 @@ $(document).on('click','#submitDodelaReona', function(e){
 			"type" : "",
 			"confNumber" : "",
 			"shoeNumber" : "",
-			"restaurant" : "",
+			"restaurant" : null,
 			"email" : "",
 			"accept" : "",
 			"password" : ""

@@ -1,12 +1,9 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,8 +58,7 @@ public class RestaurantManagerController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
@@ -82,8 +78,7 @@ public class RestaurantManagerController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		Long id = r.getId();
 		rest.setId(id);
@@ -136,10 +131,9 @@ public class RestaurantManagerController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
-		empl.setRestaurant(r.getId());
+		empl.setRestaurant(r);
 		this.employeeService.addEmployee(empl);
 		return new ResponseEntity<Employee>(empl, HttpStatus.OK);
 	}
@@ -159,10 +153,9 @@ public class RestaurantManagerController {
 		RestaurantManager rm = null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
-		prov.setRestaurant(r.getId());
+		prov.setRestaurant(r);
 		this.providerService.addProvider(prov);
 		return new ResponseEntity<Provider>(prov, HttpStatus.OK);
 	}
@@ -181,10 +174,9 @@ public class RestaurantManagerController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
-		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r.getId());
+		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r);
 		
 		return new ResponseEntity<ArrayList<Employee>>(temp, HttpStatus.OK);
 	}
@@ -203,10 +195,9 @@ public class RestaurantManagerController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
-		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r.getId());
+		ArrayList<Employee> temp= this.employeeService.getEmployeesOfRestaurant(r);
 		ArrayList<Employee> temp2 = new ArrayList<Employee>();
 		
 		for(int i=0; i<temp.size(); i++){
@@ -231,8 +222,7 @@ public class RestaurantManagerController {
 		RestaurantManager rm=null;
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
-			Long idRest = rm.getRestaurant();
-			r = restaurantService.getRestaurant(idRest);
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		}
 		ArrayList<Reon> t= this.reonService.getReonsOfRestorans(r);
 		

@@ -166,7 +166,7 @@ $(document).on('submit','#izmenaMenadzera',function(e){
 			"email" : email,
 			"contact" : contact,
 			"password" : password,
-			"restaurant" : "",
+			"restaurant" : null,
 			"role" : "restaurantManager",
 			"accept" : "true"
 		});
@@ -246,7 +246,7 @@ $(document).on('click','#submitNewEmployee',function(e){
 			"dateBirth" : date,
 			"confNumber" : konfekc,
 			"shoeNumber" : obuca,
-			"restaurant" : rest,
+			"restaurant" : null,
 			"email" : email,
 			"accept" : accept,
 			"password" : password,
@@ -308,7 +308,7 @@ $(document).on('click','#submitNewProvider',function(e){
 		"email" : email,
 		"contact" : contact,
 		"password" : password,
-		"restaurant" : restaurant,
+		"restaurant" : null,
 		"role" : "provider",
 		"accept" : "true",
 		"logFirstTime" : logFirstTime
@@ -366,8 +366,6 @@ $(document).on('click','#dodajPonudu',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,pice){
-				/*$('#spisakPica').append('<li class="caocao"><input type="checkbox" value="pice_'+pice.id+'" id="'+
-						pice.id+'">'+pice.name+'</li>');*/
 
 				$('#foodAndDrink').append('<option value = "pice_' +pice.id
 						+'" >' + pice.name + '</option>');
@@ -385,8 +383,6 @@ $(document).on('click','#dodajPonudu',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,jela){
-				/*$('#spisakJela').append('<li class="caocao"><input type="checkbox" value="jelo_'+jela.id+'" id="'+
-						jela.id+'">'+jela.name+'</li>');*/
 				
 				$('#foodAndDrink').append('<option value = "jelo_' +jela.id
 						+'" >' + jela.name + '</option>');
@@ -423,7 +419,7 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 		"endDate" : datum,
 		"foodOrDrink" : foodAndDrink,
 		"flag" : flag,
-		"restaurant" : restaurant,
+		"restaurant" : null,
 		"amount" : amount
 	});
 	$.ajax({
@@ -492,7 +488,7 @@ $(document).on('submit','#formVidiPonude',function(e){
 		"endDate" : "",
 		"foodOrDrink" : 0,
 		"flag" : "",
-		"restaurant" : 0,
+		"restaurant" : null,
 		"amount" : 0
 	});
 	
@@ -506,16 +502,16 @@ $(document).on('submit','#formVidiPonude',function(e){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,porudz){
 
-				$('#tabelaPrikaz').append('<tr><td>'+porudz.price+'</td><td>'+porudz.timeDeliver+'</td><td>'+porudz.provider+'</td>'+
+				$('#tabelaPrikaz').append('<tr><td>'+porudz.price+'</td><td>'+porudz.timeDeliver+'</td><td>'+porudz.provider.name+'</td>'+
 						'<td><form id="formPrihvatiPonudu" method="get" action="">'+
 							'<input type="submit" value="Prihvati ponudu">' +
 							'<input type="hidden" id="porudzId" value='+porudz.id+'>'+
 							'<input type="hidden" id="porudzTime" value='+porudz.timeDeliver+'>'+
 							'<input type="hidden" id="porudzPrice" value='+porudz.price+'>'+
 							'<input type="hidden" id="porudzFlag" value='+porudz.flag+'>'+
-							'<input type="hidden" id="porudzOffer" value='+porudz.offer+'>'+
-							'<input type="hidden" id="porudzRestaurant" value='+porudz.restaurant+'>'+
-							'<input type="hidden" id="porudzProvider" value='+porudz.provider+'>'+
+							'<input type="hidden" id="porudzOffer" value='+porudz.offer.id+'>'+
+							'<input type="hidden" id="porudzRestaurant" value='+porudz.restaurant.id+'>'+
+							'<input type="hidden" id="porudzProvider" value='+porudz.provider.id+'>'+
 							'</form></td></tr>');
 			});
 		},
@@ -537,11 +533,20 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 	var offer = $(this).find("input[id='porudzOffer']").val();
 	var restaurant= $(this).find("input[id='porudzRestaurant']").val();
 	
+	var data = JSON.stringify({
+		"id" : offer,
+		"endDate" : "",
+		"foodOrDrink" : "",
+		"flag" : "",
+		"restaurant" : null,
+		"amount" : 0
+	});
 	
+	var obj = JSON.parse(data);
 	var data2 = JSON.stringify({
 		"id" : id,
-		"offer" : offer,
-		"restaurant" : restaurant,
+		"offer" : obj,
+		"restaurant" : null,
 		"timeDeliver" : timeDeliver,
 		"price" : price,
 		"flag" : flag

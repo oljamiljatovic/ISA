@@ -76,7 +76,7 @@ public class RatingAllController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		RestaurantManager rm= this.managerService.getManager(u.getEmail());
-		ArrayList<RatingAll> temp = this.ratingAllService.findByRestaurant(rm.getRestaurant());
+		ArrayList<RatingAll> temp = this.ratingAllService.findByRestaurant(rm.getRestaurant().getId());
 		
 		int br = temp.size();
 		int suma = 0;

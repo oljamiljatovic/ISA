@@ -107,7 +107,7 @@ $(document).on('submit','#prihodiKonob',function(e){
 		"dateBirth" : "",
 		"confNumber" : "",
 		"shoeNumber" : "",
-		"restaurant" : "",
+		"restaurant" : null,
 		"email" : "",
 		"accept" : "",
 		"password" : "",

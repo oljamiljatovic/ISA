@@ -41,6 +41,8 @@ public class SystemManagerController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RestaurantManager> addManager(@RequestBody RestaurantManager manag)  
 			throws Exception {
+		Restaurant rest = this.restaurantService.getRestaurant(manag.getRestaurant().getId());
+		manag.setRestaurant(rest);
 		this.managerService.addManager(manag);
 		return new ResponseEntity<RestaurantManager>(manag, HttpStatus.OK);
 	}
