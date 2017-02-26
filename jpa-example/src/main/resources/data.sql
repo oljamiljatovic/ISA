@@ -93,26 +93,7 @@ insert into tablee(reon,restaurant) values (4,1)
 insert into tablee(reon,restaurant) values (4,1)
 
 
-insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) values (1,3,10,'2017-02-10','02:00',2)
-insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) values (1,4,16,'2017-02-17','01:00',3)
-insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) values (1,2,8,'2017-02-06','01:00',4)
-insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) values (1,2,7,'2017-02-06','02:00',3)
-insert into reserved_tables(id_restaurant,id_reon,id_table,date,time,duration) values (1,4,17,'2017-02-06','01:00',2)
 
--------------desanka je ovo dodala
-insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-10','02:00',2)
-insert into reservation_reserved_tables(reservation_id,table_id) values (1,1)
-insert into reservation(id_guest,id_restaurant,date,time,duration) values (5,2,'2017-02-26','12:00',2)
-insert into reservation_reserved_tables(reservation_id,table_id) values (2,3)
-insert into reservation_reserved_tables(reservation_id,table_id) values (2,4)
-insert into reservation_reserved_tables(reservation_id,table_id) values (2,5)
-insert into accepted_friends(reservation_id,friend_id) values (1,3)
-insert into accepted_friends(reservation_id,friend_id) values (1,5)
-insert into accepted_friends(reservation_id,friend_id) values (2,1)
-insert into rating_all(reservation_id,guest_id,restaurant_id,restaurant_rating,service_rating,meal_rating)values(1,1,1,2,3,4)
-insert into rating_all(reservation_id,guest_id,restaurant_id,restaurant_rating,service_rating,meal_rating)values(2,5,1,5,1,3)
-insert into rating_all(reservation_id,guest_id,restaurant_id,restaurant_rating,service_rating,meal_rating)values(2,1,2,4,2,5)
--------------
 
 insert into assign_reon(id,waiter,reon,restaurant) values (1,8,1,1)
 insert into assign_reon(id,waiter,reon,restaurant) values (2,11,2,1)
@@ -139,6 +120,29 @@ insert into meal(name, price,description,restaurant) values ('biftek',150,'meso'
 insert into meal(name, price,description,restaurant) values ('musaka',200,'glavno jelo',1)
 insert into meal(name, price,description,restaurant) values ('meso',90,'glavno jelo',1)
 insert into meal(name, price,description,restaurant) values ('grasak',60,'corba',1)
+
+
+
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,10,'2017-02-10','02:00',2)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,16,'2017-02-17','01:00',3)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,8,'2017-02-06','01:00',4)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,7,'2017-02-06','02:00',3)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,17,'2017-02-06','01:00',2)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,17,'2017-02-06','09:00',2)
+
+insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-10','02:00',2)
+insert into reservation_reserved_tables(reservation_id,table_id) values (1,1)
+insert into accepted_friends(reservation_id,friend_id) values (1,3)
+insert into accepted_friends(reservation_id,friend_id) values (1,5)
+
+
+insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-11','02:00',2)
+insert into reservation_reserved_tables(reservation_id,table_id) values (2,5)
+insert into reservation_reserved_tables(reservation_id,table_id) values (2,3)
+insert into reservation_reserved_tables(reservation_id,table_id) values (2,4)
+insert into accepted_friends(reservation_id,friend_id) values (2,3)
+insert into accepted_friends(reservation_id,friend_id) values (2,5)
+
 
 -- narudzbine
 INSERT INTO orderr(waiter,tablee,barman_state,cook_state,time_of_order,reservation,restaurant) VALUES (8,1,'kreirana','kreirana','2017-02-10 03:18:41.972',1,1)
