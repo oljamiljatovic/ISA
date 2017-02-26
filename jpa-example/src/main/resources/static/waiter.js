@@ -81,7 +81,7 @@ function showOrders(){
 							}
 						}
 						
-						var desk = order.table_id;
+						var desk = order.tablee.id;
 						var forma = $('<form method="post" class="orderForm" action=""></form>');
 						var formaBill = $('<form method="post" class="orderBill" action=""></form>');
 						var formaAdd = $('<form method="post" class="orderAdd" action=""></form>');
@@ -408,7 +408,7 @@ $(document).on('click','#tables',function(e){
 							var assignReons = data == null ? [] : (data instanceof Array ? data : [ data ]);
 							$.each(assignReons, function(index1,assignReon){
 								$.each(reons, function(index2,reon){
-									if(reon.id==assignReon.reon_id){
+									if(reon.id==assignReon.reon.id){
 										Command: toastr["info"]("Reon: "+reon.name, "Dodjeljeni reon!")
 										message();
 										$("button."+reon.name).css("background-color", "blue");
@@ -525,7 +525,8 @@ $(document).on('click', '#addOnOrder', function(e) {
 			"cook_state" : "kreirana",
 			"timeOfOrder" : timeOfOrder,
 			"drinks" : drinks,
-			"meals" : meals
+			"meals" : meals,
+			"reservation" : "1"
 		}),
 		success : function(data){	
 			Command: toastr["success"]("Uspješno izvršeno dodavanje na postojeću porudžbinu.", "Odlično!")
@@ -651,7 +652,8 @@ $(document).on('click', '#update', function(e) {
 			"cook_state" : "kreirana",
 			"timeOfOrder" : timeOfOrder,
 			"drinks" : drinks,
-			"meals" : meals
+			"meals" : meals,
+			"reservation" : "1"
 		}),
 		success : function(data){	
 			Command: toastr["success"]("Uspješno izvršena izmjena porudžbine.", "Odlično!")
@@ -732,8 +734,13 @@ $(document).on('click', '#bill', function(e) {
 							"order_id" : order_id
 						}),
 						success : function(data){
-							Command: toastr["success"]("Uspješno kreiran račun.", "Odlično!")
-							message();
+							if(data==null){
+								Command: toastr["error"]("Niste zaduženi za datu porudžbinu!", "Greška!")
+								message();
+							}else{
+								Command: toastr["success"]("Uspješno kreiran račun.", "Odlično!")
+								message();
+							}
 						},
 
 						error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -823,6 +830,8 @@ $(document).on('click','#addOrder',function(e){
 											'<select id="comboDrinks" multiple="multiple" size="5" style="width:300px"></select>'+
 											'<br/>Jela:'+
 											'<select id="comboMeals" multiple="multiple" size="5" style="width:300px"></select>'+
+											'<br/>Rezervacija:'+
+											'<select id="comboRes" multiple="multiple" size="5" style="width:300px"></select>'+
 											'<br/><input type = "submit" id = "submitOrder" value="Potvrdi" class="btn orange">'+
 											'</form></div></div></div></div>');
 							$.each(allTables, function(index,table){
@@ -872,7 +881,8 @@ $(document).on('click','#submitOrder',function(e){
 			"cook_state" : "kreirana",
 			"timeOfOrder" : timeOfOrder,
 			"drinks" : drinks,
-			"meals" : meals
+			"meals" : meals,
+			"reservation" : "1"
 		}),
 		success : function(data){
 			Command: toastr["success"]("Uspješno dodata porudžbina.", "Odlično!")

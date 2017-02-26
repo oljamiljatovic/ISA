@@ -43,7 +43,7 @@ function showOrders(){
 							meals +=meal.name+",";
 		    	  		});
 						var meals = meals.substring(0,meals.length-1);
-						var desk = order.table_id;
+						var desk = order.tablee.id;
 						if(meals!=""){
 							var forma = $('<form method="post" class="orderForm" action=""></form>');
 							var formaSignal = $('<form method="post" class="signalMeal" action=""></form>');

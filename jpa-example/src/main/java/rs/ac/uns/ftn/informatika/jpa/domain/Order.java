@@ -14,8 +14,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 
 @Entity
 @Table(name="orderr")
@@ -26,17 +28,21 @@ public class Order {
 	@Column(name="order_id", unique=true, nullable=false)
 	private Long id;
 	
-	@Column(name="waiter_id",nullable = false)
-	private Long waiter_id;
+	@ManyToOne
+	@JoinColumn(name="waiter")
+	private Employee waiter;
 	
-	@Column(name="table_id",nullable = false)
-	private Long table_id;
+	@ManyToOne
+	@JoinColumn(name="tablee")
+	private Tablee tablee;
 	
-	@Column(name="reservation",nullable = true)
-	private Long reservation;
+	@ManyToOne
+	@JoinColumn(name="reservation")
+	private Reservation reservation;
 	
-	@Column(name="restaurant",nullable = false)
-	private Long restaurant;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 
 	//stanja: kreirana, preuzeo_sanker, gotovo_pice, kraj
 	@Column(name="barman_state",nullable = false)
@@ -48,9 +54,6 @@ public class Order {
 	
 	@Column(name="time_of_order",nullable = false)
 	private Date timeOfOrder;
-	
-	/*private ArrayList<Meal> meals = new ArrayList<Meal>();
-	private ArrayList<Drink> drinks = new ArrayList<Drink>();*/
 
 	@ManyToMany(cascade=CascadeType.ALL) 
 	@JoinTable(name="meal_order", joinColumns=@JoinColumn(name="order_id"),
@@ -65,21 +68,7 @@ public class Order {
 	//private ArrayList<String> meals = new ArrayList<String>();
 
 	public Order(){}
-	
-	public Order(Long waiter_id,Long table_id,Long restaurant){
-		this.waiter_id = waiter_id;
-		this.table_id = table_id;
-		this.restaurant = restaurant;
-	}
-	
-	public Long getReservation() {
-		return reservation;
-	}
 
-	public void setReservation(Long reservation) {
-		this.reservation = reservation;
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -88,73 +77,36 @@ public class Order {
 		this.id = id;
 	}
 
-	public Long getWaiter_id() {
-		return waiter_id;
+	public Employee getWaiter() {
+		return waiter;
 	}
 
-	public void setWaiter_id(Long waiter_id) {
-		this.waiter_id = waiter_id;
+	public void setWaiter(Employee waiter) {
+		this.waiter = waiter;
 	}
 
-	public Long getTable_id() {
-		return table_id;
+	public Tablee getTablee() {
+		return tablee;
 	}
 
-	public void setTable_id(Long table_id) {
-		this.table_id = table_id;
-	}
-
-	public Date getTimeOfOrder() {
-		return timeOfOrder;
-	}
-
-	public void setTimeOfOrder(Date timeOfOrder) {
-		this.timeOfOrder = timeOfOrder;
-	}
-
-	/*@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.MERGE)
-	@JoinTable(name="meal_order", joinColumns=@JoinColumn(name="order_id"),
-	inverseJoinColumns=@JoinColumn(name="meal_id"))
-	public ArrayList<Meal> getMeals() {
-		return meals;
-	}
-	
-	public void setMeals(ArrayList<Meal> meals) {
-		this.meals = meals;
-	}
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.MERGE)
-	@JoinTable(name="drink_order", joinColumns=@JoinColumn(name="order_id"),
-	inverseJoinColumns=@JoinColumn(name="drink_id"))
-	public ArrayList<Drink> getDrinks() {
-		return drinks;
-	}
-
-	public void setDrinks(ArrayList<Drink> drinks) {
-		this.drinks = drinks;
-	}*/
-	/*public ArrayList<String> getDrinks() {
-		return drinks;
-	}
-	
-	public void setDrinks(ArrayList<String> drinks) {
-		this.drinks = drinks;
-	}
-
-	public ArrayList<String> getMeals() {
-		return meals;
-	}
-
-	public void setMeals(ArrayList<String> meals) {
-		this.meals = meals;
-	}*/
-
-	public Long getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(Long restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
+	}
+
+	public void setTablee(Tablee tablee) {
+		this.tablee = tablee;
+	}
+
+	public Reservation getReservation() {
+		return reservation;
+	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
 	}
 
 	public String getBarman_state() {
@@ -173,6 +125,14 @@ public class Order {
 		this.cook_state = cook_state;
 	}
 
+	public Date getTimeOfOrder() {
+		return timeOfOrder;
+	}
+
+	public void setTimeOfOrder(Date timeOfOrder) {
+		this.timeOfOrder = timeOfOrder;
+	}
+
 	public List<Meal> getMeals() {
 		return meals;
 	}
@@ -188,8 +148,4 @@ public class Order {
 	public void setDrinks(List<Drink> drinks) {
 		this.drinks = drinks;
 	}
-
-	
-	
-	
 }
