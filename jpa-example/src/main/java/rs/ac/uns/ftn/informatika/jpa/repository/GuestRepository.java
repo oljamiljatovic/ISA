@@ -34,4 +34,5 @@ public interface GuestRepository extends PagingAndSortingRepository<Guest, Long>
 	 @Query("select r from Guest r where r.name = ?1 and r.surname = ?2")
 	 List<Guest> findGuestsByNameAndSurname(String name, String surname);
 	 
+	 
 }

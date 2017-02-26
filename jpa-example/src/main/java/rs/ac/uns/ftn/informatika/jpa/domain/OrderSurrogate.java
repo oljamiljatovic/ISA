@@ -11,6 +11,7 @@ public class OrderSurrogate {
 	private Long waiter_id;	
 	private Long table_id;
 	private Long restaurant;	
+	private Long reservation;	
 	private String barman_state;
 	private String cook_state;	
 	private Date timeOfOrder;
@@ -38,6 +39,14 @@ public class OrderSurrogate {
 		this.cook_state = cook_state;
 	}
 
+
+	public Long getReservation() {
+		return reservation;
+	}
+
+	public void setReservation(Long reservation) {
+		this.reservation = reservation;
+	}
 
 	public Date getTimeOfOrder() {
 		return timeOfOrder;

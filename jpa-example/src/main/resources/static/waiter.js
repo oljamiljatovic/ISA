@@ -1216,3 +1216,4 @@ function formToJSON(username,password){
 		"username" : username,
 		"password" : password
 	});
+}
