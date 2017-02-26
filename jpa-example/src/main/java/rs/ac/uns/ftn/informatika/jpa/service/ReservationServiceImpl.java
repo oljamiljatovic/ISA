@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rs.ac.uns.ftn.informatika.jpa.domain.Invitation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
-import rs.ac.uns.ftn.informatika.jpa.domain.User;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.repository.ReservationRepository;
 
 @Service
@@ -33,7 +33,8 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 	
 	@Override
-	public Reservation findReservationByAll(Long idGuest, Long idRestaurant,String date, String time) {
+	public Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant,String date, String time) {
+		//System.out.println("SERVICE id guest "+idGuest +"idRest "+ idRestaurant );
 		return reservationRepository.findReservationByAll(idGuest,idRestaurant,date,time);
 	
 	}

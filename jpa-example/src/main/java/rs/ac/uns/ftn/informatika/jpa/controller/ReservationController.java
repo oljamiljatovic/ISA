@@ -60,26 +60,34 @@ public class ReservationController {
 	@RequestBody Reservation reservation ,@PathVariable Long idStola)  throws Exception {
 		
 		Tablee foundTable = tableService.findById(idStola);
+		System.out.println("nasao table"+ foundTable.getId());
 		Reservation newReservation = null;
 
 		
 		Long idChange = (long) -1;
 		Reservation neww = null;
 		
-		if(reservationService.findReservationByAll(reservation.getIdGuest().getId(),reservation.getIdRestaurant().getId(),reservation.getDate(),reservation.getTime()) == null){
+		
+		System.out.println("REZERVACIJA"+ reservation.getIdGuest().getId() + " rest"+ reservation.getIdRestaurant().getId());
+		
+		if(reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()) == null){
+			System.out.println("Dodaje");
 			if(reservation.getReservedTables() == null){
+				System.out.println("null je lista");
 				List<Tablee> pomocna = new ArrayList<Tablee>();
 				pomocna.add(foundTable);
 				reservation.setReservedTables(pomocna);
 			
 			}else{
+				System.out.println("Nije null je lista");
 				List<Tablee> res = reservation.getReservedTables();
 				res.add(foundTable);
 				reservation.setReservedTables(res);
 			}
 			 newReservation = reservationService.createNew(reservation);
 		}else {
-			neww = reservationService.findReservationByAll(reservation.getIdGuest().getId(),reservation.getIdRestaurant().getId(),reservation.getDate(),reservation.getTime()); 
+			System.out.println("Update");
+			neww = reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()); 
 			
 			List<Tablee> res = neww.getReservedTables();
 			res.add(foundTable);
@@ -88,7 +96,7 @@ public class ReservationController {
 			
 		}
 		
-
+		System.out.println("Zavrsio je uspjesno");
 		return new ResponseEntity<Reservation>( newReservation, HttpStatus.OK);
 	
 	}
@@ -187,8 +195,7 @@ public class ReservationController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Reservation> getReservationById(
 			@PathVariable Long idReservation)  throws Exception {
-		
-		
+	
 		Reservation reservation = reservationService.findOne(idReservation);
 		
 		return new ResponseEntity<Reservation>( reservation, HttpStatus.OK);
@@ -204,8 +211,7 @@ public class ReservationController {
 	public ResponseEntity<Guest> getSenderById(
 			@PathVariable Long idSender)  throws Exception {
 		
-		Guest sender = guestService.findOne(idSender);
-		
+	 	Guest sender = guestService.findOne(idSender);
 		return new ResponseEntity<Guest>( sender, HttpStatus.OK);
 	
 	}
