@@ -7,8 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Drink implements Serializable{
@@ -25,7 +24,7 @@ public class Drink implements Serializable{
 	private String description;
 	@Column(nullable = false)
 	private float price;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="restaurant")
 	private Restaurant restaurant;
 	

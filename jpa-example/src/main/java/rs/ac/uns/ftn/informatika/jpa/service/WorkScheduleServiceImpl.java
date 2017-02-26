@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
 import rs.ac.uns.ftn.informatika.jpa.repository.WorkScheduleRepository;
 
@@ -37,15 +38,14 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
 	}
 
 	@Override
-	public ArrayList<WorkSchedule> findByRest(Long rest) {
-		return this.workScheduleRepository.findByRest(rest);
+	public ArrayList<WorkSchedule> findByRestaurant(Restaurant rest) {
+		return this.workScheduleRepository.findByRestaurant(rest);
 	}
 
 	@Override
 	public void update(WorkSchedule ws) {
 		
-		this.workScheduleRepository.updateMeal(ws.worker_id, ws.dateStart, ws.dateEnd, 
-				ws.shift, ws.getId());
+		this.workScheduleRepository.updateSchedule(ws.dateStart, ws.dateEnd, ws.shift, ws.getId());
 	}
 
 }

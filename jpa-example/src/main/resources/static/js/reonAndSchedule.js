@@ -37,7 +37,6 @@ $(document).on('click','#submitSmene', function(e){
 	e.preventDefault();
 	
 	var id = $('#radnikSifra').val();
-	var worker_name = ""
 	var dateStart = $('#dateStart').val();
 	var dateEnd = $('#dateEnd').val();
 	var smene = $('#radneSmene option:selected').val();
@@ -50,15 +49,28 @@ $(document).on('click','#submitSmene', function(e){
 	}else if(smene ==""){
 		alert("Smena je prazna");
 	}else{
-		
+		var worker = JSON.stringify({
+			"id" : id,
+			"name" : "",
+			"surname" : "",
+			"dateBirth" : "",
+			"type" : "",
+			"confNumber" : "",
+			"shoeNumber" : "",
+			"restaurant" : "",
+			"email" : "",
+			"accept" : "",
+			"password" : ""
+		});
+
+		var obj1 = JSON.parse(worker);
 		
 		var data2 = JSON.stringify({
-			"worker_id" : id,
-			"worker_name" : worker_name,
+			"worker" : obj1,
 			"dateStart" : dateStart,
 			"dateEnd" : dateEnd,
 			"shift" : smene,
-			"rest" : 0
+			"rest" : null
 		});
 		$.ajax({
 			type : 'POST',
@@ -94,14 +106,14 @@ $(document).on('click','#pregledRasporeda',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,smena){
-				$('#tabelaPrikaz').append('<tr><td>'+smena.worker_id+'</td><td>'+smena.worker_name
+				$('#tabelaPrikaz').append('<tr><td>'+smena.worker.id+'</td><td>'+smena.worker.name
 						+'</td><td>'+smena.dateStart+'</td><td>'+smena.dateEnd+'</td><td>'+smena.shift+'</td>'+
 						'<td><form id="formIzbrisiSmenu" method="get" action=""><input type="submit" id="submitIzbrisiSmenu" value="Izbrisi"><input type="hidden" value='
 							+smena.id+'></form></td><td><form id="formIzmeniSmenu" method="get" action="">'+
 							'<input type="submit" value="Izmeni">' +
 							'<input type="hidden" id="idIzmenaId" value='+smena.id+'>'+
-							'<input type="hidden" id="idIzmenaWorker" value='+smena.worker_id+'>'+
-							'<input type="hidden" id="idIzmenaWorkerName" value='+smena.worker_name+'>'+
+							'<input type="hidden" id="idIzmenaWorker" value='+smena.worker.id+'>'+
+							'<input type="hidden" id="idIzmenaWorkerName" value='+smena.worker.name+'>'+
 							'<input type="hidden" id="idIzmenaStart" value='+smena.dateStart+'>'+
 							'<input type="hidden" id="idIzmenaEnd" value='+smena.dateEnd+'>'+
 							'<input type="hidden" id="idIzmenaShift" value='+smena.shift+'>'+
@@ -121,19 +133,17 @@ $(document).on('submit','#formIzbrisiSmenu',function(e){
 	e.preventDefault();
 	
 	var id = $(this).find("input[type=hidden]").val();
-	var worker_name = "";
 	var dateStart = "";
 	var dateEnd = "";
 	var smene = "";
 	
 	var data2 = JSON.stringify({
 		"id" : id,
-		"worker_id" : 0,
-		"worker_name" : worker_name,
+		"worker" : null,
 		"dateStart" : dateStart,
 		"dateEnd" : dateEnd,
 		"shift" : smene,
-		"rest" : 0
+		"rest" : null
 	});
 	
 	$.ajax({
@@ -206,12 +216,11 @@ $(document).on('click','#submitSmeneIzmena', function(e){
 	}else{
 		var data2 = JSON.stringify({
 			"id" : id,
-			"worker_id" : worker_id,
-			"worker_name" : "",
+			"worker" : null,
 			"dateStart" : dateStart,
 			"dateEnd" : dateEnd,
 			"shift" : smene,
-			"rest" : 0
+			"rest" : null
 		});
 		$.ajax({
 			type : 'POST',
@@ -285,9 +294,7 @@ $(document).on('click','#submitDodelaReona', function(e){
 	e.preventDefault();
 
 	var konobar = $('#konobarSifra option:selected').val();
-	var konobar_name = ""
 	var reon = $('#reonOznaka option:selected').val();
-	var reon_name = "";
 	if(konobar == ""){
 		alert("Izaberite konobara!");
 	}else if(reon == ""){
@@ -438,7 +445,7 @@ $(document).on('click','#submitDodajKonfiguraciju',function(e){
 			"name" : name,
 			"location" : location,
 			"numberTable" : number,
-			"restaurant" : restaurant
+			"restaurant" : null
 		});
 		
 		$.ajax({
@@ -508,7 +515,7 @@ $(document).on('submit','#formIzbrisiKonfig',function(e){
 		"name" : 0,
 		"location" : "",
 		"numberTable" : 0,
-		"restaurant" : 0
+		"restaurant" : null
 	});
 	
 	$.ajax({
@@ -578,7 +585,7 @@ $(document).on('click','#submitIzmeniKonfiguraciju', function(e){
 			"name" : name,
 			"location" : location,
 			"numberTable" : number,
-			"restaurant" : 0
+			"restaurant" : null
 		});
 		
 		$.ajax({

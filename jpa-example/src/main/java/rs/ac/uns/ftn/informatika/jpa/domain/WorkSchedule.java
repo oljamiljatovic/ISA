@@ -6,6 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 
 @Entity
 public class WorkSchedule implements Serializable {
@@ -19,30 +24,29 @@ public class WorkSchedule implements Serializable {
 	@Column(unique=true, nullable=false)
 	private Long id;
 	@Column(nullable = false)
-	public String worker_name;
-	@Column(nullable = false)
 	public String dateStart;
 	@Column(nullable = false)
 	public String dateEnd;
 	@Column(nullable = false)
-	public Long worker_id;
-	@Column(nullable = false)
 	public String shift;
-	@Column(nullable = false)
-	public Long rest;
+	@OneToOne
+	@JoinColumn(name="worker")
+	private Employee worker;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 	
 	public WorkSchedule() {
 	}
 	
-	public WorkSchedule(String worker_name, String dateStart, String dateEnd, 
-			Long worker_id, String shift, Long rest) {
+	public WorkSchedule(String dateStart, String dateEnd, String shift, 
+			Restaurant rest, Employee worker) {
 		super();
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
-		this.worker_id = worker_id;
 		this.shift = shift;
-		this.worker_name = worker_name;
-		this.rest = rest;
+		this.worker = worker;
+		this.restaurant = rest;
 	}
 
 	public Long getId() {
@@ -69,14 +73,6 @@ public class WorkSchedule implements Serializable {
 		this.dateEnd = dateEnd;
 	}
 
-	public Long getWorker_id() {
-		return worker_id;
-	}
-
-	public void setWorker_id(Long worker_id) {
-		this.worker_id = worker_id;
-	}
-
 	public String getShift() {
 		return shift;
 	}
@@ -85,22 +81,20 @@ public class WorkSchedule implements Serializable {
 		this.shift = shift;
 	}
 
-	public String getWorker_name() {
-		return worker_name;
+	public Employee getWorker() {
+		return worker;
 	}
 
-	public void setWorker_name(String worker_name) {
-		this.worker_name = worker_name;
+	public void setWorker(Employee worker) {
+		this.worker = worker;
 	}
 
-	public Long getRest() {
-		return rest;
+	public Restaurant getRestaurant() {
+		return restaurant;
 	}
 
-	public void setRest(Long rest) {
-		this.rest = rest;
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
-	
-	
-	
+
 }

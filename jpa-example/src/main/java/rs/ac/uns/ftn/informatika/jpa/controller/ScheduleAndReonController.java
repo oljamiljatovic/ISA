@@ -72,7 +72,7 @@ public class ScheduleAndReonController {
 			r = restaurantService.getRestaurant(idRest);
 		}
 		
-		reon.setRestaurant(r.getId());
+		reon.setRestaurant(r);
 		this.reonService.createReon(reon);
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
@@ -100,7 +100,7 @@ public class ScheduleAndReonController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<Reon> ar = this.reonService.findByRestaurant(r.getId());
+		ArrayList<Reon> ar = this.reonService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<Reon>>(ar, HttpStatus.OK);
 	}
 	
@@ -138,7 +138,7 @@ public class ScheduleAndReonController {
 			r = restaurantService.getRestaurant(idRest);
 		}
 		
-		reon.setRestaurant(r.getId());
+		reon.setRestaurant(r);
 		this.reonService.update(reon);
 		
 		ArrayList<Tablee> table = this.tableService.findByReon(r.getId());
@@ -161,8 +161,21 @@ public class ScheduleAndReonController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> scheduleEmpolyee(@RequestBody WorkSchedule ws)  throws Exception {
 		
-		Employee e = this.employeeService.findById(ws.getWorker_id());
-		ws.setWorker_name(e.getName());
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Restaurant r= null;
+		RestaurantManager rm=null;
+		if(u.getRole().equals("restaurantManager")){
+			rm= this.managerService.getManager(u.getEmail());
+			Long idRest = rm.getRestaurant();
+			r = restaurantService.getRestaurant(idRest);
+		}
+		
+		Employee e = this.employeeService.findById(ws.getWorker().getId());
+		ws.setWorker(e);
+		ws.setRestaurant(r);
 		
 		this.workScheduleService.createSchedule(ws);
 		return new ResponseEntity<WorkSchedule>(ws, HttpStatus.OK);
@@ -185,7 +198,7 @@ public class ScheduleAndReonController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<WorkSchedule> fs = this.workScheduleService.findByRest(r.getId());
+		ArrayList<WorkSchedule> fs = this.workScheduleService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<WorkSchedule>>(fs, HttpStatus.OK);
 	}
 	
@@ -205,6 +218,7 @@ public class ScheduleAndReonController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> updateSchedule(@RequestBody WorkSchedule ws)  throws Exception {
+
 		this.workScheduleService.update(ws);
 		return new ResponseEntity<WorkSchedule>(ws, HttpStatus.OK);
 	}

@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 
 public interface ReonRepository extends PagingAndSortingRepository<Reon, Long> {
 	
-	public ArrayList<Reon> findByRestaurant(Long restaurant);
+	public ArrayList<Reon> findByRestaurant(Restaurant restaurant);
 
 
 	@Modifying

@@ -117,12 +117,12 @@ insert into rating_all(reservation_id,guest_id,restaurant_id,restaurant_rating,s
 insert into assign_reon(id,waiter,reon,restaurant) values (1,8,1,1)
 insert into assign_reon(id,waiter,reon,restaurant) values (2,11,2,1)
 
-insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (1,8,'Zora','prva','2017-02-10','2017-03-11',1)
-insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (2,9,'Sinisa','druga','2017-02-10','2017-03-11',1)
-insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (3,10,'Dana','prva','2017-02-10','2017-03-11',1)
-insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (4,11,'Gavra','druga','2017-02-01','2017-05-01',1)
-insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (5,13,'Jovan','prva','2017-02-01','2017-05-01',1)
-insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (6,16,'Nemanja','prva','2017-01-01','2017-04-01',1)
+insert into work_schedule(id,worker,shift,date_start,date_end,restaurant) values (1,8,'prva','2017-02-10','2017-03-11',1)
+insert into work_schedule(id,worker,shift,date_start,date_end,restaurant) values (2,9,'druga','2017-02-10','2017-03-11',1)
+insert into work_schedule(id,worker,shift,date_start,date_end,restaurant) values (3,10,'prva','2017-02-10','2017-03-11',1)
+insert into work_schedule(id,worker,shift,date_start,date_end,restaurant) values (4,11,'druga','2017-02-01','2017-05-01',1)
+insert into work_schedule(id,worker,shift,date_start,date_end,restaurant) values (5,13,'prva','2017-02-01','2017-05-01',1)
+insert into work_schedule(id,worker,shift,date_start,date_end,restaurant) values (6,16,'prva','2017-01-01','2017-04-01',1)
 
 
 insert into drink(name,price,description,restaurant) values ('rakija',120,'zestoko',1)

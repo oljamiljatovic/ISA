@@ -2,7 +2,7 @@ package rs.ac.uns.ftn.informatika.jpa.service;
 
 import java.util.ArrayList;
 
-import rs.ac.uns.ftn.informatika.jpa.domain.User;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.WorkSchedule;
 
 public interface WorkScheduleService {
@@ -15,7 +15,7 @@ public interface WorkScheduleService {
 	
 	public void delete(WorkSchedule ws);
 	
-	public ArrayList<WorkSchedule> findByRest(Long rest);
+	public ArrayList<WorkSchedule> findByRestaurant(Restaurant rest);
 	
 	public void update(WorkSchedule ws);
 
