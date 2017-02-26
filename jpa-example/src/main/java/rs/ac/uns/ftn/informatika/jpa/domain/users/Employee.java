@@ -6,7 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 
 @Entity
 public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implements Serializable {
@@ -25,8 +29,9 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implemen
 	private String confNumber;
 	@Column(nullable = false)
 	private String shoeNumber;
-	@Column(nullable = false)
-	private Long restaurant;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 	@Column(name="first_log",nullable = false)
 	private String firstLog;
 	
@@ -35,7 +40,7 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implemen
 	}
 
 	public Employee(String name, String surname, String dateBirth, String type, String confNumber, 
-			String shoeNumber, Long restaurant, String email, String accept, String password) {
+			String shoeNumber, Restaurant restaurant, String email, String accept, String password) {
 		this.name = name;
 		this.surname = surname;
 		this.dateBirth = dateBirth;
@@ -96,12 +101,12 @@ public class Employee extends rs.ac.uns.ftn.informatika.jpa.domain.User implemen
 		this.shoeNumber = shoeNumber;
 	}
 
-	public Long getRestaurant() {
+
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 	
-	@OneToOne
-	public void setRestaurant(Long restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 	

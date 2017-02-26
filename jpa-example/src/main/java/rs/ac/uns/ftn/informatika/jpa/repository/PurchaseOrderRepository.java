@@ -6,15 +6,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
 import rs.ac.uns.ftn.informatika.jpa.domain.PurchaseOrder;
-import java.lang.Long;
-import java.util.List;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 
 public interface PurchaseOrderRepository extends PagingAndSortingRepository<PurchaseOrder, Long>  {
 	
-	public ArrayList<PurchaseOrder> findByOffer(Long offer);
-	public PurchaseOrder findByProviderAndOffer(Long provider, Long offer);
-	public ArrayList<PurchaseOrder> findByRestaurant(Long restaurant);
+	public ArrayList<PurchaseOrder> findByOffer(Offer offer);
+	public PurchaseOrder findByProviderAndOffer(Provider provider, Offer offer);
+	public ArrayList<PurchaseOrder> findByRestaurant(Restaurant restaurant);
 
 	@Modifying
 	@Query("update PurchaseOrder set price = ?, timeDeliver = ?, flag=? where id = ? ")
@@ -25,5 +26,5 @@ public interface PurchaseOrderRepository extends PagingAndSortingRepository<Purc
 	@Query("update PurchaseOrder set  flag=? where id = ? ")
 	public void updateFlag(Long flag, Long id);
 	
-	public ArrayList<PurchaseOrder> findByProvider(Long provider);
+	public ArrayList<PurchaseOrder> findByProvider(Provider provider);
 }

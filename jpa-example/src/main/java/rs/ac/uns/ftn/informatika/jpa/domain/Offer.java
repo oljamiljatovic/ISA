@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -30,8 +31,9 @@ public class Offer implements Serializable{
 	private String flag;
 	@Column(nullable = false)
 	private int amount;
-	@Column(nullable = false)
-	private Long restaurant;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 
 	
 	public Offer() {
@@ -39,7 +41,7 @@ public class Offer implements Serializable{
 	}
 
 
-	public Offer(String endDate, Long foodOrDrink, String flag, Long restaurant, int amount) {
+	public Offer(String endDate, Long foodOrDrink, String flag, Restaurant restaurant, int amount) {
 		super();
 		this.endDate = endDate;
 		this.restaurant = restaurant;
@@ -68,12 +70,12 @@ public class Offer implements Serializable{
 		this.endDate = endDate;
 	}
 
-	public Long getRestaurant() {
+
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
-
-
-	public void setRestaurant(Long restaurant) {
+	
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 

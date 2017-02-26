@@ -8,9 +8,8 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import java.lang.String;
 import java.util.List;
 
-public interface ManagerRepository extends PagingAndSortingRepository<RestaurantManager, Long> {
+public interface RestaurantManagerRepository extends PagingAndSortingRepository<RestaurantManager, Long> {
 	
-	//public RestaurantManager save(RestaurantManager manag);
 	
 	public RestaurantManager findByEmail(String email);
 

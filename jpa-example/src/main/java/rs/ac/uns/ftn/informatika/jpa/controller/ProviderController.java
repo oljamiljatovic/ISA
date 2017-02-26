@@ -122,7 +122,9 @@ public class ProviderController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		Provider provider= this.providerService.getProvider(u.getEmail());
-		po.setProvider(provider.getId());
+		Offer of = this.offerService.getOffer(po.getOffer().getId());
+		po.setOffer(of);
+		po.setProvider(provider);
 		po.setRestaurant(provider.getRestaurant());
 		
 		this.purchaseService.addPurchaseOrder(po);
@@ -143,7 +145,9 @@ public class ProviderController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		Provider provider= this.providerService.getProvider(u.getEmail());
-		po.setProvider(provider.getId());
+		Offer of = this.offerService.getOffer(po.getOffer().getId());
+		po.setOffer(of);
+		po.setProvider(provider);
 		po.setRestaurant(provider.getRestaurant());
 		PurchaseOrder purch = this.purchaseService.getPurchaseOrderByOfferAndProvider(po);
 		
@@ -164,22 +168,23 @@ public class ProviderController {
 		User u = (User) session.getAttribute("korisnik");
 		if(u.getRole().equals("restaurantManager")){
 			RestaurantManager rm= this.managerService.getManager(u.getEmail());
-			po.setProvider(rm.getId());
 			po.setRestaurant(rm.getRestaurant());
 		}else if(u.getRole().equals("provider")){
 			Provider rm= this.providerService.getProvider(u.getEmail());
-			po.setProvider(rm.getId());
+			po.setProvider(rm);
 			po.setRestaurant(rm.getRestaurant());
 		}
 		
 		if(u.getRole().equals("restaurantManager")){
-			ArrayList<PurchaseOrder> por = this.purchaseService.getPurchaseOrderByOffer(po.getOffer());
+			Offer of = this.offerService.getOffer(po.getOffer().getId());
+			po.setOffer(of);
+			ArrayList<PurchaseOrder> por = this.purchaseService.getPurchaseOrderByOffer(of);
 			
 			for(int i=0; i<por.size(); i++){
 				this.purchaseService.updateFlag(po.getFlag(), por.get(i).getId());
 			}
 			
-			this.offerService.delete(po.getOffer());
+			this.offerService.delete(po.getOffer().getId());
 		}else if(u.getRole().equals("provider")){
 			this.purchaseService.updatePurchaseOrder(po);
 		}
@@ -192,15 +197,16 @@ public class ProviderController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<PurchaseOrder>> uzmiAktivnePoruzbenice(@RequestBody Offer off)  throws Exception {
-
-		ArrayList<PurchaseOrder> po = this.purchaseService.getPurchaseOrderByOffer(off.getId());
+		
+		Offer offerr = this.offerService.getOffer(off.getId());
+		ArrayList<PurchaseOrder> po = this.purchaseService.getPurchaseOrderByOffer(offerr);
 		ArrayList<PurchaseOrder> temp = new ArrayList<PurchaseOrder>();
 		
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date todayDate = dateFormatter.parse(dateFormatter.format(new Date()));
 		
 		for(int i=0; i<po.size(); i++){
-			Offer offer = this.offerService.getOffer(po.get(i).getOffer());
+			Offer offer = this.offerService.getOffer(po.get(i).getOffer().getId());
 			String datum = offer.getEndDate();
 			
 			Date compare = dateFormatter.parse(datum);
@@ -223,7 +229,7 @@ public class ProviderController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		Provider rm= this.providerService.getProvider(u.getEmail());
-		ArrayList<PurchaseOrder> temp = this.purchaseService.getPurchaseOrderByProvider(rm.getId());
+		ArrayList<PurchaseOrder> temp = this.purchaseService.getPurchaseOrderByProvider(rm);
 		return new ResponseEntity<ArrayList<PurchaseOrder>>(temp, HttpStatus.OK);
 	}
 }

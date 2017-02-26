@@ -6,6 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 
 @Entity
 public class PurchaseOrder implements Serializable {
@@ -16,13 +21,15 @@ public class PurchaseOrder implements Serializable {
     @GeneratedValue
 	@Column(unique=true, nullable=false)
 	private Long id;
-	@Column(nullable = false)
-	private Long offer;
-	@Column(nullable = false)
-	private Long restaurant;
-	@Column(nullable = false)
-	private Long provider;
-	@Column(nullable = false)
+	@OneToOne
+	@JoinColumn(name="offer" )
+	private Offer offer;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
+	@ManyToOne
+	@JoinColumn(name="provider")
+	private Provider provider;
 	private Long flag;
 	@Column(nullable = false)
 	private String timeDeliver;
@@ -33,7 +40,7 @@ public class PurchaseOrder implements Serializable {
 		
 	}
 
-	public PurchaseOrder(Long offer, Long restaurant, Long provider, Long flag,
+	public PurchaseOrder(Offer offer, Restaurant restaurant, Provider provider, Long flag,
 			String timeDeliver, String price) {
 		super();
 		this.offer = offer;
@@ -52,19 +59,19 @@ public class PurchaseOrder implements Serializable {
 		this.id = id;
 	}
 
-	public Long getOffer() {
+	public Offer getOffer() {
 		return offer;
 	}
 
-	public void setOffer(Long offer) {
+	public void setOffer(Offer offer) {
 		this.offer = offer;
 	}
 
-	public Long getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
-
-	public void setRestaurant(Long restaurant) {
+	
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 
@@ -84,11 +91,11 @@ public class PurchaseOrder implements Serializable {
 		this.price = price;
 	}
 
-	public Long getProvider() {
+	public Provider getProvider() {
 		return provider;
 	}
 
-	public void setProvider(Long provider) {
+	public void setProvider(Provider provider) {
 		this.provider = provider;
 	}
 

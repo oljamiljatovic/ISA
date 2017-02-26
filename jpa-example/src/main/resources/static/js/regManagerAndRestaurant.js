@@ -54,6 +54,16 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 	var contact = $('#kontaktMenadzera').val();
 	var password = $('#lozinkaMenadzera').val();
 	var restaurant = $('#restoranMenadzera option:selected').val();
+	var data2 = JSON.stringify({
+		"id" : restaurant,
+		"name" : "",
+		"type" : "",
+		"address" : "",
+		"contact" : ""
+	});
+	
+	var obj = JSON.parse(data2);
+	
 	var dataa = JSON.stringify({
 		"name" : name,
 		"surname" : surname,
@@ -61,7 +71,7 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 		"email" : email,
 		"contact" : contact,
 		"password" : password,
-		"restaurant" : restaurant,
+		"restaurant" : obj,
 		"role" : "restaurantManager",
 		"accept" : "true"
 	});

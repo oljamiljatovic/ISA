@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
 import rs.ac.uns.ftn.informatika.jpa.domain.PurchaseOrder;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
 import rs.ac.uns.ftn.informatika.jpa.repository.PurchaseOrderRepository;
 
 
@@ -28,7 +31,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	}
 
 	@Override
-	public ArrayList<PurchaseOrder> getPurchaseOrderByOffer(Long id) {
+	public ArrayList<PurchaseOrder> getPurchaseOrderByOffer(Offer id) {
 		return this.purchaseOrderRepository.findByOffer(id);
 	}
 
@@ -43,7 +46,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	}
 
 	@Override
-	public ArrayList<PurchaseOrder> getPurchaseOrderByRestaurant(Long id) {
+	public ArrayList<PurchaseOrder> getPurchaseOrderByRestaurant(Restaurant id) {
 		// TODO Auto-generated method stub
 		return this.purchaseOrderRepository.findByRestaurant(id);
 	}
@@ -54,7 +57,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	}
 
 	@Override
-	public ArrayList<PurchaseOrder> getPurchaseOrderByProvider(Long id) {
+	public ArrayList<PurchaseOrder> getPurchaseOrderByProvider(Provider id) {
 		
 		return this.purchaseOrderRepository.findByProvider(id);
 	}

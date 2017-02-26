@@ -112,7 +112,7 @@ public class OrderController {
 		if(u.getRole().equals("cook") || u.getRole().equals("barman") || u.getRole().equals("saladCook") || u.getRole().equals("grilledCook")){
 			Employee employee = employeeService.findById(u.getId());
 			System.out.println(employee.getEmail());
-			Restaurant rest = restaurantService.getRestaurant(employee.getRestaurant());
+			Restaurant rest = restaurantService.getRestaurant(employee.getRestaurant().getId());
 			System.out.println(rest.getName());
 			orders = this.orderService.findByRestaurant(rest);
 			System.out.println(orders.size());
@@ -134,7 +134,7 @@ public class OrderController {
 		User u = (User) session.getAttribute("korisnik");
 		Employee employee = employeeService.findById(u.getId());
 		surrogateOrder.setWaiter_id(u.getId());
-		surrogateOrder.setRestaurant(employee.getRestaurant());
+		//surrogateOrder.setRestaurant(employee.getRestaurant());
 		ArrayList<Drink> drinks = new ArrayList<Drink>();
 		if(surrogateOrder.getDrinks()!=null){
 			for(int i=0;i<surrogateOrder.getDrinks().size();i++){
@@ -211,7 +211,7 @@ public class OrderController {
 		if(u.getRole().equals("waiter")){
 			order.setWaiter_id(u.getId());
 			Employee employee = employeeService.findById(u.getId());
-			order.setRestaurant(employee.getRestaurant());
+			//order.setRestaurant(employee.getRestaurant());
 			ArrayList<Drink> drinks = new ArrayList<Drink>();
 			if(order.getDrinks()!=null){
 				for(int i=0;i<order.getDrinks().size();i++){
@@ -280,7 +280,7 @@ public class OrderController {
 		if(u.getRole().equals("waiter")){
 			order.setWaiter_id(u.getId());
 			Employee employee = employeeService.findById(u.getId());
-			order.setRestaurant(employee.getRestaurant());
+			//order.setRestaurant(employee.getRestaurant());
 			ArrayList<Drink> drinks = new ArrayList<Drink>();
 			if(order.getDrinks()!=null){
 				for(int i=0;i<order.getDrinks().size();i++){

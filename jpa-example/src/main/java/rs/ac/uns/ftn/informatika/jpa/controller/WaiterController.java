@@ -101,7 +101,7 @@ public class WaiterController {
 					break;
 				}
 			}*/
-			Restaurant rest = this.restService.getRestaurant(employee.getRestaurant());
+			Restaurant rest = this.restService.getRestaurant(employee.getRestaurant().getId());
 			temp = reonService.getReonsOfRestorans(rest);
 
 		}
@@ -121,11 +121,11 @@ public class WaiterController {
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 		if(u.getRole().equals("waiter")){
 			Employee employee = employeeService.findById(u.getId());
-			Restaurant rest = this.restService.getRestaurant(employee.getRestaurant());
+			Restaurant rest = this.restService.getRestaurant(employee.getRestaurant().getId());
 			ArrayList<Reon> reons= reonService.getReonsOfRestorans(rest);
 			Long reonId = reons.get(0).getId();
-			Restaurant restt = this.restService.getRestaurant(employee.getRestaurant());
-			Long restaurantId = employee.getRestaurant();
+			Restaurant restt = this.restService.getRestaurant(employee.getRestaurant().getId());
+			//Long restaurantId = employee.getRestaurant();
 			System.out.println("reonId" + reonId);
 			temp = tableService.findByReonAndRestaurant(reons.get(0), restt);
 		}
@@ -224,7 +224,7 @@ public class WaiterController {
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 		Employee foundedEmployee = employeeService.findById(u.getId());
-		Restaurant restt = this.restService.getRestaurant(foundedEmployee.getRestaurant());
+		Restaurant restt = this.restService.getRestaurant(foundedEmployee.getRestaurant().getId());
 		temp = tableService.findByRestaurant(restt);
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
@@ -237,8 +237,6 @@ public class WaiterController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Tablee>> getTablesForReservation(
 			@RequestBody Reservation reservation)  throws Exception {
-		
-		
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 	
 		temp = tableService.findByRestaurant(reservation.getIdRestaurant());
@@ -254,8 +252,8 @@ public class WaiterController {
 	public ResponseEntity<ArrayList<Reon>> getReonsForReservation(
 			@RequestBody Reservation reservation)  throws Exception {
 
-		Restaurant rest = this.restService.getRestaurant(reservation.getIdRestaurant());
-		ArrayList<Reon> temp = reonService.getReonsOfRestorans(rest);
+		//Restaurant rest = this.restService.getRestaurant(reservation.getIdRestaurant());
+		ArrayList<Reon> temp = null;
 		System.out.println("Broj vracenih reona"+temp.size());
 		
 		return new ResponseEntity<ArrayList<Reon>>(temp, HttpStatus.OK);
