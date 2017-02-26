@@ -114,8 +114,8 @@ insert into rating_all(reservation_id,guest_id,restaurant_id,restaurant_rating,s
 insert into rating_all(reservation_id,guest_id,restaurant_id,restaurant_rating,service_rating,meal_rating)values(2,1,2,4,2,5)
 -------------
 
-insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (1,8,'Zora','North',1,1)
-insert into assign_reon(id,waiter_id,waiter_name,reon_name,reon_id,restaurant) values (2,11,'Gavra','NorthCenter',2,1)
+insert into assign_reon(id,waiter,reon,restaurant) values (1,8,1,1)
+insert into assign_reon(id,waiter,reon,restaurant) values (2,11,2,1)
 
 insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (1,8,'Zora','prva','2017-02-10','2017-03-11',1)
 insert into work_schedule(id,worker_id,worker_name,shift,date_start,date_end,rest) values (2,9,'Sinisa','druga','2017-02-10','2017-03-11',1)

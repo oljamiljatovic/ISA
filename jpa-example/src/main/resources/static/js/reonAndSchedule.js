@@ -50,6 +50,8 @@ $(document).on('click','#submitSmene', function(e){
 	}else if(smene ==""){
 		alert("Smena je prazna");
 	}else{
+		
+		
 		var data2 = JSON.stringify({
 			"worker_id" : id,
 			"worker_name" : worker_name,
@@ -291,12 +293,34 @@ $(document).on('click','#submitDodelaReona', function(e){
 	}else if(reon == ""){
 		alert("Izaberite reon!");
 	}else{
+		var waiter = JSON.stringify({
+			"id" : konobar,
+			"name" : "",
+			"surname" : "",
+			"dateBirth" : "",
+			"type" : "",
+			"confNumber" : "",
+			"shoeNumber" : "",
+			"restaurant" : "",
+			"email" : "",
+			"accept" : "",
+			"password" : ""
+		});
+
+		var obj1 = JSON.parse(waiter);
+		
+		var reon = JSON.stringify({
+			"id" : reon,
+			"name" : "",
+			"location" : "",
+			"numberTable" : 0,
+			"restaurant" : null
+		});
+		var obj2 = JSON.parse(reon);
 		var data2 = JSON.stringify({
-			"waiter_id" : konobar,
-			"reon_id" : reon,
-			"reon_name" : reon_name,
-			"restaurant" : 0,
-			"waiter_name" : konobar_name
+			"waiter" : obj1,
+			"reon" : obj2,
+			"restaurant" : null,
 		});
 		$.ajax({
 			type : 'POST',
@@ -334,8 +358,8 @@ $(document).on('click','#pregledDodeleReon',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,reon){
-				$('#tabelaPrikaz').append('<tr><td>'+reon.waiter_id+'</td><td>'+reon.waiter_name
-						+'</td><td>'+reon.reon_id+'</td><td>'+reon.reon_name+'</td>'+
+				$('#tabelaPrikaz').append('<tr><td>'+reon.waiter.id+'</td><td>'+reon.waiter.name
+						+'</td><td>'+reon.reon.id+'</td><td>'+reon.reon.name+'</td>'+
 						'<td><form id="formIzbrisiDodelu" method="get" action=""><input type="submit" id="submitIzbrisiKonfig" value="Izbrisi"><input type="hidden" value='
 							+reon.id+'></form></td><td>');
 				
@@ -358,11 +382,8 @@ $(document).on('submit','#formIzbrisiDodelu',function(e){
 	
 	var data2 = JSON.stringify({
 		"id" : id,
-		"waiter_id" : 0,
-		"waiter_name" : "",
-		"reon_id" : 0,
-		"reon_name" : "",
-		"restaurant" : 0
+		"waiter" : null,
+		"reon" : null
 	});
 	
 	$.ajax({

@@ -28,10 +28,6 @@ public class Drink implements Serializable{
 	@OneToOne
 	@JoinColumn(name="restaurant")
 	private Restaurant restaurant;
-
-	@OneToOne
-	@JoinColumn(name="offer")
-	private Offer offer;
 	
 	public Drink(){
 		
@@ -83,14 +79,6 @@ public class Drink implements Serializable{
 
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
-	}
-
-	public Offer getOffer() {
-		return offer;
-	}
-
-	public void setOffer(Offer offer) {
-		this.offer = offer;
 	}
 	
 

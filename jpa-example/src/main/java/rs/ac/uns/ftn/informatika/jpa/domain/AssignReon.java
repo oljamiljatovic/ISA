@@ -2,10 +2,13 @@ package rs.ac.uns.ftn.informatika.jpa.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 
 @Entity
 public class AssignReon implements Serializable{
@@ -19,7 +22,8 @@ public class AssignReon implements Serializable{
     @GeneratedValue
 	private Long id;
 	
-	@Column(nullable = false)
+	
+	/*@Column(nullable = false)
 	private Long waiter_id;
 	@Column(nullable = false)
 	private String waiter_name;
@@ -28,20 +32,34 @@ public class AssignReon implements Serializable{
 	@Column(nullable = false)
 	private String reon_name;
 	@Column(nullable = false)
-	private Long restaurant;
+	private Long restaurant;*/
+	
+
+	@OneToOne
+	@JoinColumn(name="waiter")
+	private Employee waiter;
+	@OneToOne
+	@JoinColumn(name="reon")
+	private Reon reon;
+	@OneToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 	
 	public AssignReon() {
 		
 	}
 	
-	public AssignReon(Long waiter_id, String waiter_name, Long reon_id, String reon_name, Long restaurant) {
+	
+
+	public AssignReon(Long id, Employee waiter, Reon reon, Restaurant restaurant) {
 		super();
-		this.waiter_id = waiter_id;
-		this.waiter_name = waiter_name;
-		this.reon_id = reon_id;
-		this.reon_name = reon_name;
+		this.id = id;
+		this.waiter = waiter;
+		this.reon = reon;
 		this.restaurant = restaurant;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -51,44 +69,39 @@ public class AssignReon implements Serializable{
 		this.id = id;
 	}
 
-	public Long getWaiter_id() {
-		return waiter_id;
+	public Employee getWaiter() {
+		return waiter;
 	}
 
-	public void setWaiter_id(Long waiter_id) {
-		this.waiter_id = waiter_id;
+	public void setWaiter(Employee waiter) {
+		this.waiter = waiter;
 	}
 
-	public Long getReon_id() {
-		return reon_id;
+	public Reon getReon() {
+		return reon;
 	}
 
-	public void setReon_id(Long reon_id) {
-		this.reon_id = reon_id;
+	public void setReon(Reon reon) {
+		this.reon = reon;
 	}
 
-	public Long getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(Long restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-
-	public String getWaiter_name() {
-		return waiter_name;
-	}
-
-	public void setWaiter_name(String waiter_name) {
+	
+	/*public AssignReon(Long waiter_id, String waiter_name, Long reon_id, String reon_name, Long restaurant) {
+		super();
+		this.waiter_id = waiter_id;
 		this.waiter_name = waiter_name;
-	}
-
-	public String getReon_name() {
-		return reon_name;
-	}
-
-	public void setReon_name(String reon_name) {
+		this.reon_id = reon_id;
 		this.reon_name = reon_name;
-	}
+		this.restaurant = restaurant;
+	}*/
+
+	
 
 }

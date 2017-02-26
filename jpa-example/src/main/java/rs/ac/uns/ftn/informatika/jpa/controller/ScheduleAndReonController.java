@@ -227,12 +227,12 @@ public class ScheduleAndReonController {
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
-			reon.setRestaurant(r.getId());
+			reon.setRestaurant(r);
 		}
-		Employee e = this.employeeService.findById(reon.getWaiter_id());
-		reon.setWaiter_name(e.getName());
-		Reon rr = this.reonService.findOne(reon.getReon_id());
-		reon.setReon_name(rr.getName());
+		Employee e = this.employeeService.findById(reon.getWaiter().getId());
+		reon.setWaiter(e);
+		Reon rr = this.reonService.findOne(reon.getReon().getId());
+		reon.setReon(rr);
 		this.assignReonService.createAssignReon(reon);
 		return new ResponseEntity<AssignReon>(reon, HttpStatus.OK);
 	}
@@ -255,7 +255,7 @@ public class ScheduleAndReonController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		ArrayList<AssignReon> ar = this.assignReonService.findByRestaurant(r.getId());
+		ArrayList<AssignReon> ar = this.assignReonService.findByRestaurant(r);
 		return new ResponseEntity<ArrayList<AssignReon>>(ar, HttpStatus.OK);
 	}
 	

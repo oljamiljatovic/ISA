@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.repository.AssignReonRepository;
 @Service
 @Transactional
@@ -31,9 +32,9 @@ public class AssignReonServiceImpl implements AssignReonService{
 	}
 
 	@Override
-	public ArrayList<AssignReon> findByRestaurant(Long id) {
+	public ArrayList<AssignReon> findByRestaurant(Restaurant rest) {
 		// TODO Auto-generated method stub
-		return this.assignReonRepository.findByRestaurant(id);
+		return this.assignReonRepository.findByRestaurant(rest);
 	}
 
 	@Override
