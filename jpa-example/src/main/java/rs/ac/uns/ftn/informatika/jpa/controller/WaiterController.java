@@ -124,9 +124,10 @@ public class WaiterController {
 			Restaurant rest = this.restService.getRestaurant(employee.getRestaurant());
 			ArrayList<Reon> reons= reonService.getReonsOfRestorans(rest);
 			Long reonId = reons.get(0).getId();
+			Restaurant restt = this.restService.getRestaurant(employee.getRestaurant());
 			Long restaurantId = employee.getRestaurant();
 			System.out.println("reonId" + reonId);
-			temp = tableService.findByReonAndRestaurant(reonId, restaurantId);
+			temp = tableService.findByReonAndRestaurant(reons.get(0), restt);
 		}
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
@@ -222,7 +223,8 @@ public class WaiterController {
 		User u = (User) session.getAttribute("korisnik");
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 		Employee foundedEmployee = employeeService.findById(u.getId());
-		temp = tableService.findByRestaurant(foundedEmployee.getRestaurant());
+		Restaurant restt = this.restService.getRestaurant(foundedEmployee.getRestaurant());
+		temp = tableService.findByRestaurant(restt);
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
 	
@@ -237,8 +239,9 @@ public class WaiterController {
 		
 	
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
-	
-		temp = tableService.findByRestaurant(reservation.getIdRestaurant());
+
+		Restaurant restt = this.restService.getRestaurant(reservation.getIdRestaurant());
+		temp = tableService.findByRestaurant(restt);
 		System.out.println("Pronasao je stolove "+temp.size() );
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}

@@ -30,7 +30,6 @@ import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 import rs.ac.uns.ftn.informatika.jpa.service.TableService;
-import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 import rs.ac.uns.ftn.informatika.jpa.service.WorkScheduleService;
 
 
@@ -76,7 +75,7 @@ public class ScheduleAndReonController {
 		this.reonService.createReon(reon);
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee table = new Tablee(reon.getId(),r.getId());
+			Tablee table = new Tablee(reon,r);
 			this.tableService.createTable(table);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
@@ -111,7 +110,8 @@ public class ScheduleAndReonController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteReon(@RequestBody Reon r)  throws Exception {
 		
-		ArrayList<Tablee> table = this.tableService.findByReon(r.getId());
+		Reon reon = this.reonService.findOne(r.getId());
+		ArrayList<Tablee> table = this.tableService.findByReon(reon);
 		for(int i=0; i<table.size(); i++){
 			Long idd = table.get(i).getId();
 			this.tableService.delete(idd);
@@ -138,17 +138,17 @@ public class ScheduleAndReonController {
 			r = restaurantService.getRestaurant(idRest);
 		}
 		
-		reon.setRestaurant(r);
+		reon = this.reonService.findOne(reon.getId());
 		this.reonService.update(reon);
 		
-		ArrayList<Tablee> table = this.tableService.findByReon(r.getId());
+		ArrayList<Tablee> table = this.tableService.findByReon(reon);
 		for(int i=0; i<table.size(); i++){
 			Long idd = table.get(i).getId();
 			this.tableService.delete(idd);
 		}
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee tablee = new Tablee(reon.getId(),r.getId());
+			Tablee tablee = new Tablee(reon,r);
 			this.tableService.createTable(tablee);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
