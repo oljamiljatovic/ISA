@@ -20,7 +20,7 @@ public class Hotel implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional=false)
 	private City city;
 
 	@Column(nullable = false)

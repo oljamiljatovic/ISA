@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.BillService;
+import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
+import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
 import rs.ac.uns.ftn.informatika.jpa.service.WorkScheduleService;
 
@@ -31,6 +34,10 @@ public class BillController {
 	private OrderService orderService;
 	@Autowired
 	private WorkScheduleService workScheduleService;
+	@Autowired
+	private EmployeeService employeeService;
+	@Autowired
+	private ManagerService managerService;
 	
 	@RequestMapping(
 			value = "/getBills",
@@ -88,6 +95,56 @@ public class BillController {
 		}
 		Bill addedBill = billService.addNew(bill);
 		return new ResponseEntity<Bill>(addedBill, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/getBillsOfRestaurant",
+			method = RequestMethod.GET,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Bill>> getBillsOfRestaurant() throws Exception {
+		
+		ArrayList<Bill> cfw = this.billService.getBills();
+		ArrayList<Bill> temp = new ArrayList<Bill>();
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		RestaurantManager rm= this.managerService.getManager(u.getEmail());
+		ArrayList<Employee> employees = this.employeeService.getEmployeesOfRestaurant(rm.getRestaurant());
+		
+		for(int i=0; i<cfw.size(); i++){
+			for(int j=0; j<employees.size(); j++){
+				Long first = employees.get(j).getId();
+				Long second = cfw.get(i).getWaiter_id();
+				if(first.equals(second))
+					temp.add(cfw.get(i));
+			}
+		}
+		
+		return new ResponseEntity<ArrayList<Bill>>(temp, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/getBillsOfWaiter",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Bill>> getBillsOfWaiter(@RequestBody Employee empl) throws Exception {
+		
+		ArrayList<Bill> cfw = this.billService.getBills();
+		ArrayList<Bill> temp = new ArrayList<Bill>();
+		
+		for(int i=0; i<cfw.size(); i++){
+				Long first = cfw.get(i).getWaiter_id();
+				if(first.equals(empl.getId()))
+					temp.add(cfw.get(i));
+		}
+		
+		return new ResponseEntity<ArrayList<Bill>>(temp, HttpStatus.OK);
 	}
 	
 }

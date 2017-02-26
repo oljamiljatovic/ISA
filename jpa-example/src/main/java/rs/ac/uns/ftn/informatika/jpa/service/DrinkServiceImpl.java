@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.repository.DrinkRepository;
 
 @Service
@@ -17,9 +18,9 @@ public class DrinkServiceImpl implements DrinkService {
 	private DrinkRepository drinkRepository;
 	
 	@Override
-	public ArrayList<Drink> getDrinksByRestaurant(Long id) {
+	public ArrayList<Drink> getDrinksByRestaurant(Restaurant rest) {
 		
-		return this.drinkRepository.findByRestaurant(id);
+		return this.drinkRepository.findByRestaurant(rest);
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class DrinkServiceImpl implements DrinkService {
 	@Override
 	public void updateDrink(Drink dr) {
 		this.drinkRepository.updateDrink(dr.getName(), dr.getDescription(), 
-				dr.getPrice(), dr.getRestaurant(), dr.getId());
+				dr.getPrice(),  dr.getId());
 	}
 
 	@Override

@@ -1,14 +1,13 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Meal implements Serializable{
@@ -28,14 +27,15 @@ public class Meal implements Serializable{
 	private String description;
 	@Column(nullable = false)
 	private float price;
-	@Column(nullable = false)
-	private Long restaurant;
+	@OneToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 	
 	public Meal() {
 		
 	}
 	
-	public Meal(String name, String description, float price, Long rest) {
+	public Meal(String name, String description, float price,Restaurant rest) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -75,11 +75,11 @@ public class Meal implements Serializable{
 		this.description = description;
 	}
 
-	public Long getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(Long restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 

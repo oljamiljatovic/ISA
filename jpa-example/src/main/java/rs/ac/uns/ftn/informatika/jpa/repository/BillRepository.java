@@ -12,5 +12,6 @@ public interface BillRepository extends PagingAndSortingRepository<Bill, Long>{
 	
 	@Query("select b from Bill b where b.waiter_id = ?1")
 	public ArrayList<Bill> findByWaiter_id(Long waiter_id);
+	
 }
 
