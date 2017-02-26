@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.repository.MealRepository;
 
 @Service
@@ -17,8 +18,8 @@ public class MealServiceImpl implements MealService {
 	private MealRepository mealRepository;
 
 	@Override
-	public ArrayList<Meal> getMealsByRestaurant(Long rest_id) {
-		return this.mealRepository.findByRestaurant(rest_id);
+	public ArrayList<Meal> getMealsByRestaurant(Restaurant rest) {
+		return this.mealRepository.findByRestaurant(rest);
 	}
 
 	@Override
@@ -34,8 +35,7 @@ public class MealServiceImpl implements MealService {
 
 	@Override
 	public void updateMeal(Meal dr) {
-		this.mealRepository.updateMeal(dr.getName(),dr.getDescription(),
-				dr.getPrice(),dr.getRestaurant(),dr.getId());
+		this.mealRepository.updateMeal(dr.getName(),dr.getDescription(),dr.getPrice(),dr.getId());
 	}
 
 	@Override

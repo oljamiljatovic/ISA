@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 
 public interface DrinkRepository extends PagingAndSortingRepository<Drink, Long>{
 	
@@ -15,10 +16,10 @@ public interface DrinkRepository extends PagingAndSortingRepository<Drink, Long>
 	public Drink findById(Long id);
 	
 	@Modifying
-	@Query("update Drink set name = ?, description = ?,price = ?, restaurant = ? where id = ? ")
-	public void updateDrink(String name, String desc, float price, Long rest, Long id);
+	@Query("update Drink set name = ?, description = ?,price = ? where id = ? ")
+	public void updateDrink(String name, String desc, float price, Long id);
 	
-	public ArrayList<Drink> findByRestaurant(Long restaurant);
+	public ArrayList<Drink> findByRestaurant(Restaurant restaurant);
 	
 	public Drink findByName(String name);
 

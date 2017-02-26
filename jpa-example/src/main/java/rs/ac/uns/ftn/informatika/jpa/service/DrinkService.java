@@ -7,7 +7,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 
 public interface DrinkService {
 	
-	public ArrayList<Drink> getDrinksByRestaurant(Long rest_id);
+	public ArrayList<Drink> getDrinksByRestaurant(Restaurant rest_id);
 	public Drink getDrink(Long id);
 	public void deleteDrink(Drink dr);
 	public void updateDrink(Drink dr);

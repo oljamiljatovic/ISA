@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Foodstuff;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
@@ -74,13 +76,15 @@ public class MealAndDrinkController {
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
-			drinks = this.drinkService.getDrinksByRestaurant(r.getId());
+			drinks = this.drinkService.getDrinksByRestaurant(r);
 		}else if(u.getRole().equals("waiter") || u.getRole().equals("barman")){
 			employee = employeeService.findById(u.getId());
-			drinks = this.drinkService.getDrinksByRestaurant(employee.getRestaurant());
+			Restaurant rest = this.restaurantService.getRestaurant(employee.getRestaurant());
+			drinks = this.drinkService.getDrinksByRestaurant(rest);
 		}else if(u.getRole().equals("provider")){
 			providerr = this.providerService.getProvider(u.getEmail());
-			drinks = this.drinkService.getDrinksByRestaurant(providerr.getRestaurant());
+			Restaurant rest = this.restaurantService.getRestaurant(providerr.getRestaurant());
+			drinks = this.drinkService.getDrinksByRestaurant(rest);
 		}
 		
 		return new ResponseEntity<ArrayList<Drink>>(drinks, HttpStatus.OK);
@@ -126,7 +130,7 @@ public class MealAndDrinkController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		drink.setRestaurant(r.getId());
+		drink.setRestaurant(r);
 		this.drinkService.addDrink(drink);
 		return new ResponseEntity<Drink>(drink, HttpStatus.OK);
 	}
@@ -151,13 +155,15 @@ public class MealAndDrinkController {
 			rm= this.managerService.getManager(u.getEmail());
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
-			meals = this.mealService.getMealsByRestaurant(r.getId());
+			meals = this.mealService.getMealsByRestaurant(r);
 		}else if(u.getRole().equals("waiter") || u.getRole().equals("cook") || u.getRole().equals("saladCook") || u.getRole().equals("grilledCook")){
 			employee = employeeService.findById(u.getId());
-			meals = this.mealService.getMealsByRestaurant(employee.getRestaurant());
+			Restaurant rest = this.restaurantService.getRestaurant(employee.getRestaurant());
+			meals = this.mealService.getMealsByRestaurant(rest);
 		}else if(u.getRole().equals("provider")){
 			providerr = this.providerService.getProvider(u.getEmail());
-			meals = this.mealService.getMealsByRestaurant(providerr.getRestaurant());
+			Restaurant rest = this.restaurantService.getRestaurant(providerr.getRestaurant());
+			meals = this.mealService.getMealsByRestaurant(rest);
 		}
 		return new ResponseEntity<ArrayList<Meal>>(meals, HttpStatus.OK);
 	}
@@ -178,6 +184,7 @@ public class MealAndDrinkController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
+	@JsonCreator
 	public ResponseEntity<Meal> updateMeal(@RequestBody Meal meal)  throws Exception {
 		this.mealService.updateMeal(meal);
 		return new ResponseEntity<Meal>(meal, HttpStatus.OK);
@@ -202,7 +209,7 @@ public class MealAndDrinkController {
 			Long idRest = rm.getRestaurant();
 			r = restaurantService.getRestaurant(idRest);
 		}
-		meal.setRestaurant(r.getId());
+		meal.setRestaurant(r);
 		this.mealService.addMeal(meal);
 		return new ResponseEntity<Meal>(meal, HttpStatus.OK);
 	}

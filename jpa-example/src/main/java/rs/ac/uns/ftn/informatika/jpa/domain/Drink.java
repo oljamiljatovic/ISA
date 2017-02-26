@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Drink implements Serializable{
@@ -23,17 +25,19 @@ public class Drink implements Serializable{
 	private String description;
 	@Column(nullable = false)
 	private float price;
-	@Column(nullable = false)
-	private Long restaurant;
-	
-	@Column(nullable = true)
-	private Long offer;
+	@OneToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
+
+	@OneToOne
+	@JoinColumn(name="offer")
+	private Offer offer;
 	
 	public Drink(){
 		
 	}
 	
-	public Drink(String name, String description, float price, Long rest) {
+	public Drink(String name, String description, float price, Restaurant rest) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -73,23 +77,21 @@ public class Drink implements Serializable{
 		this.description = description;
 	}
 
-	public Long getRestaurant() {
+	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(Long restaurant) {
+	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
 
-	@OneToMany(mappedBy="offer_id")
-	public Long getOffer() {
+	public Offer getOffer() {
 		return offer;
 	}
 
-	public void setOffer(Long offer) {
+	public void setOffer(Offer offer) {
 		this.offer = offer;
 	}
-	
 	
 
 }

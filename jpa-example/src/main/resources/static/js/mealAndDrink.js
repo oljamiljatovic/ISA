@@ -21,7 +21,7 @@ $(document).on('click','#pica',function(e){
 							'<input type="hidden" id="idIzmenaName" value='+pice.name+'>'+
 							'<input type="hidden" id="idIzmenaOpis" value='+pice.description+'>'+
 							'<input type="hidden" id="idIzmenaPrice" value='+pice.price+'>'+
-							'<input type="hidden" id="idIzmenaRestoran" value='+pice.restaurant+'>'+
+							'<input type="hidden" id="idIzmenaRestoran" value='+pice.restaurant.id+'>'+
 							'</form></td></tr>');
 				
 			});
@@ -39,7 +39,7 @@ $(document).on('submit','#formIzbrisiPice',function(e){
 	var id = $(this).find("input[type=hidden]").val();
 	var name = "";
 	var price = 0;
-	var restaurant = "";
+	var restaurant = null;
 	var description = "";
 	var data2 = JSON.stringify({
 		"id" : id,
@@ -114,11 +114,22 @@ $(document).on('submit','#submitIzmenaPica',function(e){
 	}else if(price == ""){
 		alert("Cena je prazna");
 	}else{
+
+		var restaurant = JSON.stringify({
+			"id" : restaurant,
+			"name" : "",
+			"type" : "",
+			"address" : "",
+			"contact" : ""
+		});
+		
+		var obj = JSON.parse(restaurant);
+		
 		var data2 = JSON.stringify({
 			"id" : id,
 			"name" : name,
 			"price" : price,
-			"restaurant" : restaurant,
+			"restaurant" : obj,
 			"description" : description
 		});
 		$.ajax({
@@ -165,7 +176,7 @@ $(document).on('submit','#submitDodajPice',function(e){
 	var name = $('#imePica').val();
 	var price = $('#cenaPica').val();
 	var opis = $('#opisPica').val();
-	var restoran = 0;
+	var restoran = null;
 	if(name == ""){
 		alert("Ime je prazno");
 	}else if(price == ""){
@@ -223,7 +234,7 @@ $(document).on('click','#jelovnik',function(e){
 							'<input type="hidden" id="idIzmenaName" value='+jelo.name+'>'+
 							'<input type="hidden" id="idIzmenaOpis" value='+jelo.description+'>'+
 							'<input type="hidden" id="idIzmenaPrice" value='+jelo.price+'>'+
-							'<input type="hidden" id="idIzmenaRestoran" value='+jelo.restaurant+'>'+
+							'<input type="hidden" id="idIzmenaRestoran" value='+jelo.restaurant.id+'>'+
 							'</form></td></tr>');
 				
 			});
@@ -241,7 +252,7 @@ $(document).on('submit','#formIzbrisiJelo',function(e){
 	var id = $(this).find("input[type=hidden]").val();
 	var name = "";
 	var price = 0;
-	var restaurant = "";
+	var restaurant = null;
 	var description = "";
 	var data2 = JSON.stringify({
 		"id" : id,
@@ -314,13 +325,25 @@ $(document).on('submit','#submitIzmenaJelo',function(e){
 	}else if(price == ""){
 		alert("Cena je prazna");
 	}else{
+		var restaurant = JSON.stringify({
+			"id" : restaurant,
+			"name" : "",
+			"type" : "",
+			"address" : "",
+			"contact" : ""
+		});
+		
+		var obj = JSON.parse(restaurant);
+		
 		var data2 = JSON.stringify({
 			"id" : id,
 			"name" : name,
 			"price" : price,
-			"restaurant" : restaurant,
+			"restaurant" : obj,
 			"description" : description
 		});
+		
+		//var data = JSON.parse(data2)
 		$.ajax({
 			type : 'POST',
 			url :  '/mealAndDrinkController/updateMeal',
@@ -365,7 +388,6 @@ $(document).on('submit','#submitDodajJelo',function(e){
 	var name = $('#imeJela').val();
 	var price = $('#cenaJela').val();
 	var opis = $('#opisJela').val();
-	var restoran = 0;
 	if(name == ""){
 		alert("Ime je prazno");
 	}else if(price == ""){
@@ -374,7 +396,7 @@ $(document).on('submit','#submitDodajJelo',function(e){
 		var data2 = JSON.stringify({
 			"name" : name,
 			"price" : price,
-			"restaurant" : restoran,
+			"restaurant" : null,
 			"description" : opis
 		});
 		$.ajax({
