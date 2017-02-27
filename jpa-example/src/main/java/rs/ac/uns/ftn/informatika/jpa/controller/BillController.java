@@ -59,9 +59,10 @@ public class BillController {
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		System.out.println("Billl user "+u.getEmail()+"  id"+u.getId());
-		ArrayList<Bill> cfw = this.billService.findByWaiter_id(u.getId());
-		System.out.println("Duzina bills "+cfw.size());
-		return new ResponseEntity<Object>(cfw, HttpStatus.OK);
+		Employee waiter = employeeService.findById(u.getId());
+		ArrayList<Bill> bills = this.billService.findByWaiter(waiter);
+		System.out.println("Duzina bills "+bills.size());
+		return new ResponseEntity<Object>(bills, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -75,11 +76,11 @@ public class BillController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");		
-		Long orderId = bill.getOrder_id();
+		Long orderId = bill.getOrderBill().getId();
 		Order orderForClose = this.orderService.findById(orderId);
-		Bill addedBill = null;
-		bill.setWaiter_id(u.getId());
-		addedBill = billService.addNew(bill);
+		Employee waiter = employeeService.findById(u.getId());
+		bill.setWaiter(waiter);
+		Bill addedBill = billService.addNew(bill);
 		orderForClose.setBarman_state("kraj");
 		orderForClose.setCook_state("kraj");
 		Order changedOrder = orderService.update(orderForClose, orderId);
@@ -96,23 +97,21 @@ public class BillController {
 		
 		ArrayList<Bill> cfw = this.billService.getBills();
 		ArrayList<Bill> temp = new ArrayList<Bill>();
-		
 		ServletRequestAttributes attr = (ServletRequestAttributes) 
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
 		RestaurantManager rm= this.managerService.getManager(u.getEmail());
 		ArrayList<Employee> employees = this.employeeService.getEmployeesOfRestaurant(rm.getRestaurant());
-		
+
 		for(int i=0; i<cfw.size(); i++){
 			for(int j=0; j<employees.size(); j++){
 				Long first = employees.get(j).getId();
-				Long second = cfw.get(i).getWaiter_id();
+				Long second = cfw.get(i).getWaiter().getId();
 				if(first.equals(second))
 					temp.add(cfw.get(i));
 			}
 		}
-		
 		return new ResponseEntity<ArrayList<Bill>>(temp, HttpStatus.OK);
 	}
 	
@@ -123,12 +122,10 @@ public class BillController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Bill>> getBillsOfWaiter(@RequestBody Employee empl) throws Exception {
-		
 		ArrayList<Bill> cfw = this.billService.getBills();
 		ArrayList<Bill> temp = new ArrayList<Bill>();
-		
 		for(int i=0; i<cfw.size(); i++){
-				Long first = cfw.get(i).getWaiter_id();
+				Long first = cfw.get(i).getWaiter().getId();
 				if(first.equals(empl.getId()))
 					temp.add(cfw.get(i));
 		}

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.RatingAll;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.repository.RatingAllRepository;
 
 @Service
@@ -15,11 +18,6 @@ public class RatingAllServiceImpl implements RatingAllService{
 
 	@Autowired
 	private RatingAllRepository ratingAllRepository;
-	
-	@Override
-	public ArrayList<RatingAll> findByGuestId(Long guestId) {
-		return this.ratingAllRepository.findByGuestId(guestId);
-	}
 
 	@Override
 	public RatingAll addNew(RatingAll rating) {
@@ -27,13 +25,20 @@ public class RatingAllServiceImpl implements RatingAllService{
 	}
 
 	@Override
-	public RatingAll findByGuestIdAndReservationId(Long guestId, Long reservationId) {
-		return ratingAllRepository.findByGuestIdAndReservationId(guestId, reservationId);
+	public ArrayList<RatingAll> findByGuest(Guest guest) {
+		return ratingAllRepository.findByGuest(guest);
 	}
 
 	@Override
-	public ArrayList<RatingAll> findByRestaurant(Long id) {
-		return this.ratingAllRepository.findByRestaurantId(id);
+	public RatingAll findByGuestAndReservation(Guest guest, Reservation reservation) {
+		return ratingAllRepository.findByGuestAndReservation(guest, reservation);
 	}
+
+	@Override
+	public ArrayList<RatingAll> findByRestaurant(Restaurant restaurant) {
+		return ratingAllRepository.findByRestaurant(restaurant);
+	}
+
+
 
 }

@@ -1,12 +1,14 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 @Entity
 @Table(name="rating_all")
@@ -16,14 +18,17 @@ public class RatingAll{
 	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 	
-	@Column(name="guest_id",nullable = false)
-	private Long guestId;
+	@ManyToOne
+	@JoinColumn(name="guest")
+	private Guest guest;
 	
-	@Column(name="reservation_id",nullable = false)
-	private Long reservationId;
+	@ManyToOne
+	@JoinColumn(name="reservation")
+	private Reservation reservation;
 	
-	@Column(name="restaurant_id",nullable = false)
-	private Long restaurantId;
+	@ManyToOne
+	@JoinColumn(name="restaurant")
+	private Restaurant restaurant;
 	
 	@Column(name="restaurant_rating",nullable = false)
 	private int restaurantRating;
@@ -44,28 +49,28 @@ public class RatingAll{
 		this.id = id;
 	}
 
-	public Long getGuestId() {
-		return guestId;
+	public Guest getGuest() {
+		return guest;
 	}
 
-	public void setGuestId(Long guestId) {
-		this.guestId = guestId;
+	public void setGuest(Guest guest) {
+		this.guest = guest;
 	}
 
-	public Long getReservationId() {
-		return reservationId;
+	public Reservation getReservation() {
+		return reservation;
 	}
 
-	public Long getRestaurantId() {
-		return restaurantId;
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
 	}
 
-	public void setRestaurantId(Long restaurantId) {
-		this.restaurantId = restaurantId;
+	public Restaurant getRestaurant() {
+		return restaurant;
 	}
 
-	public void setReservationId(Long reservationId) {
-		this.reservationId = reservationId;
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 
 	public int getRestaurantRating() {

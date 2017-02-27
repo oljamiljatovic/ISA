@@ -136,7 +136,7 @@ public class OrderController {
 		surrogateOrder.setWaiter_id(u.getId());
 		//surrogateOrder.setRestaurant(employee.getRestaurant());
 		ArrayList<Drink> drinks = new ArrayList<Drink>();
-		if(surrogateOrder.getDrinks()!=null){
+		if(!surrogateOrder.getDrinks().isEmpty()){
 			for(int i=0;i<surrogateOrder.getDrinks().size();i++){
 				String name = surrogateOrder.getDrinks().get(i);
 				Drink drink = drinkService.findByName(name);
@@ -145,7 +145,7 @@ public class OrderController {
 			}
 		}
 		ArrayList<Meal> meals = new ArrayList<Meal>();
-		if(surrogateOrder.getMeals()!=null){
+		if(!surrogateOrder.getMeals().isEmpty()){
 			for(int i=0;i<surrogateOrder.getMeals().size();i++){
 				String name = surrogateOrder.getMeals().get(i);
 				Meal meal = mealService.findByName(name);
@@ -282,7 +282,7 @@ public class OrderController {
 			Employee employee = employeeService.findById(u.getId());
 			//order.setRestaurant(employee.getRestaurant());
 			ArrayList<Drink> drinks = new ArrayList<Drink>();
-			if(order.getDrinks()!=null){
+			if(!order.getDrinks().isEmpty()){
 				for(int i=0;i<order.getDrinks().size();i++){
 					String name = order.getDrinks().get(i);
 					Drink drink = drinkService.findByName(name);
@@ -293,7 +293,7 @@ public class OrderController {
 				}
 			}
 			ArrayList<Meal> meals = new ArrayList<Meal>();
-			if(order.getMeals()!=null){
+			if(!order.getMeals().isEmpty()){
 				for(int i=0;i<order.getMeals().size();i++){
 					String name = order.getMeals().get(i);
 					Meal meal = mealService.findByName(name);
@@ -303,8 +303,6 @@ public class OrderController {
 					foundedOrder.getMeals().add(meals.get(i));
 				}
 			}
-			
-			
 		}
 		Order changedOrder = orderService.update(foundedOrder, id);
 		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);

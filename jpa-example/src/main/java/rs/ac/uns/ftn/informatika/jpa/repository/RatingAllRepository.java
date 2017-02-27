@@ -3,15 +3,17 @@ package rs.ac.uns.ftn.informatika.jpa.repository;
 import java.util.ArrayList;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
+
 import rs.ac.uns.ftn.informatika.jpa.domain.RatingAll;
-import java.lang.Long;
-import java.util.List;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 
 public interface RatingAllRepository extends PagingAndSortingRepository<RatingAll, Long>{
-	public ArrayList<RatingAll> findByGuestId(Long guestId);
+	public ArrayList<RatingAll> findByGuest(Guest guest);
 	
-	public RatingAll findByGuestIdAndReservationId(Long guestId, Long reservationId);
+	public RatingAll findByGuestAndReservation(Guest guest, Reservation reservation);
 	
-	public ArrayList<RatingAll> findByRestaurantId(Long restaurantid);
+	public ArrayList<RatingAll> findByRestaurant(Restaurant restaurant);
 }
