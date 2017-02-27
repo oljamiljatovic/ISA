@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Foodstuff;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
@@ -34,6 +36,7 @@ import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OfferService;
 import rs.ac.uns.ftn.informatika.jpa.service.ProviderService;
+import rs.ac.uns.ftn.informatika.jpa.service.ReservationService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 
 
@@ -57,6 +60,9 @@ public class MealAndDrinkController {
 	private EmployeeService employeeService;
 	@Autowired
 	private ProviderService providerService;
+	@Autowired
+	private ReservationService reservationService;
+	
 	
 	@RequestMapping(
 			value = "/uzmiPica",
@@ -240,4 +246,39 @@ public class MealAndDrinkController {
 				
 		return new ResponseEntity<ArrayList<Foodstuff>>(fs, HttpStatus.OK);
 	}
+	
+	
+	
+	
+	
+	@RequestMapping(
+			value = "/getAllDrinks/{idReservation}",
+			method = RequestMethod.PUT,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Drink>> getAllDrinks(@PathVariable Long idReservation)  throws Exception {
+		
+			ArrayList<Drink> drinks = new ArrayList<Drink>();
+			Reservation reservation = reservationService.findOne(idReservation);
+			drinks = this.drinkService.getDrinksByRestaurant(reservation.getIdRestaurant());
+	
+		
+		return new ResponseEntity<ArrayList<Drink>>(drinks, HttpStatus.OK);
+	}
+	
+	
+
+	@RequestMapping(
+			value = "/getAllMeals/{idReservation}",
+			method = RequestMethod.PUT,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Meal>> getAllMeals(@PathVariable Long idReservation)  throws Exception {
+		
+			ArrayList<Meal> meals = new ArrayList<Meal>();
+			Reservation reservation = reservationService.findOne(idReservation);
+			meals = this.mealService.getMealsByRestaurant(reservation.getIdRestaurant());
+	
+		
+		return new ResponseEntity<ArrayList<Meal>>(meals, HttpStatus.OK);
+	}
+	
 }

@@ -287,6 +287,23 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(
+			value = "/getReservedTableForReservation/{idReservation}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Tablee> getReservedTableForReservation(
+			@PathVariable Long idReservation) throws Exception {
+		
+		System.out.println("pronasao ga");
+		List<Tablee> tables = new ArrayList<Tablee>();
+		Reservation reservation = reservationService.findOne(idReservation);
+		tables = reservation.getReservedTables();
+		
+		
+		System.out.println("tabele"+tables.size());
+		return tables;
+	}
+	
+	@RequestMapping(
 			value = "/getTablesForReservation/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -315,5 +332,10 @@ public class ReservationController {
 		}
 		return new ResponseEntity<ArrayList<Tablee>>(tables, HttpStatus.OK);
 	}
+	
+	
+	
+	
+
 
 }
