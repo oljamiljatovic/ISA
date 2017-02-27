@@ -153,9 +153,12 @@ INSERT INTO orderr(waiter,tablee,barman_state,cook_state,time_of_order,reservati
 --racuni 
 insert into bill(bill_id,order_bill,waiter,date_of_bill,bill) values (1,1,8,'2017-02-17 00:25:09',530)
 --ocjene
-insert into rating_all(reservation,guest,restaurant,restaurant_rating,service_rating,meal_rating)values(1,1,1,2,3,4)
-insert into rating_all(reservation,guest,restaurant,restaurant_rating,service_rating,meal_rating)values(1,5,1,5,1,3)
-insert into rating_all(reservation,guest,restaurant,restaurant_rating,service_rating,meal_rating)values(1,3,2,4,2,5)
+insert into rating_all(reservation,guest,restaurant,restaurant_rating,service_rating,meal_rating,waiter)values(1,1,1,2,3,4,8)
+insert into rating_all(reservation,guest,restaurant,restaurant_rating,service_rating,meal_rating,waiter)values(1,5,1,5,1,3,8)
+insert into rating_all(reservation,guest,restaurant,restaurant_rating,service_rating,meal_rating,waiter)values(1,3,2,4,2,5,8)
+insert into rating_all_meals(rating_id,meal_id) values (1,1)
+insert into rating_all_meals(rating_id,meal_id) values (1,2)
+
 --narucana jela i pica
 insert into drink_order(order_id,drink_id) values ('1','1')
 insert into drink_order(order_id,drink_id) values ('1','2')

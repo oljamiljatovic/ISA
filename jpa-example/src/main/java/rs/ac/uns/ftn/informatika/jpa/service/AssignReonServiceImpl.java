@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.repository.AssignReonRepository;
@@ -49,5 +50,12 @@ public class AssignReonServiceImpl implements AssignReonService{
 		// TODO Auto-generated method stub
 		return this.assignReonRepository.findByWaiter(waiter);
 	}
+
+	@Override
+	public ArrayList<AssignReon> findByReonAndRestaurant(Reon reon, Restaurant restaurant) {
+		return this.assignReonRepository.findByReonAndRestaurant(reon, restaurant);
+	}
+
+
 
 }

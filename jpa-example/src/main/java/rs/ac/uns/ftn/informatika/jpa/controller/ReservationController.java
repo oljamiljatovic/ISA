@@ -25,6 +25,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
+import rs.ac.uns.ftn.informatika.jpa.domain.OrderSurrogate;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
@@ -36,6 +37,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.service.AssignReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.GuestService;
+import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReservationService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReservedTablesService;
 import rs.ac.uns.ftn.informatika.jpa.service.TableService;
@@ -65,6 +67,9 @@ public class ReservationController {
 	
 	@Autowired
 	private AssignReonService assignReonService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 
 	@RequestMapping(
@@ -215,8 +220,6 @@ public class ReservationController {
 				reservations.addAll(resFromAccept);
 			}
 		}
-		/*if(!resFromAccept.isEmpty())
-			System.out.println("Accepted "+resFromAccept.get(0).getId());*/
 		return new ResponseEntity<ArrayList<Reservation>>(reservations, HttpStatus.OK);
 	}
 		
