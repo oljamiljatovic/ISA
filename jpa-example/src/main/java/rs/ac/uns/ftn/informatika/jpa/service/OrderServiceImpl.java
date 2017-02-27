@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.repository.OrderRepository;
@@ -51,5 +52,9 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public ArrayList<Order> findByRestaurant(Restaurant restaurant) {
 		return this.orderRepository.findByRestaurant(restaurant);
+	}
+	@Override
+	public ArrayList<Order> findByReservation(Reservation reservation) {
+		return orderRepository.findByReservation(reservation);
 	}
 }

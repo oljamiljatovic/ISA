@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.service;
 import java.util.ArrayList;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 
@@ -19,4 +20,6 @@ public interface AssignReonService {
 	public ArrayList<AssignReon> findByRestaurant(Restaurant rest);
 	
 	public void delete(Long id);
+	
+	public ArrayList<AssignReon> findByReonAndRestaurant(Reon reon, Restaurant restaurant);
 }

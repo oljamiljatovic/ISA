@@ -80,6 +80,7 @@ public class BillController {
 		Order orderForClose = this.orderService.findById(orderId);
 		Employee waiter = employeeService.findById(u.getId());
 		bill.setWaiter(waiter);
+		bill.setOrderBill(orderForClose);
 		Bill addedBill = billService.addNew(bill);
 		orderForClose.setBarman_state("kraj");
 		orderForClose.setCook_state("kraj");

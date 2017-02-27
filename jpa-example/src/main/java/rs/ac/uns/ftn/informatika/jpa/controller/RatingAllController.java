@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,14 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
+import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.RatingAll;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
 import rs.ac.uns.ftn.informatika.jpa.service.GuestService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
+import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
 import rs.ac.uns.ftn.informatika.jpa.service.RatingAllService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReservationService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
@@ -41,6 +46,8 @@ public class RatingAllController {
 	private ReservationService reservationService;
 	@Autowired
 	private RestaurantService restaurantService;
+	@Autowired
+	private OrderService orderService;
 
 	@RequestMapping(
 			value = "/addRating",
@@ -55,7 +62,31 @@ public class RatingAllController {
 		User u = (User) session.getAttribute("korisnik");
 		Guest guest = guestService.findOne(u.getId());
 		rating.setGuest(guest);
-		RatingAll addedRating = ratingAllService.addNew(rating);
+		System.out.println("guest "+guest.getName());
+		Restaurant restaurant = restaurantService.getRestaurant(rating.getRestaurant().getId());
+		rating.setRestaurant(restaurant);
+		System.out.println("restaurant "+restaurant.getName());
+		Reservation reservation = reservationService.findOne(rating.getReservation().getId());
+		rating.setReservation(reservation);
+		System.out.println("reservation "+reservation.getId());
+		ArrayList<Order> orders = orderService.findByReservation(reservation);
+		RatingAll addedRating = null;
+		//uzme konobara prve porudzbine iz rezervacije
+		//ako nije bilo poridzbina zabrani da ocjenjuje
+		List<Meal> meals = new ArrayList<Meal>();
+		if(orders!=null && !orders.isEmpty()){
+			Order order = orders.get(0);
+			Employee waiter = order.getWaiter();
+			rating.setWaiter(waiter);
+			System.out.println("waiter "+waiter.getEmail());
+			for(int i=0;i<order.getMeals().size();i++){
+				meals.add(order.getMeals().get(i));
+				System.out.println("meal "+order.getMeals().get(i).getName());
+			}
+			rating.setMeals(meals);
+			addedRating = ratingAllService.addNew(rating);
+		}
+		
 		return new ResponseEntity<RatingAll>(addedRating, HttpStatus.OK);
 	}
 	

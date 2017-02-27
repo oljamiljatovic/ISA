@@ -86,6 +86,7 @@ $(document).on('click','#rating',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 			'<div class="login-page wrapper centered centered-block">'+ 
 			'<div class = "form-group"><form id="ratingForm" method="post">'+
+			'Ocjenjivanje posjete:<br/>'+
 			'Ocjena restorana:<select id="comboRest">'+
 			'<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select><br/><br/>'+
 			'Ocjena usluge:   <select id="comboService">'+
@@ -138,14 +139,22 @@ $(document).on('click','#ratingSubmit',function(e){
 			"guest" : objGuest,
 			"reservation" : objReservation,
 			"restaurant" : objRestaurant,
-			"restaurantRating" : rest,
+			"waiter" : null,
+			"meals" : null,
+ 			"restaurantRating" : rest,
 			"serviceRating" : service,
 			"mealRating" : meal
 		}),
 		success : function(data){
-			Command: toastr["success"]("Uspješno ste ocjenili.", "Odlično!")
-			//message();
-			showHistory();
+			if(data==null){
+				Command: toastr["error"]("Nemate pravo ocjenjivanja jer još ništa niste naručili.", "Greška!")
+				//message();
+				showHistory();
+			}else{
+				Command: toastr["success"]("Uspješno ste ocjenili.", "Odlično!")
+				//message();
+				showHistory();
+			}
 		},
 	
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)

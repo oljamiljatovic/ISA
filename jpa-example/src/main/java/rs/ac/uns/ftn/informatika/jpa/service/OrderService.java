@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 
@@ -23,4 +24,6 @@ public interface OrderService {
 	public Order findById(Long id);
 	
 	List<Order> findByDrinks(List drinks);
+	
+	public ArrayList<Order> findByReservation(Reservation reservation);
 }

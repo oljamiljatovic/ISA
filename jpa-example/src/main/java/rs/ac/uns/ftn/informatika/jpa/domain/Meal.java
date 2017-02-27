@@ -30,17 +30,20 @@ public class Meal implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="restaurant")
 	private Restaurant restaurant;
+	@Column(nullable = false)
+	private boolean exist;
 	
 	public Meal() {
 		
 	}
 	
-	public Meal(String name, String description, float price,Restaurant rest) {
+	public Meal(String name, String description, float price,Restaurant rest,boolean exist) {
 		super();
 		this.name = name;
 		this.price = price;
 		this.price = price;
 		this.restaurant = rest;
+		this.exist = exist;
 	}
 
 	public Long getId() {
@@ -82,6 +85,16 @@ public class Meal implements Serializable{
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
+
+	public boolean isExist() {
+		return exist;
+	}
+
+	public void setExist(boolean exist) {
+		this.exist = exist;
+	}
+	
+	
 
 
 }

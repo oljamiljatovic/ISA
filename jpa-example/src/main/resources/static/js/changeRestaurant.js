@@ -28,8 +28,7 @@ $(document).on('click','#restoran',function(e){
 			$('#kontaktRestorana').val(data.contact);
 		},
 
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("Da li je ovdje problem");
+		error : function(XMLHttpRequest, textStatus, errorThrown) { 
 			alert("AJAX ERROR: " + errorThrown);
 		}
 	});
@@ -441,13 +440,13 @@ $(document).on('click','#aktuelnePonude',function(e){
 	$.ajax({
 		type: 'GET',
 		contentType : 'application/json',
-		url : '/providerController/uzmiSveAktuelnePonude',
+		url : '/providerController/uzmiSveAktuelnePonudeRestorana',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,ponuda){
-				var date1 = new Date();
-				var date2 = new Date(ponuda.endDate);
-				if( date1 < date2 && ponuda.accepted==false)
+				//var date1 = new Date();
+				//var date2 = new Date(ponuda.endDate);
+				if( ponuda.accepted==false)
 			    {
 				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td><td>'
 						+ponuda.amount+'</td><td>'+ponuda.endDate+'</td><td><form id="formVidiPonude" method="get" action="">'+

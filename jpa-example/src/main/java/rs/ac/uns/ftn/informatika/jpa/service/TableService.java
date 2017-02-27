@@ -19,5 +19,7 @@ public interface TableService {
 	public void delete(Long id);
 
 	Tablee findById(Long id);
+	
+	public void updateTableFlag(Tablee table);
 
 }

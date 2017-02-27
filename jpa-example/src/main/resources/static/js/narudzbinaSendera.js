@@ -137,7 +137,7 @@ function KreirajPorudzbinu(){
 				}),
 				success : function(data){
 					
-					alert("Uspjesno dodavanje");
+					alert("Uspjesno dodavanje porudzbine za konobara "+data.waiter.email);
 					window.location.href= "userProfile.html";
 					
 				},

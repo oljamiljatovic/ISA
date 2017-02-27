@@ -128,7 +128,6 @@ $(document).on('click','#pregledRasporeda',function(e){
 	
 });
 
-
 $(document).on('submit','#formIzbrisiSmenu',function(e){
 	e.preventDefault();
 	
@@ -411,7 +410,7 @@ $(document).on('submit','#formIzbrisiDodelu',function(e){
 	});
 });
 
-$(document).on('click','#konfiguracijaRasporeda',function(e){
+/*$(document).on('click','#konfiguracijaRasporeda',function(e){
 	
 	$('#content').empty();
 	$('#mica_mapa').empty();
@@ -464,7 +463,7 @@ $(document).on('click','#submitDodajKonfiguraciju',function(e){
 			}
 		});
 	}
-});
+});*/
 
 
 $(document).on('click','#pregledKonfiguracijeRasporeda',function(e){
@@ -473,7 +472,8 @@ $(document).on('click','#pregledKonfiguracijeRasporeda',function(e){
 	$('#mica_mapa').empty();
 	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID REONA</th><th>NAZIV REONA</th>'+
-		'<th>LOKACIJA REONA</th><th>BROJ STOLOVA</th></tr></table>');
+		'<th>LOKACIJA REONA</th><th>BROJ STOLOVA</th>'+
+		'<th><input type="button" value="Vidi prikaz" id="grafickiPrikazRasporeda"><th/></tr></table>');
 	
 	$.ajax({
 		type: 'GET',
@@ -484,9 +484,8 @@ $(document).on('click','#pregledKonfiguracijeRasporeda',function(e){
 			$.each(list, function(index,reon){
 				$('#tabelaPrikaz').append('<tr><td>'+reon.id+'</td><td>'+reon.name
 						+'</td><td>'+reon.location+'</td><td>'+reon.numberTable+'</td>'+
-						'<td><form id="formIzbrisiKonfig" method="get" action=""><input type="submit" id="submitIzbrisiKonfig" value="Izbrisi"><input type="hidden" value='
-							+reon.id+'></form></td><td><form id="formIzmeniReone" method="get" action="">'+
-							'<input type="submit" value="Izmeni">' +
+						'<td></form></td><td><form id="formDodajStolove" method="get" action="">'+
+							'<input type="submit" value="Dodaj stolove">' +
 							'<input type="hidden" id="reonId" value='+reon.id+'>'+
 							'<input type="hidden" id="reonName" value='+reon.name+'>'+
 							'<input type="hidden" id="reonLocation" value='+reon.location+'>'+
@@ -505,7 +504,7 @@ $(document).on('click','#pregledKonfiguracijeRasporeda',function(e){
 
 
 
-$(document).on('submit','#formIzbrisiKonfig',function(e){
+/*$(document).on('submit','#formIzbrisiKonfig',function(e){
 	e.preventDefault();
 	
 	var id = $(this).find("input[type=hidden]").val();
@@ -534,10 +533,10 @@ $(document).on('submit','#formIzbrisiKonfig',function(e){
 			alert("AJAX ERROR: " + errorThrown);
 		}
 	});
-});
+});*/
 
 
-$(document).on('submit','#formIzmeniReone',function(e){
+$(document).on('submit','#formDodajStolove',function(e){
 	e.preventDefault();
 	
 	var id = $(this).find("input[id='reonId']").val();
@@ -551,49 +550,37 @@ $(document).on('submit','#formIzmeniReone',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
 			'<form method="post" id="izmenaaReona">Podaci o reonu:<br/><br/>'+
-				'Oznaka reona:<input type = "text" id = "nazivReona" class="in-text"/><br/>'+
-				'Lokacija reona:<input type = "text" id = "lokacijaReona" class="in-text"/><br/>'+
-				'Broj stolova:<input type = "text" id = "brojStolova" class="in-text"/><br/>'+
+				'Oznaka reona:<input type = "text" id = "nazivReona" class="in-text" readonly="true"/><br/><br/><br/>'+
+				'Unesite broj stolova:<input type = "text" id = "brojStolova" class="in-text"/><br/>'+
 				'<input type="hidden" id="reonId" value='+id+'>'+
-				'<input type = "submit" id = "submitIzmeniKonfiguraciju" value="Submit" class="btn orange">'+
+				'<input type = "submit" id = "submitDodajStolove" value="Submit" class="btn orange">'+
 				'</form></div></div></div></div>');
 
 	$('#nazivReona').val(name);
-	$('#lokacijaReona').val(location);
-	$('#brojStolova').val(numberTable);
 });
 
 
 
-$(document).on('click','#submitIzmeniKonfiguraciju', function(e){
+$(document).on('click','#submitDodajStolove', function(e){
 	e.preventDefault();
 	var id = $('#reonId').val();
-	var name = $('#nazivReona').val();
-	var location = $('#lokacijaReona').val();
 	var number = $('#brojStolova').val();
 	
-	if(name == ""){
-		alert("Ime je prazno");
-	}else if(location == ""){
-		alert("Lokacija je prazna");
-	}else if(number == ""){
-		alert("Broj stolova je prazan");
-	}else{
-		
-		var data2 = JSON.stringify({
-			"id" : id,
-			"name" : name,
-			"location" : location,
-			"numberTable" : number,
-			"restaurant" : null
-		});
+	var data1 = JSON.stringify({
+		"id" : id,
+		"name" : "",
+		"restaurant" : null,
+		"numberTable" : number
+	});
+	
+	
 		
 		$.ajax({
 			type : 'POST',
-			url :  '/scheduleAndReonController/updateReon',
+			url :  '/scheduleAndReonController/addTables',
 			contentType : 'application/json',
 			dataType : 'json',
-			data : data2,
+			data : data1,
 			success : function(data){
 				alert(data.id);
 				window.location.reload();
@@ -603,7 +590,121 @@ $(document).on('click','#submitIzmeniKonfiguraciju', function(e){
 				alert("AJAX ERROR: " + errorThrown);
 			}
 		});
-	}
 });
 
 
+
+$(document).on('click','#grafickiPrikazRasporeda',function(e){
+	e.preventDefault();
+	
+	$('#content').empty();
+	$.ajax({
+		type: 'GET',
+		contentType : 'application/json',
+		url : '/restaurantManagerController/getTablesForRestaurant',
+		success : function(tables){
+			$("#content").empty();
+			$("#content").append("<br/>");
+			$("#content").append("<br/>");
+			$('#content').append('Kliknite na sto koji zelite izbrisati');
+			$('#content').append('<br/>');
+			$('#content').append('<br/>');
+			var numberTable = tables.length;
+			var  x= numberTable/5;
+			var iter = 0;
+			var iterNum = parseInt(x, 10);
+			for(var j= 0; j<tables.length; j++){
+				
+				if(tables[j].reon.id%4==0){
+					
+					$("#content").append('<input type = "button" class="btn green" style="height:70px;width:130px"  onclick="OdabranSto()"'+ 
+							'id ="'+tables[j].id+'"  value="Broj '+tables[j].id+'"></td> ');
+				
+				}
+			}
+			$('#content').append('<br/>');
+			for(var j= 0; j<tables.length; j++){
+				 if(tables[j].reon.id%4==1){
+					
+					$("#content").append('<input type = "button" class="btn green" style="height:70px;width:130px;background:#FFB987"  onclick="OdabranSto()"'+ 
+							'id ="'+tables[j].id+'"  value="Broj '+tables[j].id+'"></td> ');
+					
+					}
+			}
+			$('#content').append('<br/>');
+			
+			for(var j= 0; j<tables.length; j++){
+				if(tables[j].reon.id%4==2){
+					
+					$("#content").append('<input type = "button" class="btn green" style="height:70px;width:130px;background:#F0D900"  onclick="OdabranSto()"'+ 
+							'id ="'+tables[j].id+'"  value="Broj '+tables[j].id+'"></td> ');
+					
+					}
+			}
+			$('#content').append('<br/>');
+			
+			for(var j= 0; j<tables.length; j++){
+				if(tables[j].reon.id%4==3){
+					
+					$("#content").append('<input type = "button" class="btn green" style="height:70px;width:130px;background:#B2E02E"  onclick="OdabranSto()"'+ 
+					'id ="'+tables[j].id+'"  value="Broj '+tables[j].id+'"></td> ');
+					
+					}
+			
+			}
+			
+			
+			$.ajax({
+				type: 'GET',
+				contentType : 'application/json',
+				url : '/restaurantManagerController/getReservedTables',
+				success : function(zauzeti){ //data su rezervisani reservedtables
+					
+					for(var i = 0 ; i < zauzeti.length ; i++){
+						
+						 var idStola = zauzeti[i].idTable.id;
+						
+						document.getElementById(idStola).disabled="true";
+						document.getElementById(idStola).value="Broj "+idStola+" je zauzet";
+						
+					
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("AssignReon ERROR: " + errorThrown);
+				}	
+			});	
+
+		},error : function(XMLHttpRequest, textStatus, errorThrown) { 
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
+	
+});
+
+function OdabranSto(){
+	 
+	   var idStola = OdabranSto.caller.arguments[0].target.id; 
+	   
+	   var data = JSON.stringify({
+		  "id" : idStola,
+		  "restaurant" : null,
+		  "reon" : null,
+		  "exist": false
+	   });
+	   
+	   $.ajax({
+		   type : 'POST',
+	   		url :  '/scheduleAndReonController/izbrisiSto',
+			contentType : 'application/json',
+	   		data : data,
+	   		success : function(){
+	   			alert('Izbrisan sto!');
+	   			window.location.reload();
+	   		},
+	   		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+	   				alert("AJAX ERROR: " + errorThrown);
+	   			}
+	   		
+	   		});
+	}
