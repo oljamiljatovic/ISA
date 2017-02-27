@@ -276,4 +276,42 @@ public class ScheduleAndReonController {
 		this.assignReonService.delete(r.getId());
 	}
 	
+	@RequestMapping(
+			value = "/izbrisiSto",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void deleteSto(@RequestBody Tablee t)  throws Exception {
+		
+		this.tableService.delete(t.getId());
+	}
+	
+	
+	@RequestMapping(
+			value = "/addTables",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<Reon> addTables(@RequestBody Reon reon)  throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes)
+				RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		Restaurant r= null;
+		RestaurantManager rm = null;
+		if(u.getRole().equals("restaurantManager")){
+			rm= this.managerService.getManager(u.getEmail());
+			r = restaurantService.getRestaurant(rm.getRestaurant().getId());
+		}
+		int number = reon.getNumberTable();
+		reon = this.reonService.findOne(reon.getId());
+		reon.setNumberTable(reon.getNumberTable()+number);
+		this.reonService.update(reon);
+		
+		for(int i=0; i<number; i++){
+			Tablee tablee = new Tablee(reon,r);
+			this.tableService.createTable(tablee);
+		}
+		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
+	}
 }
