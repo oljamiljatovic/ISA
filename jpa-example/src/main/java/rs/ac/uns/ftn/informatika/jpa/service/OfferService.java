@@ -16,4 +16,6 @@ public interface OfferService {
 	public ArrayList<Offer> getOffersByRestaurant(Restaurant id);
 	
 	public void delete(Long id);
+	
+	public void updateFlag(boolean accepted, Long id);
 }

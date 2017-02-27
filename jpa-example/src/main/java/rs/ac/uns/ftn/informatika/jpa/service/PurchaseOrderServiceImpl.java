@@ -62,4 +62,15 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		return this.purchaseOrderRepository.findByProvider(id);
 	}
 
+	@Override
+	public void updatePurchaseOrderSeen(boolean flag, Long id) {
+		
+		this.purchaseOrderRepository.updateSeen(flag, id);
+	}
+
+	@Override
+	public PurchaseOrder findOne(Long id) {
+		return this.purchaseOrderRepository.findOne(id);
+	}
+
 }

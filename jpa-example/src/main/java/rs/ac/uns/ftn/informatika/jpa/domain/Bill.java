@@ -1,33 +1,30 @@
 package rs.ac.uns.ftn.informatika.jpa.domain;
 
-import static javax.persistence.InheritanceType.JOINED;
-
-import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 
 @Entity
 @Table(name="bill")
-@Inheritance(strategy=JOINED)
-public class Bill implements Serializable{
-	private static final long serialVersionUID = 1L;
-
+public class Bill{
 	@Id
     @GeneratedValue
 	@Column(name="bill_id", unique=true, nullable=false)
 	private Long id;
 	
-	@Column(nullable = false)
-	private Long waiter_id;
+	@ManyToOne
+	@JoinColumn(name="waiter")
+	private Employee waiter;
 	
-	@Column(nullable = false)
-	private Long order_id;
+	@ManyToOne
+	@JoinColumn(name="order_bill")
+	private Order orderBill;
 	
 	@Column(nullable = false)
 	private int bill;
@@ -43,6 +40,22 @@ public class Bill implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Employee getWaiter() {
+		return waiter;
+	}
+
+	public void setWaiter(Employee waiter) {
+		this.waiter = waiter;
+	}
+
+	public Order getOrderBill() {
+		return orderBill;
+	}
+
+	public void setOrderBill(Order orderBill) {
+		this.orderBill = orderBill;
 	}
 
 	public int getBill() {
@@ -61,21 +74,6 @@ public class Bill implements Serializable{
 		this.dateOfBill = dateOfBill;
 	}
 
-	public Long getWaiter_id() {
-		return waiter_id;
-	}
 
-	public void setWaiter_id(Long waiter_id) {
-		this.waiter_id = waiter_id;
-	}
-
-	public Long getOrder_id() {
-		return order_id;
-	}
-
-	public void setOrder_id(Long order_id) {
-		this.order_id = order_id;
-	}
-	
 	
 }

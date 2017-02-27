@@ -403,24 +403,14 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 	var foodAndDrink = parts.split('_')[1];
 	var restaurant = "";
 	var amount = $('#kolicina').val();
-	/*$("input[type=checkbox]:checked").map(function() {
-		var  cekiran = $(this).val();
-		var id = cekiran.split('_')[1];
-		var oznaka = cekiran.split('_')[0];
-		if(oznaka=="jelo")
-			jela.push(id);
-		else
-			pica.push(id);
-	});*/
-	
 	var datum = $('#krajPonude').val();
-	
 	var data2 = JSON.stringify({
 		"endDate" : datum,
 		"foodOrDrink" : foodAndDrink,
 		"flag" : flag,
 		"restaurant" : null,
-		"amount" : amount
+		"amount" : amount,
+		"accepted" : false
 	});
 	$.ajax({
 		type : 'POST',
@@ -457,7 +447,7 @@ $(document).on('click','#aktuelnePonude',function(e){
 			$.each(list, function(index,ponuda){
 				var date1 = new Date();
 				var date2 = new Date(ponuda.endDate);
-				if( date1 < date2)
+				if( date1 < date2 && ponuda.accepted==false)
 			    {
 				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td><td>'
 						+ponuda.amount+'</td><td>'+ponuda.endDate+'</td><td><form id="formVidiPonude" method="get" action="">'+
@@ -539,7 +529,8 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 		"foodOrDrink" : "",
 		"flag" : "",
 		"restaurant" : null,
-		"amount" : 0
+		"amount" : 0,
+		"accepted" : true
 	});
 	
 	var obj = JSON.parse(data);
@@ -559,24 +550,38 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 			data : data2,
 			success : function(data){
 				alert(data.id);
-				window.location.reload();
 				
 				$.ajax({
 					type : 'POST',
 					url :  '/acceptOffer',
-					data : {
-						"acceptOffer" : flag
-					},
+					data :  {"acceptOffer" : id},
 					error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 						alert("AJAX ERROR: " + errorThrown);
 					}
 				});
+				
+				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 				alert("AJAX ERROR: " + errorThrown);
 			}
 		});
-		
-	
+});
+
+
+$(document).on('click', '#dugmeOdjava', function(e) {
+	e.preventDefault();
+	$("#content").empty();
+	$.ajax({
+		type: 'GET',
+		dataType: 'text',
+		url : '/userController/logout',
+		success : function(data){
+			window.location.href= "index.html";
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("billOrders: " + errorThrown);
+		}	
+	});
 });

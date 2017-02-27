@@ -92,7 +92,7 @@ $(document).on('click','#rating',function(e){
 			'<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select><br/><br/>'+
 			'Ocjena jela:     <select id="comboMeal">'+
 			'<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select><br/><br/>'+
-			'<input type = "submit" value="Potvrdi" name="'+reservationAndRestId+'" id="ratingSubmit" class="btn orange">'+
+			'<input type = "submit" value="Potvrdi" name="'+reservationAndRestId+'" id="ratingSubmit" style="width:100px" class="btn orange">'+
 			'</form></div></div></div></div>');	
 });
 $(document).on('click','#ratingSubmit',function(e){
@@ -103,15 +103,41 @@ $(document).on('click','#ratingSubmit',function(e){
 	var reservationAndRestId = $(this).attr('name');
 	var reservationId = reservationAndRestId.split(";")[0];
 	var restaurantId = reservationAndRestId.split(";")[1];
-		$.ajax({
+	var restaurant = JSON.stringify({
+		"id" : restaurantId,
+		"name" : "",
+		"type" : "",
+		"address" : "",
+		"contact" : ""
+	});
+	var objRestaurant = JSON.parse(restaurant);
+	
+	var guest = JSON.stringify({
+		"id" : "1",
+		"name" : "",
+		"surname" : "",
+	});
+	var objGuest = JSON.parse(guest);
+	
+	var reservation = JSON.stringify({
+		"id" : reservationId,
+		"idGuest" : null,
+		"idRestaurant" : null,
+		"date" : "",
+		"time" : "",
+		"duration" : "0"
+	});
+	var objReservation = JSON.parse(reservation);
+	
+	$.ajax({
 		type : 'POST',
 		url :  '/ratingAllController/addRating',
 		contentType : 'application/json',
 		dataType : 'json',
 		data : JSON.stringify({
-			"guestId" : "1",
-			"reservationId" : reservationId,
-			"restaurantId" : restaurantId,
+			"guest" : objGuest,
+			"reservation" : objReservation,
+			"restaurant" : objRestaurant,
 			"restaurantRating" : rest,
 			"serviceRating" : service,
 			"mealRating" : meal
@@ -121,7 +147,7 @@ $(document).on('click','#ratingSubmit',function(e){
 			//message();
 			showHistory();
 		},
-
+	
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 			alert("addRating ERROR: " + errorThrown);
 		}

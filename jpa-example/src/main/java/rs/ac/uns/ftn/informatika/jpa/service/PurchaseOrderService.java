@@ -17,6 +17,7 @@ public interface PurchaseOrderService {
 	public PurchaseOrder getPurchaseOrderByOfferAndProvider(PurchaseOrder pc);
 	public ArrayList<PurchaseOrder> getPurchaseOrderByRestaurant(Restaurant id);
 	public ArrayList<PurchaseOrder> getPurchaseOrderByProvider(Provider id);
-	
+	public void updatePurchaseOrderSeen(boolean flag, Long id);
+	public PurchaseOrder findOne(Long id);
 	
 }

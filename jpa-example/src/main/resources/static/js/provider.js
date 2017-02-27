@@ -26,6 +26,10 @@ $(document).ready(function(){
 		stompClient.subscribe("/topic/acceptOffer", function(data) {
 
 			var mess = data.body;
+			var order = mess.split(';')[0];
+			var provider = mess.split(';')[1];
+			var offer = mess.split(';')[2];
+			var seen = mess.split(';')[3];
 			
 			$.ajax({
 				type: 'GET',
@@ -33,7 +37,7 @@ $(document).ready(function(){
 				url : '/providerController/uzmiPonudjaca',
 				success : function(ponudjac){
 					
-					if(ponudjac.id==mess){
+					if(ponudjac.id==provider ){
 						Command: toastr["info"]("Prihvacena je vasa ponuda!", "Info!")
 						message();
 					
@@ -41,6 +45,30 @@ $(document).ready(function(){
 						Command: toastr["error"]("Odbijena je vasa ponuda za restoran!", "Info!")
 						message();
 					}
+					
+					var data = JSON.stringify({
+						"id" : order,
+						"offer" : null,
+						"restaurant" : null,
+						"timeDeliver" : "",
+						"price" : 0,
+						"provider" : null,
+						"flag" : 0
+					});
+					
+					$.ajax({
+						type: 'POST',
+						contentType : 'application/json',
+						dataType : 'json',
+						data : data,
+						url : '/providerController/updateSeen',
+						success : function(ponudjac){
+							alert("uspesno!");
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							alert("Admin ERROR: " + errorThrown);
+						}
+					});
 			
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -51,6 +79,9 @@ $(document).ready(function(){
 		});
 		
 	});
+	
+	
+	
 	$('#content').empty();
 	$('#start').empty();
 	
@@ -59,6 +90,56 @@ $(document).ready(function(){
 		dataType: 'json',
 		url : '/providerController/uzmiPonudjaca',
 		success : function(ponudjac){
+			
+			$.ajax({
+				type: 'GET',
+				contentType : 'application/json',
+				url : '/providerController/uzmiSvePorudzbenicePonudjaca',
+				success : function(data){
+					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+					$.each(list, function(index,ponuda){
+						if(ponuda.flag!=0 && ponuda.seen==false){
+							
+							if(ponudjac.id==ponuda.flag ){
+								Command: toastr["info"]("Prihvacena je vasa ponuda!", "Info!")
+								message();
+							
+							}else{
+								Command: toastr["error"]("Odbijena je vasa ponuda za restoran!", "Info!")
+								message();
+							}
+							
+							var data = JSON.stringify({
+								"id" : ponuda.id,
+								"offer" : null,
+								"restaurant" : null,
+								"timeDeliver" : "",
+								"price" : 0,
+								"provider" : null,
+								"flag" : 0
+							});
+							
+							$.ajax({
+								type: 'POST',
+								contentType : 'application/json',
+								dataType : 'json',
+								data : data,
+								url : '/providerController/updateSeen',
+								success : function(ponudjac){
+									alert("uspesno!");
+								},
+								error : function(XMLHttpRequest, textStatus, errorThrown) {
+									alert("Admin ERROR: " + errorThrown);
+								}
+							});
+						}
+					});
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Admin ERROR: " + errorThrown);
+				}	
+			});
+			
 				if(ponudjac.logFirstTime=="true"){
 					
 					$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
@@ -311,7 +392,8 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		"foodOrDrink" : "",
 		"flag" : "",
 		"restaurant" : null,
-		"amount" : 0
+		"amount" : 0,
+		"accepted" : false
 	});
 	
 	var obj = JSON.parse(data2);
@@ -430,7 +512,8 @@ $(document).on('submit','#submitDodajPorudzbenicu',function(e){
 			"foodOrDrink" : 0,
 			"flag" : "",
 			"restaurant" : null,
-			"amount" : 0
+			"amount" : 0,
+			"accepted" : false
 		});
 		
 		var obj = JSON.parse(offer);
@@ -521,10 +604,10 @@ $(document).on('click','#spisakPonuda', function(e){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,ponuda){
 				
-				if(ponuda.flag==ponuda.provider){
+				if(ponuda.flag==ponuda.provider.id){
 				$('#tabelaPrikaz').append('<tr id="nesto"><td>'+ponuda.offer.id+'</td><td>'+ponuda.restaurant.name+'</td><td>'
 						+ponuda.timeDeliver+'</td><td>'+ponuda.price+'</td><td>prihvacena</td></tr>');
-				}else if( ponuda.flag!=ponuda.provider && ponuda.flag!=0)
+				}else if( ponuda.flag!=ponuda.provider.id && ponuda.flag!=0)
 			    {
 					$('#tabelaPrikaz').append('<tr id="nesto"><td>'+ponuda.offer.id+'</td><td>'+ponuda.restaurant.name+'</td><td>'
 						+ponuda.timeDeliver+'</td><td>'+ponuda.price+'</td><td>odbijeno</td></tr>');
@@ -535,6 +618,22 @@ $(document).on('click','#spisakPonuda', function(e){
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});
+
+$(document).on('click', '#dugmeOdjava', function(e) {
+	e.preventDefault();
+	$("#content").empty();
+	$.ajax({
+		type: 'GET',
+		dataType: 'text',
+		url : '/userController/logout',
+		success : function(data){
+			window.location.href= "index.html";
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("billOrders: " + errorThrown);
 		}	
 	});
 });
