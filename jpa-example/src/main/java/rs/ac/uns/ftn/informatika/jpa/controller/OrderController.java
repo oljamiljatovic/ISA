@@ -17,17 +17,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
 import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.OrderSurrogate;
 import rs.ac.uns.ftn.informatika.jpa.domain.OrrderHelpClass;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
+import rs.ac.uns.ftn.informatika.jpa.service.AssignReonService;
 import rs.ac.uns.ftn.informatika.jpa.service.BillService;
 import rs.ac.uns.ftn.informatika.jpa.service.DrinkService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
@@ -56,6 +59,8 @@ public class OrderController {
 	private RestaurantService restaurantService;
 	@Autowired 
 	private TableService tableService;
+	@Autowired
+	private AssignReonService assignReonService;
 	
 	@RequestMapping(
 			value = "/getOrders",
@@ -138,21 +143,19 @@ public class OrderController {
 		surrogateOrder.setWaiter_id(u.getId());
 		//surrogateOrder.setRestaurant(employee.getRestaurant());
 		ArrayList<Drink> drinks = new ArrayList<Drink>();
-		if(!surrogateOrder.getDrinks().isEmpty()){
+		if(surrogateOrder.getDrinks()!=null && !surrogateOrder.getDrinks().isEmpty()){
 			for(int i=0;i<surrogateOrder.getDrinks().size();i++){
 				String name = surrogateOrder.getDrinks().get(i);
 				Drink drink = drinkService.findByName(name);
 				drinks.add(drink);
-				System.out.println(drink.getName());
 			}
 		}
 		ArrayList<Meal> meals = new ArrayList<Meal>();
-		if(!surrogateOrder.getMeals().isEmpty()){
+		if(surrogateOrder.getMeals()!=null && !surrogateOrder.getMeals().isEmpty()){
 			for(int i=0;i<surrogateOrder.getMeals().size();i++){
 				String name = surrogateOrder.getMeals().get(i);
 				Meal meal = mealService.findByName(name);
 				meals.add(meal);
-				System.out.println(meal.getName());
 			}
 		}
 		Order order = new Order();
@@ -215,7 +218,7 @@ public class OrderController {
 			Employee employee = employeeService.findById(u.getId());
 			//order.setRestaurant(employee.getRestaurant());
 			ArrayList<Drink> drinks = new ArrayList<Drink>();
-			if(order.getDrinks()!=null){
+			if(order.getDrinks()!=null && !order.getDrinks().isEmpty()){
 				for(int i=0;i<order.getDrinks().size();i++){
 					String name = order.getDrinks().get(i);
 					Drink drink = drinkService.findByName(name);
@@ -223,7 +226,7 @@ public class OrderController {
 				}
 			}
 			ArrayList<Meal> meals = new ArrayList<Meal>();
-			if(order.getMeals()!=null){
+			if(order.getMeals()!=null && !order.getMeals().isEmpty()){
 				for(int i=0;i<order.getMeals().size();i++){
 					String name = order.getMeals().get(i);
 					Meal meal = mealService.findByName(name);
@@ -240,32 +243,6 @@ public class OrderController {
 		Order changedOrder = orderService.update(foundedOrder, id);
 		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);
 	}
-	/*@RequestMapping(
-			value = "/change/{id}",
-			method = RequestMethod.PUT,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Order> update(
-			@RequestBody Order order, @PathVariable Long id) throws Exception {
-		ServletRequestAttributes attr = (ServletRequestAttributes) 
-			    RequestContextHolder.currentRequestAttributes();
-		HttpSession session= attr.getRequest().getSession(true);
-		User u = (User) session.getAttribute("korisnik");
-		Order foundedOrder = orderService.findOne(id);
-		if(u.getRole().equals("waiter")){
-			order.setWaiter_id(u.getId());
-			Employee employee = employeeService.findById(u.getId());
-			order.setRestaurant(employee.getRestaurant());
-			foundedOrder.setDrinks(order.getDrinks());
-			foundedOrder.setMeals(order.getMeals());
-		}else if(u.getRole().equals("cook")){
-			foundedOrder.setCook_state(order.getCook_state());
-		}else if(u.getRole().equals("barman")){
-			foundedOrder.setBarman_state(order.getBarman_state());
-		}
-		Order changedOrder = orderService.update(foundedOrder, id);
-		return new ResponseEntity<Order>(changedOrder, HttpStatus.OK);
-	}*/
 	
 	@RequestMapping(
 			value = "/addOnOrder/{id}",
@@ -284,7 +261,7 @@ public class OrderController {
 			Employee employee = employeeService.findById(u.getId());
 			//order.setRestaurant(employee.getRestaurant());
 			ArrayList<Drink> drinks = new ArrayList<Drink>();
-			if(!order.getDrinks().isEmpty()){
+			if(order.getDrinks()!=null && !order.getDrinks().isEmpty()){
 				for(int i=0;i<order.getDrinks().size();i++){
 					String name = order.getDrinks().get(i);
 					Drink drink = drinkService.findByName(name);
@@ -295,7 +272,7 @@ public class OrderController {
 				}
 			}
 			ArrayList<Meal> meals = new ArrayList<Meal>();
-			if(!order.getMeals().isEmpty()){
+			if(order.getMeals()!=null && !order.getMeals().isEmpty()){
 				for(int i=0;i<order.getMeals().size();i++){
 					String name = order.getMeals().get(i);
 					Meal meal = mealService.findByName(name);
@@ -347,13 +324,10 @@ public class OrderController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Order> addOrderInReservation(
-			@RequestBody OrrderHelpClass surrogateOrder) throws Exception {
-		
-		//Pronaci koji tacno waiter opsluzuje taj sto
-		
+			@RequestBody OrrderHelpClass surrogateOrder) throws Exception {	
 	
 		ArrayList<Drink> drinks = new ArrayList<Drink>();
-		if(!surrogateOrder.getDrinks().isEmpty()){
+		if(surrogateOrder.getDrinks().size()!=0){
 			for(int i=0;i<surrogateOrder.getDrinks().size();i++){
 				String name = surrogateOrder.getDrinks().get(i);
 				Drink drink = drinkService.findByName(name);
@@ -362,7 +336,7 @@ public class OrderController {
 			}
 		}
 		ArrayList<Meal> meals = new ArrayList<Meal>();
-		if(!surrogateOrder.getMeals().isEmpty()){
+		if(surrogateOrder.getMeals().size()!=0){
 			for(int i=0;i<surrogateOrder.getMeals().size();i++){
 				String name = surrogateOrder.getMeals().get(i);
 				Meal meal = mealService.findByName(name);
@@ -376,11 +350,7 @@ public class OrderController {
 		
 		order.setRestaurant(rest);
 		Tablee tablee = tableService.findById(surrogateOrder.getTable_id());
-		
 		order.setTablee(tablee);
-		Employee e = employeeService.findById(surrogateOrder.getWaiter_id());
-		
-		order.setWaiter(e);
 		
 		order.setCook_state(surrogateOrder.getCook_state());
 		order.setBarman_state(surrogateOrder.getBarman_state());
@@ -395,8 +365,23 @@ public class OrderController {
 		Reservation reservation = reservationService.findOne(surrogateOrder.getReservation());
 		
 		order.setReservation(reservation);
+		//kome pripada reon u kome je sto iz rezervacije
+		/////////////desa
+		Reon reon = tablee.getReon();
+		System.out.println("Reon "+reon.getName());
+		ArrayList<AssignReon> assignReons = assignReonService.findByReonAndRestaurant(reon, rest);
+		if(assignReons!=null && !assignReons.isEmpty()){
+			Employee waiter = assignReons.get(0).getWaiter();
+			System.out.println("Waiter "+waiter.getName());
+			order.setWaiter(waiter);
+		}else{//ako nikome ne pripada reon u kome je sto iz rezervacije, dodijeliti ga prvom konobaru iz 
+			//liste svih konobara
+			ArrayList<Employee> es = employeeService.getWaitersOfRestaurant("waiter",rest);
+			Employee e = es.get(0);
+			System.out.println("Waiter from order"+e.getName());
+			order.setWaiter(e);
+		}
 		Order addedOrder = orderService.createNew(order);
-		
 		
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
 	}
