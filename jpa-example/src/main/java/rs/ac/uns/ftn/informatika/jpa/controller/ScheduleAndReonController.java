@@ -1,3 +1,4 @@
+
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
@@ -275,6 +276,7 @@ public class ScheduleAndReonController {
 		
 		this.assignReonService.delete(r.getId());
 	}
+	
 	
 	@RequestMapping(
 			value = "/izbrisiSto",

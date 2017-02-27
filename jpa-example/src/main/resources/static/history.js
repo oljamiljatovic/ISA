@@ -2,6 +2,25 @@ $(document).ready(function() {
 	showHistory();
 });
 
+
+$(document).on('click','#restorani',function(e){
+	window.location.href= "restaurants.html";
+	
+});
+
+$(document).on('click','#prijatelji',function(e){
+	window.location.href= "friendsOfGuest.html";
+	
+});
+
+$(document).on('click','#mojNalog',function(e){
+	window.location.href= "userProfile.html";
+	
+});
+
+
+
+
 function showHistory(){
 	$("#content").empty();
 	$.ajax({

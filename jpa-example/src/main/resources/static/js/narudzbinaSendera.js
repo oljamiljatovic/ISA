@@ -93,13 +93,6 @@ window.onload = function() {
 				});
 				
 		
-		
-			
-	
-	
-	
-	
-	
 	
 };
 
