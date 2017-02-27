@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -392,12 +393,23 @@ public class OrderController {
 		order.setTimeOfOrder(datum);
 		order.setDrinks(drinks);
 		order.setMeals(meals);
-		Reservation reservation = reservationService.findOne(surrogateOrder.getReservation());
 		
+		Reservation reservation = reservationService.findOne(surrogateOrder.getReservation());
+	
 		order.setReservation(reservation);
 		Order addedOrder = orderService.createNew(order);
 		
+	
 		
+		/*List<Order> orders = reservation.getOrders();
+		
+		System.out.println("Order lista"+ orders.size());
+	
+		
+		orders.add(addedOrder);
+		reservation.setOrders(orders);
+		Reservation res = reservationService.update(reservation, reservation.getId());
+		System.out.println("Res" + res.getId());*/
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
 	}
 }

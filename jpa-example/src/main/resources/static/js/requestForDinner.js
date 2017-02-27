@@ -10,6 +10,7 @@ window.onload = function() {
 	var idGuest = pairGuest.split("=")[1];
 	var idReservation = pairReservation.split("=")[1];
 
+	alert("idguest"+ idGuest);
 	$.ajax({ //ajax poziv za dobijanje rezervacije
 		type : 'PUT',
 		url :'/reservationController/getReservationById/'+ idReservation,

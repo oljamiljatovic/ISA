@@ -42,6 +42,7 @@ public class Reservation {
 	private int duration;
 	
 	
+	
 	@ManyToMany(cascade=CascadeType.ALL) 
 	@JoinTable(name="reservation_reserved_tables", joinColumns=@JoinColumn(name="reservation_id"),
 	inverseJoinColumns=@JoinColumn(name="table_id"))
@@ -52,6 +53,13 @@ public class Reservation {
 	@JoinTable(name="accepted_friends", joinColumns=@JoinColumn(name="reservation_id"),
 	inverseJoinColumns=@JoinColumn(name="friend_id"))
 	private List<Guest> acceptedFriends ;
+	
+	
+	@ManyToMany(cascade=CascadeType.ALL) 
+	@JoinTable(name="reservation_orders", joinColumns=@JoinColumn(name="reservation_id"),
+	inverseJoinColumns=@JoinColumn(name="order_id"))
+	private List<Order> orders ;
+	
 	
 	public Reservation(){
 		
@@ -66,6 +74,7 @@ public class Reservation {
 		this.duration = duration;
 		this.reservedTables = new ArrayList<Tablee>();
 		this.acceptedFriends = new ArrayList<Guest>();
+		this.orders = new ArrayList<Order>();
 	}
 	
 	
@@ -83,7 +92,7 @@ public class Reservation {
 
 	
 	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration,
-			List<Tablee> reservedTables, List<Guest> acceptedFriends) {
+			List<Tablee> reservedTables, List<Guest> acceptedFriends, List<Order> orders) {
 		super();
 		this.idGuest = idGuest;
 		this.idRestaurant = idRestaurant;
@@ -92,6 +101,7 @@ public class Reservation {
 		this.duration = duration;
 		this.reservedTables = reservedTables;
 		this.acceptedFriends = acceptedFriends;
+		this.orders = orders;
 	}
 
 	public Long getId() {
@@ -157,6 +167,15 @@ public class Reservation {
 	public void setAcceptedFriends(List<Guest> acceptedFriends) {
 		this.acceptedFriends = acceptedFriends;
 	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+	
 	
 	
 	
