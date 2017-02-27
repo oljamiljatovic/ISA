@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.repository.AssignReonRepository;
 @Service
 @Transactional
@@ -41,6 +42,12 @@ public class AssignReonServiceImpl implements AssignReonService{
 	public void delete(Long id) {
 		
 		this.assignReonRepository.delete(id);
+	}
+
+	@Override
+	public ArrayList<AssignReon> findByWaiter(Employee waiter) {
+		// TODO Auto-generated method stub
+		return this.assignReonRepository.findByWaiter(waiter);
 	}
 
 }

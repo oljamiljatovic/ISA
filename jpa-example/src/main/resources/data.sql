@@ -130,13 +130,13 @@ insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1
 insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,17,'2017-02-06','01:00',2)
 insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,17,'2017-02-06','09:00',2)
 
-insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-10','02:00',2)
+insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-27','02:00',2)
 insert into reservation_reserved_tables(reservation_id,table_id) values (1,1)
 insert into accepted_friends(reservation_id,friend_id) values (1,3)
 insert into accepted_friends(reservation_id,friend_id) values (1,5)
 
 
-insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-11','02:00',2)
+insert into reservation(id_guest,id_restaurant,date,time,duration) values (1,1,'2017-02-27','02:00',2)
 insert into reservation_reserved_tables(reservation_id,table_id) values (2,5)
 insert into reservation_reserved_tables(reservation_id,table_id) values (2,3)
 insert into reservation_reserved_tables(reservation_id,table_id) values (2,4)
