@@ -17,9 +17,9 @@ public interface ReservationService {
 
 	Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant, String date, String time);
 	
-	ArrayList<Reservation> findByIdGuest(Long idGuest);
+	ArrayList<Reservation> findByIdGuest(Guest idGuest);
 	
-	ArrayList<Reservation> findByIdRestaurantAndDate(Long idRestaurant, String date);
+	ArrayList<Reservation> findByIdRestaurantAndDate(Restaurant idRestaurant, String date);
 	
 	ArrayList<Reservation> findByAcceptedFriends_Id(Long id);
 

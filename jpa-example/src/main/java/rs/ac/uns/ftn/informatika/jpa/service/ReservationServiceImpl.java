@@ -38,14 +38,13 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservationRepository.findReservationByAll(idGuest,idRestaurant,date,time);
 	
 	}
-
 	@Override
-	public ArrayList<Reservation> findByIdGuest(Long idGuest) {
+	public ArrayList<Reservation> findByIdGuest(Guest idGuest) {
 		return reservationRepository.findByIdGuest(idGuest);
 	}
 
 	@Override
-	public ArrayList<Reservation> findByIdRestaurantAndDate(Long idRestaurant, String date) {
+	public ArrayList<Reservation> findByIdRestaurantAndDate(Restaurant idRestaurant, String date) {
 		return reservationRepository.findByIdRestaurantAndDate(idRestaurant, date);
 	}
 
