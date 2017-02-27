@@ -15,5 +15,7 @@ public interface ReservedTablesRepository extends PagingAndSortingRepository<Res
 	List<ReservedTables> findReservedTablesByDate(String date);
 
 	ArrayList<ReservedTables> findByIdRestaurant(Restaurant idrestaurant);
+	
+
 	 
 }

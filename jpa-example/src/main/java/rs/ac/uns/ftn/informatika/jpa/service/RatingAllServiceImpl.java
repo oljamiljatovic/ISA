@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.informatika.jpa.domain.RatingAll;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.repository.RatingAllRepository;
 
@@ -37,6 +38,17 @@ public class RatingAllServiceImpl implements RatingAllService{
 	@Override
 	public ArrayList<RatingAll> findByRestaurant(Restaurant restaurant) {
 		return ratingAllRepository.findByRestaurant(restaurant);
+	}
+
+	@Override
+	public ArrayList<RatingAll> findByMeals(Long id) {
+		return this.ratingAllRepository.findByMeals_id(id);
+	}
+
+	@Override
+	public ArrayList<RatingAll> findByWaiter(Employee e) {
+		// TODO Auto-generated method stub
+		return this.ratingAllRepository.findByWaiter(e);
 	}
 
 

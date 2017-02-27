@@ -285,6 +285,12 @@ public class ScheduleAndReonController {
 		
 		//this.tableService.delete(t.getId());
 		this.tableService.updateTableFlag(t);
+		
+		Tablee tab = this.tableService.findById(t.getId());
+		Reon reon = tab.getReon();
+		int number = reon.getNumberTable();
+		reon.setNumberTable(number-1);
+		this.reonService.update(reon);
 	}
 	
 	

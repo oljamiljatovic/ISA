@@ -26,8 +26,10 @@ import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
+import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.GuestService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
+import rs.ac.uns.ftn.informatika.jpa.service.MealService;
 import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
 import rs.ac.uns.ftn.informatika.jpa.service.RatingAllService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReservationService;
@@ -48,6 +50,10 @@ public class RatingAllController {
 	private RestaurantService restaurantService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private MealService mealService;
+	@Autowired
+	private EmployeeService employeeService;
 
 	@RequestMapping(
 			value = "/addRating",
@@ -132,7 +138,56 @@ public class RatingAllController {
 			float prosek = (float) (suma/br);
 			str = Float.toString(prosek);
 		}else
-			str = "Nema ocene";
+			str = "0";
+		return new ResponseEntity<String>(str, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/takeMarksForMeal",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> takeMarksForMeal(@RequestBody Meal m)  throws Exception {
+		
+		Meal meal = this.mealService.getMeal(m.getId());
+		ArrayList<RatingAll> temp = this.ratingAllService.findByMeals(meal.getId());
+
+		String str = null;
+		int br = temp.size();
+		if(br!=0){
+			int suma = 0;
+			for(int i=0; i<br; i++)
+				suma = suma + temp.get(i).getMealRating();
+			
+			float prosek = (float) (suma/br);
+			str = Float.toString(prosek);
+		}else
+			str = "0";
+		return new ResponseEntity<String>(str, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/takeMarksForService",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> takeMarksForService(@RequestBody Employee empl)  throws Exception {
+		
+		Employee e = this.employeeService.findById(empl.getId());
+		ArrayList<RatingAll> temp = this.ratingAllService.findByWaiter(e);
+
+		String str = null;
+		int br = temp.size();
+		if(br!=0){
+			int suma = 0;
+			for(int i=0; i<br; i++)
+				suma = suma + temp.get(i).getServiceRating();
+			
+			float prosek = (float) (suma/br);
+			str = Float.toString(prosek);
+		}else
+			str = "0";
 		return new ResponseEntity<String>(str, HttpStatus.OK);
 	}
 }

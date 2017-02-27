@@ -1,9 +1,11 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
 import java.util.ArrayList;
+
 import rs.ac.uns.ftn.informatika.jpa.domain.RatingAll;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 public interface RatingAllService {
@@ -15,4 +17,8 @@ public interface RatingAllService {
 	public RatingAll findByGuestAndReservation(Guest guest, Reservation reservation);
 	
 	public ArrayList<RatingAll> findByRestaurant(Restaurant restaurant);
+	
+	public ArrayList<RatingAll> findByMeals(Long id);
+	
+	public ArrayList<RatingAll> findByWaiter(Employee e);
 }
