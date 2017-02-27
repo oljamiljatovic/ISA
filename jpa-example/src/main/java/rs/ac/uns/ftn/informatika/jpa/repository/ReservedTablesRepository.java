@@ -12,5 +12,7 @@ public interface ReservedTablesRepository extends PagingAndSortingRepository<Res
 
 	@Query("select r from ReservedTables r where r.date = ?1")
 	List<ReservedTables> findReservedTablesByDate(String date);
+
+	
 	 
 }

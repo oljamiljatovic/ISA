@@ -4,7 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 @Entity
 @Table(name="invitation")
@@ -16,11 +20,13 @@ public class Invitation {
 	private Long id;
 	
 	
-	@Column(name="sender",nullable = false)
-	private Long sender;
+	@OneToOne
+	@JoinColumn(name="sender")
+	private Guest sender;
 	
-	@Column(name="recipient",nullable = false)
-	private Long recipient;
+	@OneToOne
+	@JoinColumn(name="recipient")
+	private Guest recipient;
 	
 	@Column(name="accept",nullable = false)
 	private String accept;
@@ -37,19 +43,19 @@ public class Invitation {
 		this.id = id;
 	}
 
-	public Long getSender() {
+	public Guest getSender() {
 		return sender;
 	}
 
-	public void setSender(Long sender) {
+	public void setSender(Guest sender) {
 		this.sender = sender;
 	}
 
-	public Long getRecipient() {
+	public Guest getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(Long recipient) {
+	public void setRecipient(Guest recipient) {
 		this.recipient = recipient;
 	}
 
@@ -61,7 +67,7 @@ public class Invitation {
 		this.accept = accept;
 	}
 
-	public Invitation(Long id, Long sender, Long recipient, String accept) {
+	public Invitation(Long id, Guest sender, Guest recipient, String accept) {
 		super();
 		this.id = id;
 		this.sender = sender;
@@ -69,7 +75,7 @@ public class Invitation {
 		this.accept = accept;
 	}
 
-	public Invitation(Long sender, Long recipient, String accept) {
+	public Invitation(Guest sender, Guest recipient, String accept) {
 		super();
 		this.sender = sender;
 		this.recipient = recipient;

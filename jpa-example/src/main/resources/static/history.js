@@ -27,7 +27,7 @@ function showHistory(){
 		      $.each(list, function(index, reservation) {
 		    		$.ajax({
 		    			type : 'GET',
-		    			url :  '/restaurantManagerController/getRestaurant/'+reservation.idRestaurant,
+		    			url :  '/restaurantManagerController/getRestaurant/'+reservation.idRestaurant.id,
 		    			contentType : 'application/json',
 		    			dataType :'json',
 		    			success : function(data){
@@ -37,7 +37,7 @@ function showHistory(){
 						        tr.append('<td align="center">' + reservation.id + '</td><td align="center">'+restaurant+
 						        		'</td><td align="center">' + reservation.date + '</td><td align="center">'+reservation.time+
 						        		'</td>');
-						        forma.append('<input type="submit" id="rating" name='+ reservation.id+";"+ reservation.idRestaurant +' value="Ocjeni" class="btn green">');
+						        forma.append('<input type="submit" id="rating" name='+ reservation.id+";"+ reservation.idRestaurant.id +' value="Ocjeni" class="btn green">');
 						        var td = $('<td></td>');
 						        td.append(forma);	        
 						        tr.append(td);
@@ -48,8 +48,8 @@ function showHistory(){
 					    			dataType :'json',
 					    			success : function(data){
 					    				  if(data!=null){
-					    					  	$('input[id="rating"][name="'+ reservation.id+";"+ reservation.idRestaurant +'"]').attr('disabled','disabled');
-					  			        		$('input[id="rating"][name="'+ reservation.id+";"+ reservation.idRestaurant +'"]').css('color','gray'); 
+					    					  	$('input[id="rating"][name="'+ reservation.id+";"+ reservation.idRestaurant.id +'"]').attr('disabled','disabled');
+					  			        		$('input[id="rating"][name="'+ reservation.id+";"+ reservation.idRestaurant.id +'"]').css('color','gray'); 
 					    				  }
 					    			},
 

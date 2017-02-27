@@ -9,17 +9,18 @@ window.onload = function() {
 	
 	var idGuest = pairGuest.split("=")[1];
 	var idReservation = pairReservation.split("=")[1];
-	
+
 	$.ajax({ //ajax poziv za dobijanje rezervacije
 		type : 'PUT',
 		url :'/reservationController/getReservationById/'+ idReservation,
 		dataType : 'json',
 		success : function(reservation){
+			
 			$('#tabelaOdgovorNaPoziv').empty();
 			var table = document.getElementById("tabelaOdgovorNaPoziv");
 			
-			var idSender = reservation.idGuest;
-			//alert("idsendera koji saljem" + idSender);
+			var idSender = reservation.idGuest.id;
+			
 			$.ajax({ //ajax poziv za dobijanje informacija o senderu
 				type : 'PUT',
 				url :'/reservationController/getSenderById/'+idSender ,
@@ -47,7 +48,7 @@ window.onload = function() {
 					
 					
 					row2cell1.innerHTML = "Restoran :";
-					row2cell2.innerHTML = reservation.idRestaurant;
+					row2cell2.innerHTML = reservation.idRestaurant.id;
 					row2cell3.innerHTML = reservation.date;
 					row2cell4.innerHTML = reservation.time;
 					

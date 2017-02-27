@@ -269,9 +269,6 @@ public class WaiterController {
 	public ResponseEntity<ArrayList<ReservedTables>> getReservedTables(
 			@RequestBody Reservation reservation)  throws Exception {
 		
-		System.out.println("Sta sam dobila u kontroleru"+ reservation.getIdGuest().getName() + "  "+ reservation.getIdRestaurant().getName());
-		
-		
 		String wantedDate = reservation.getDate();
 		String wantedTime = reservation.getTime();
 		
@@ -280,10 +277,8 @@ public class WaiterController {
 		int hour = Integer.parseInt(time[0]);
 		int minut = Integer.parseInt(time[1]);
 		
-		System.out.println("Datum koji sam poslal"+ wantedDate);
 		List<ReservedTables> datetables = reservedTablesService.findReservedTablesByDate(wantedDate);
 		List<ReservedTables> timetables = new ArrayList<ReservedTables>();
-		System.out.println("Broj zauzetih"+ datetables.size());
 		
 		for(int i = 0; i<datetables.size(); i++){
 			String[] time2 = datetables.get(i).getTime().split(":");
@@ -296,7 +291,6 @@ public class WaiterController {
 			}
 		}
 		
-		System.out.println("Sa vremenom kao problem"+ timetables.size());
 		return new ResponseEntity<ArrayList<ReservedTables>>((ArrayList<ReservedTables>) timetables, HttpStatus.OK);
 	
 	}

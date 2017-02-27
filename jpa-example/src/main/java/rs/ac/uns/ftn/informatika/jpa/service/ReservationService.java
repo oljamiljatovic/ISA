@@ -2,8 +2,9 @@ package rs.ac.uns.ftn.informatika.jpa.service;
 
 import java.util.ArrayList;
 
-import rs.ac.uns.ftn.informatika.jpa.domain.Invitation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 public interface ReservationService {
 
@@ -14,11 +15,11 @@ public interface ReservationService {
 
 	Reservation update(Reservation reservation, Long id);
 
-	Reservation findReservationByAll(Long idGuest, Long idRestaurant, String date, String time);
+	Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant, String date, String time);
 	
-	ArrayList<Reservation> findByIdGuest(Long idGuest);
+	ArrayList<Reservation> findByIdGuest(Guest idGuest);
 	
-	ArrayList<Reservation> findByIdRestaurantAndDate(Long idRestaurant, String date);
+	ArrayList<Reservation> findByIdRestaurantAndDate(Restaurant idRestaurant, String date);
 	
 	ArrayList<Reservation> findByAcceptedFriends_Id(Long id);
 

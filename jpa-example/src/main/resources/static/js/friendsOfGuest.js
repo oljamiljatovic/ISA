@@ -22,6 +22,7 @@ window.onload = function() {
 		    				"password" : data.password
 		    			}),
 						success : function(friends){
+							alert("Usao kod prijatelja");
 							var table = document.getElementById("tabelaPrijatelji");
 							$('#tabelaPrijatelji').empty();
 							for(var i = 0 ; i < friends.length ; i++){
@@ -48,6 +49,7 @@ window.onload = function() {
 					
 					});	//kraj ajax za prijatelje
 					
+					alert("DATA JE"+ data.id);
 					
 					$.ajax({ //ajax poziv za zahtjeve
 						type : 'POST',
@@ -61,7 +63,7 @@ window.onload = function() {
 							for(var i = 0 ; i < requests.length ; i++){
 								
 								 var item = requests[i];
-								if(requests[i].accept.valueOf() == "false"){
+								
 									
 								 var row = table.insertRow(i);
 								 
@@ -73,29 +75,29 @@ window.onload = function() {
 								 
 									$.ajax({ //ajax poziv za zahtjeve
 										type : 'PUT',
-										url :'/guestController/findById/'+ item.sender,
+										url :'/guestController/findById/'+ item.sender.id,
 										dataType : 'json',
 										success : function(guest){
-											
+											alert("nasao onog sto je poslao zahtjev");
 											cell1.innerHTML = guest.name;
 											cell2.innerHTML = guest.surname;
 										},
 									error : function(XMLHttpRequest, textStatus, errorThrown) {
-										alert("GRESKA kod prijatelja");
+										alert("GRESKA kod findById");
 										alert("AJAX ERROR: " + errorThrown);
 									}
 									
 									});	
 									
 								 cell0.innerHTML = "Zahtjev od : ";
-								 cell3.innerHTML = '<input type = "button" class="btn green" onclick="Prihvati()" id ="'+requests[i].sender+'/'+ requests[i].recipient+'"value="Prihvati"></td> ';
-								 cell4.innerHTML = '<input type = "button" class="btn green" onclick="Odbij()" id ="'+requests[i].sender+'/'+ requests[i].recipient+'"value="Odbij"></td> ';
-							}
+								 cell3.innerHTML = '<input type = "button" class="btn green" onclick="Prihvati()" id ="'+requests[i].sender.id+'/'+ requests[i].recipient.id+'"value="Prihvati"></td> ';
+								 cell4.innerHTML = '<input type = "button" class="btn green" onclick="Odbij()" id ="'+requests[i].sender.id+'/'+ requests[i].recipient.id+'"value="Odbij"></td> ';
+							
 							}
 							//}
 						},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
-						alert("GRESKA kod prijatelja");
+						alert("GRESKA kod zahtjeva");
 						alert("AJAX ERROR: " + errorThrown);
 					}
 					
@@ -110,8 +112,8 @@ window.onload = function() {
 	});
 	
 	
-	
-	document.getElementById('trazi').onchange = function() {
+////////////////////PRETRAGA///////////////////////////
+document.getElementById('trazi').onchange = function() {
 		  
 		  var text = document.getElementById('trazi').value;
 		  
@@ -178,6 +180,8 @@ window.onload = function() {
 };
 
 
+
+///////////////IZBRISI PRIJATELJA/////////////////////
 function IzbrisiPrijatelja(){
 	
 	    var idFriend = IzbrisiPrijatelja.caller.arguments[0].target.id;
@@ -219,7 +223,7 @@ function IzbrisiPrijatelja(){
 }
 
 
-
+//////////////////////POSALJI ZAHTJEV////////////////////
 
 function PosaljiZahtjev(){
 	
@@ -271,7 +275,7 @@ function PosaljiZahtjev(){
     
 }
 
-
+///////////////////PREKINI ZAHTJEV//////////////////////////
 function PrekiniZahtjev(){
 	
     
@@ -292,8 +296,13 @@ function PrekiniZahtjev(){
     			url :  '/invitationController/cancelRequest/'+ idToChange + '/'+ idFriend,
     			dataType :'json',
     			success : function(dataa){
-    			
-    				 /*var buttonAdd = document.getElementById(idFriend);
+    				
+    				$('#pronadjeni').empty();
+    			//IZBRISI ZAHTJEVE , nevalidan, prekinut
+    				 
+    				
+    				
+    				/*var buttonAdd = document.getElementById(idFriend);
     				 buttonAdd.value="Posalji zahtjev";
     				
     				 var element = document.getElementById(idFriend);
@@ -319,7 +328,7 @@ function PrekiniZahtjev(){
 
 }
 
-
+//////////////////////PRIHVATI ZAHTJEV/////////////////////
 function Prihvati(){
 	
     var idFriend = Prihvati.caller.arguments[0].target.id; //njega dodajem
@@ -339,8 +348,8 @@ function Prihvati(){
     			data : "true",
     			success : function(invitation){ //vraca invitation
     			
-    				var idToChange = invitation.sender;
-    				var idFriend = invitation.recipient;
+    				var idToChange = invitation.sender.id;
+    				var idFriend = invitation.recipient.id;
     				//Ovdje je prihvacen zahtjev 
     				$.ajax({
             			type : 'PUT',
@@ -348,7 +357,7 @@ function Prihvati(){
             			dataType :'json',
             			success : function(friends){ //vraca sada listu prijatelja
             			//ali oljinih umjesto vesninih
-            			/*	var table = document.getElementById("tabelaPrijatelji");
+            				var table = document.getElementById("tabelaPrijatelji");
 							$('#tabelaPrijatelji').empty();
 							for(var i = 0 ; i < friends.length ; i++){
 								 var item = friends[i];
@@ -365,7 +374,7 @@ function Prihvati(){
 								 cell3.innerHTML =  '<input type = "button" class="btn green" onclick="IzbrisiPrijatelja()" id ="'+itemID+'"value="Obrisi"></td> ';
 								 
 								
-							}*/
+							}
             			
             			},
 
@@ -374,6 +383,64 @@ function Prihvati(){
             			}
             		
             		});
+    				
+    				
+    				
+    				$.ajax({ //kraj ajax posle prihvatanja requests
+						type : 'POST',
+						url :'/invitationController/getRequests/'+ idFriend,
+						dataType : 'json',
+						success : function(requests){
+						//if(requests.accept.equals("false")){
+							//alert("Usao u ispis zahtjeva");
+							var table = document.getElementById("zahtjevi");
+							$('#zahtjevi').empty();
+							for(var i = 0 ; i < requests.length ; i++){
+								
+								 var item = requests[i];
+								if(requests[i].accept.valueOf() == "false"){
+									
+								 var row = table.insertRow(i);
+								 
+								 var cell0 = row.insertCell(0);
+								 var cell1 = row.insertCell(1);
+								 var cell2 = row.insertCell(2);
+								 var cell3 = row.insertCell(3);
+								 var cell4 = row.insertCell(4);
+								 
+									$.ajax({ //ajax poziv za zahtjeve
+										type : 'PUT',
+										url :'/guestController/findById/'+ item.sender.id,
+										dataType : 'json',
+										success : function(guest){
+											alert("nasao onog sto je poslao zahtjev");
+											cell1.innerHTML = guest.name;
+											cell2.innerHTML = guest.surname;
+										},
+									error : function(XMLHttpRequest, textStatus, errorThrown) {
+										alert("GRESKA kod findById");
+										alert("AJAX ERROR: " + errorThrown);
+									}
+									
+									});	
+									
+								 cell0.innerHTML = "Zahtjev od : ";
+								 cell3.innerHTML = '<input type = "button" class="btn green" onclick="Prihvati()" id ="'+requests[i].sender.id+'/'+ requests[i].recipient.id+'"value="Prihvati"></td> ';
+								 cell4.innerHTML = '<input type = "button" class="btn green" onclick="Odbij()" id ="'+requests[i].sender.id+'/'+ requests[i].recipient.id+'"value="Odbij"></td> ';
+							}
+							}
+							//}
+						},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+						alert("GRESKA kod zahtjeva");
+						alert("AJAX ERROR: " + errorThrown);
+					}
+					
+					});	//kraj ajax posle prihvatanja requests
+    				
+    				
+    				
+    				
 
     			},
 
@@ -385,7 +452,7 @@ function Prihvati(){
 
 }
 
-
+///////////////////////ODBIJ ZAHTJEV////////////////////
 function Odbij(){
 	 
     var idFriend = Odbij.caller.arguments[0].target.id; //njega dodajem
@@ -402,7 +469,7 @@ function Odbij(){
     			url :  '/invitationController/changeInvitation/'+ sender + '/'+ recipient,
     			contentType : 'application/json',
     			dataType :'json',
-    			data : "false",
+    			data : "nevalidan",
     			success : function(dataa){
     			
     				//Ovdje je odbijen zahtjev zahtjev 

@@ -785,17 +785,21 @@ $(document).on('click','#addOrder',function(e){
 	$("#content").append('<table id="tableAddOrder"></table>');*/
 	var allDrinks = [];
 	var allMeals = [];
-	var allTables= [];
+	var allReservations= [];
 	$.ajax({
 		type: 'GET',
 		dataType: 'json',
-		url : '/waiterController/getTables',
+		url : '/reservationController/getTodayReservations',
 		success : function(data){
-			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			var reservations = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			//$("#tableAddOrder").append('<tr><td>Sto: &nbsp; </td><td><select id="comboTables" style="width:170px;">');
-			$.each(list, function(index,table){
+			if(reservations.length==0){
+				Command: toastr["info"]("Nema rezervacija za danas, ne možete unijeti porudžbinu!", "Informacija!")
+				message();
+			}else{
+			$.each(reservations, function(index,reservation){
 				//$('#comboTables').append('<option>'+table.id+'</option>');
-				allTables.push(table.id);
+				allReservations.push(reservation.id);
 			});
 			$.ajax({
 				type: 'GET',
@@ -824,18 +828,16 @@ $(document).on('click','#addOrder',function(e){
 									'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 										'<form method="post" id="updateForm">'+
 											'Dodavanje porudžbine:<br/>'+
-											'<br/>Sto:<br/>'+
-											'<select id="comboTables" style="width:300px"></select>'+
+											'<br/>Rezervacija:<br/>'+
+											'<select id="comboReservations" style="width:300px"></select>'+
 											'<br/>Pića:'+
 											'<select id="comboDrinks" multiple="multiple" size="5" style="width:300px"></select>'+
 											'<br/>Jela:'+
 											'<select id="comboMeals" multiple="multiple" size="5" style="width:300px"></select>'+
-											'<br/>Rezervacija:'+
-											'<select id="comboRes" multiple="multiple" size="5" style="width:300px"></select>'+
 											'<br/><input type = "submit" id = "submitOrder" value="Potvrdi" class="btn orange">'+
 											'</form></div></div></div></div>');
-							$.each(allTables, function(index,table){
-								$('#comboTables').append('<option>'+table+'</option>');
+							$.each(allReservations, function(index,reserv){
+								$('#comboReservations').append('<option>'+reserv+'</option>');
 							});
 							$.each(allDrinks, function(index,drink){
 								$('#comboDrinks').append('<option>'+drink+'</option>');
@@ -853,9 +855,10 @@ $(document).on('click','#addOrder',function(e){
 					alert("Drink ERROR: " + errorThrown);
 				}	
 			});
+			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Tablee ERROR: " + errorThrown);
+			alert("getTodayReservations ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -863,53 +866,76 @@ $(document).on('click','#addOrder',function(e){
 
 $(document).on('click','#submitOrder',function(e){
 	e.preventDefault();
-	var table = $('#comboTables').val();
+	var reservationId = $('#comboReservations').val();
 	var drinks = $('#comboDrinks').val();
 	var meals = $('#comboMeals').val();
 	var listOfDrinkss = [];
 	var timeOfOrder = new Date().getTime();
+
 	$.ajax({
-		type : 'POST',
-		url :  '/orderController/addOrder',
-		contentType : 'application/json',
-		dataType :'json',
-		data : JSON.stringify({
-			"waiter_id" :"1",
-			"table_id" : table,
-			"restaurant" : "1",
-			"barman_state" : "kreirana",
-			"cook_state" : "kreirana",
-			"timeOfOrder" : timeOfOrder,
-			"drinks" : drinks,
-			"meals" : meals,
-			"reservation" : "1"
-		}),
+		type: 'GET',
+		dataType: 'json',
+		url : '/reservationController/getTablesForReservation/'+reservationId,
 		success : function(data){
-			Command: toastr["success"]("Uspješno dodata porudžbina.", "Odlično!")
-			message();
-			showOrders();
-			$.ajax({
-				type : 'POST',
-				url :  '/send/newOrder',
-				data : {
-					"newOrder" : "Stigla je nova porudžbina!"
-				},
-				success : function(data){	
-					//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!")
-					//message();
-				},
-
-				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-					alert("AJAX ERROR: " + errorThrown);
-				}
-			
-			});
+			var tables = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			if(tables.legth==0){
+				Command: toastr["error"]("Nemate pravo primiti porudžbinu. Rezervisani stolovi nisu u vašem reonu!", "Greška!")
+				message();
+				$('#content').empty();
+			}else{
+				///kreiera za svaki sto po jednu porudzbinu na ime ovog konobara
+				$.each(tables, function(index,table){
+					$.ajax({
+						type : 'POST',
+						url :  '/orderController/addOrder',
+						contentType : 'application/json',
+						dataType :'json',
+						data : JSON.stringify({
+							"waiter_id" :"1",
+							"table_id" : table.id,
+							"restaurant" : "1",
+							"barman_state" : "kreirana",
+							"cook_state" : "kreirana",
+							"timeOfOrder" : timeOfOrder,
+							"drinks" : drinks,
+							"meals" : meals,
+							"reservation" : reservationId
+						}),
+						success : function(data){
+							Command: toastr["success"]("Uspješno dodata porudžbina.", "Odlično!")
+							message();
+							showOrders();
+							$.ajax({
+								type : 'POST',
+								url :  '/send/newOrder',
+								data : {
+									"newOrder" : "Stigla je nova porudžbina!"
+								},
+								success : function(data){	
+									//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!")
+									//message();
+								},
+		
+								error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+									alert("newOrder ERROR: " + errorThrown);
+								}
+							
+							});
+						},
+		
+						error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+							alert("addOrder ERROR: " + errorThrown);
+						}
+					});
+				});
+				
+			}
 		},
-
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("getTablesForReservation ERROR: " + errorThrown);
+		}	
 	});
+	
 });
 $(document).on('click','#updateProfile',function(e){
 	$.ajax({

@@ -108,7 +108,7 @@ public class GuestController {
 				produces = MediaType.APPLICATION_JSON_VALUE)
 		public @ResponseBody List<Guest> getFriends(
 				 @RequestBody User user) throws Exception {
-			System.out.println("Pogodio za prijatelja");
+			
 			String email = user.getEmail();
 			
 			Guest guest = guestService.findGuestByEmail(email);
@@ -118,7 +118,6 @@ public class GuestController {
 			List<Guest> friends = guestService.findByFriends(newList);
 			
 			
-			System.out.println("Broj u listi"+friends.size());
 			return friends;
 			/*return null;
 			return new List<Guest>(guest, HttpStatus.OK);
@@ -186,6 +185,7 @@ public class GuestController {
 	public @ResponseBody Guest findById(
 			 @PathVariable Long id) throws Exception {
 	
+	
 		Guest foundedGuest = guestService.findOne(id);
 		
 		return foundedGuest;
@@ -219,15 +219,11 @@ public class GuestController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Guest> search(
 			 @RequestBody String search) throws Exception {
-		System.out.println("Pogodio za pretragu");
-		
-		System.out.println("Za pretragu "+ search);
-		
+	
 		ArrayList<Guest> listOfGuests = new ArrayList<Guest>();
 		
 		if(search.contains(" ")){
 		String[] array = search.split(" "); 
-		System.out.println("Ime" + array[0]+" a prezime"  + array[1]);
 		
 		String name = array[0];
 		String surname = array[1];
@@ -238,9 +234,7 @@ public class GuestController {
 			ArrayList<Guest> listBySurname= (ArrayList<Guest>) guestService.findGuestsBySurname(search);
 			ArrayList<Guest> listByName= (ArrayList<Guest>) guestService.findGuestsByName(search);
 			
-			System.out.println("Broj pronadjenih po prezimenu"+ listBySurname.size());
-			System.out.println("Broj pronadjenih po imenu"+ listByName.size());
-
+		
 			for(int i = 0; i<listByName.size(); i++){
 				listOfGuests.add(listByName.get(i));
 			}
@@ -278,8 +272,8 @@ public class GuestController {
 		
 		Guest changedGuest = guestService.update(foundedGuest, id);
 		
-		 
-		return foundedGuest.getFriends();
+		 Guest returnGuest = guestService.findOne(idFriend);
+		return returnGuest.getFriends();
 	}
 	
 	
