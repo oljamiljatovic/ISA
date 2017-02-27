@@ -87,6 +87,12 @@ window.onload = function() {
 };
 
 
+function OdbijPozivZaVeceru(){
+	 
+	window.location.href= "index.html"
+		
+}
+
 function PrihvatiPozivZaVeceru(){
 	 
     var idGuest = PrihvatiPozivZaVeceru.caller.arguments[0].target.id; //njega dodajem
