@@ -283,6 +283,7 @@ function PotvrdiStolove(){
    			
    		var table = document.getElementById("tabelaPrijateljiVecera");
    		$("#tabelaPrijateljiVecera").empty();
+   		$("#dugmici").empty();
    			for(var i = 0 ; i < friends.length ; i++){
 				
 				
@@ -301,6 +302,15 @@ function PotvrdiStolove(){
 				 
 						
    			}
+   			
+   			var dugmici = document.getElementById("dugmici");
+   			var row1 = dugmici.insertRow(0);
+   			var row1cell1 = row1.insertCell(0);
+			 var row1cell2 = row1.insertCell(1);
+			 row1cell1.innerHTML =  '<input type = "button" name="'+idRezervacije+'" class="btn green" onclick="OdabirNarudzbineSendera()" id ="Nastavi" value="Nastavi"></td> ';;
+			 row1cell2.innerHTML =  '<input type = "button"  class="btn green" onclick="OdustaniOdPozivaPrijatelja()" value="Odustani"></td> ';
+			 
+   			
    			},
 
    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -324,30 +334,14 @@ function PozoviPrijateljaNaVeceru(){
    			contentType : 'application/json',
    			dataType :'json',
    			data: idRezervacije,
-   			success : function(friends){
+   			success : function(friend){
    			
    			alert("Vratio prijatelje");
-   		  
-   		/*var table = document.getElementById("tabelaPrijateljiVecera");
-   		$("#tabelaPrijateljiVecera").empty();
-   			for(var i = 0 ; i < friends.length ; i++){
-				
-				
-				 var item = friends[i];
-				 var row = table.insertRow(i);
-				 
-				 
-				 var cell1 = row.insertCell(0);
-				 var cell2 = row.insertCell(1);
-				 var cell3 = row.insertCell(2);
-				 
-				 var itemID = item.id;
-				 cell1.innerHTML = item.name;
-				 cell2.innerHTML = item.surname;
-				 cell3.innerHTML =  '<input type = "button" class="btn green" onclick="PozoviPrijateljaNaVeceru()" id ="'+itemID+'"value="Pozovi"></td> ';
-				 
-						
-   			}*/
+   			var table = document.getElementById(friend.id).className="btn red";
+   			var table = document.getElementById(friend.id).value="Poslat";
+   			var table = document.getElementById(friend.id).disabled="false";
+   			
+   		
    			},
 
    			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -357,6 +351,23 @@ function PozoviPrijateljaNaVeceru(){
    		});
 		
 }
+
+
+function OdustaniOdPozivaPrijatelja(){
+	 
+	window.location.href= "narudzbinaSendera.html";
+		
+}
+
+
+function OdabirNarudzbineSendera(){
+	 
+	var idRezervacije = OdabirNarudzbineSendera.caller.arguments[0].target.name;
+	window.location.href= "narudzbinaSendera.html?idReservation="+idRezervacije;
+		
+}
+
+
 
 
 

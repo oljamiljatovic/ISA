@@ -9,7 +9,7 @@ window.onload = function() {
 		url :'/userController/isValidate',
 		success : function(data){
 			var roleData = data.role;
-			alert(roleData);
+			
 				if(roleData != "guest"){
 					document.location.href="index.html";
 				}else{

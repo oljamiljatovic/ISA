@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -160,7 +161,7 @@ public class ReservationController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Guest>> sendRequestByMail(
+	public @ResponseBody Guest sendRequestByMail(
 			@RequestBody Long  idRezervacije, @PathVariable Long idPozvanogPrijatelja)  throws Exception {
 		
 		Guest guestToSend = guestService.findOne(idPozvanogPrijatelja);
@@ -169,7 +170,7 @@ public class ReservationController {
 		sendMail(guestToSend,reservationToSend);
 		
 		//return new ResponseEntity<List<Guest>>( friendsOfGuest, HttpStatus.OK);
-	return null;
+		return guestToSend;
 	}
  public void sendMail(Guest guest, Reservation reservation) {
 	
@@ -290,17 +291,17 @@ public class ReservationController {
 			value = "/getReservedTableForReservation/{idReservation}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Tablee> getReservedTableForReservation(
+	public ResponseEntity<List<Tablee>> getReservedTableForReservation(
 			@PathVariable Long idReservation) throws Exception {
 		
 		System.out.println("pronasao ga");
-		List<Tablee> tables = new ArrayList<Tablee>();
+		//List<Tablee> tables = new ArrayList<Tablee>();
 		Reservation reservation = reservationService.findOne(idReservation);
-		tables = reservation.getReservedTables();
+		List<Tablee>  tables= reservation.getReservedTables();
+
+		return new ResponseEntity<List<Tablee>>( tables, HttpStatus.OK);
 		
-		
-		System.out.println("tabele"+tables.size());
-		return tables;
+			
 	}
 	
 	@RequestMapping(

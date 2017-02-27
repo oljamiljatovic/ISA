@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +22,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Meal;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
 import rs.ac.uns.ftn.informatika.jpa.domain.OrderSurrogate;
+import rs.ac.uns.ftn.informatika.jpa.domain.OrrderHelpClass;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
@@ -337,4 +339,65 @@ public class OrderController {
 		return new ResponseEntity<Bill>(addedBill, HttpStatus.OK);
 	}
 	
+	
+	
+	@RequestMapping(
+			value = "/addOrderInReservation",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Order> addOrderInReservation(
+			@RequestBody OrrderHelpClass surrogateOrder) throws Exception {
+		
+		//Pronaci koji tacno waiter opsluzuje taj sto
+		
+	
+		ArrayList<Drink> drinks = new ArrayList<Drink>();
+		if(!surrogateOrder.getDrinks().isEmpty()){
+			for(int i=0;i<surrogateOrder.getDrinks().size();i++){
+				String name = surrogateOrder.getDrinks().get(i);
+				Drink drink = drinkService.findByName(name);
+				drinks.add(drink);
+			
+			}
+		}
+		ArrayList<Meal> meals = new ArrayList<Meal>();
+		if(!surrogateOrder.getMeals().isEmpty()){
+			for(int i=0;i<surrogateOrder.getMeals().size();i++){
+				String name = surrogateOrder.getMeals().get(i);
+				Meal meal = mealService.findByName(name);
+				meals.add(meal);
+				
+			}
+		}
+		Order order = new Order();
+		
+		Restaurant rest = restaurantService.getRestaurant(surrogateOrder.getRestaurant());
+		
+		order.setRestaurant(rest);
+		Tablee tablee = tableService.findById(surrogateOrder.getTable_id());
+		
+		order.setTablee(tablee);
+		Employee e = employeeService.findById(surrogateOrder.getWaiter_id());
+		
+		order.setWaiter(e);
+		
+		order.setCook_state(surrogateOrder.getCook_state());
+		order.setBarman_state(surrogateOrder.getBarman_state());
+		
+		
+		String q= surrogateOrder.getDate().split("-")[1];
+		Date datum = new Date(Integer.parseInt(surrogateOrder.getDate().split("-")[0]),  Integer.parseInt(q), Integer.parseInt(surrogateOrder.getDate().split("-")[2]), Integer.parseInt(surrogateOrder.getTime().split(":")[0]), Integer.parseInt(surrogateOrder.getTime().split(":")[1]), Integer.parseInt("00"));
+		
+		order.setTimeOfOrder(datum);
+		order.setDrinks(drinks);
+		order.setMeals(meals);
+		Reservation reservation = reservationService.findOne(surrogateOrder.getReservation());
+		
+		order.setReservation(reservation);
+		Order addedOrder = orderService.createNew(order);
+		
+		
+		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
+	}
 }

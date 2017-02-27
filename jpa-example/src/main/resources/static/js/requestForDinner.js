@@ -207,17 +207,16 @@ function PrihvatiPorudzbinu(){
 							$('#content').empty();
 							$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 									'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
-										'<form method="post" id="updateForm">'+
 											'Dodavanje porudžbine:<br/>'+
 											'<br/>Rezervacija:<br/>'+
 											'<input type="text" id="desk" value="'+desk+'"><br/>'+
-											'<select id="comboReservations" style="width:300px"></select>'+
+											'<input type="text" id="comboReservations" value="'+idReservation+'"><br/>'+
+											//'<input type="text" id="timeOfOrder" value="'+idReservation+'"><br/>'+
 											'<br/>Pića:'+
 											'<select id="comboDrinks" multiple="multiple" size="5" style="width:300px"></select>'+
 											'<br/>Jela:'+
 											'<select id="comboMeals" multiple="multiple" size="5" style="width:300px"></select>'+
-											'<br/><input type = "submit" name = "'+idReservation+'" id = "submitOrder" value="Potvrdi" class="btn orange">'+
-											'</form></div></div></div></div>');
+											'<br/><input type = "button" name ="'+idReservation+'" class="btn green" onclick="KreirajPorudzbinu()" id ="'+idGuest+'"value="Dodaj">');
 							
 							$('#comboReservations').append('<option>'+idReservation+'</option>');
 							
@@ -246,79 +245,68 @@ function PrihvatiPorudzbinu(){
 
 
 
-$(document).on('click','#submitOrder',function(e){
-	e.preventDefault();
-	var reservationId = $('#comboReservations').val();
+function KreirajPorudzbinu(){
+	
+	
+	 var idReservation = KreirajPorudzbinu.caller.arguments[0].target.name;
+	
+	//var reservationId = $('#comboReservations').val();
+	var desk = $('#desk').val();
 	var drinks = $('#comboDrinks').val();
 	var meals = $('#comboMeals').val();
 	var listOfDrinkss = [];
 	var timeOfOrder = new Date().getTime();
 
+	alert("rese id "+ idReservation +" desk" +desk + "drinks" + drinks.length+ "meals"+ meals.length);
+
 	$.ajax({
-		type: 'GET',
-		dataType: 'json',
-		url : '/reservationController/getTablesForReservation/'+reservationId,
-		success : function(data){
-			var tables = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			if(tables.legth==0){
-				Command: toastr["error"]("Nemate pravo primiti porudžbinu. Rezervisani stolovi nisu u vašem reonu!", "Greška!")
-				message();
-				$('#content').empty();
-			}else{
-				///kreiera za svaki sto po jednu porudzbinu na ime ovog konobara
-				$.each(tables, function(index,table){
-					$.ajax({
-						type : 'POST',
-						url :  '/orderController/addOrder',
-						contentType : 'application/json',
-						dataType :'json',
-						data : JSON.stringify({
-							"waiter_id" :"1",
-							"table_id" : table.id,
-							"restaurant" : "1",
-							"barman_state" : "kreirana",
-							"cook_state" : "kreirana",
-							"timeOfOrder" : timeOfOrder,
-							"drinks" : drinks,
-							"meals" : meals,
-							"reservation" : reservationId
-						}),
-						success : function(data){
-							Command: toastr["success"]("Uspješno dodata porudžbina.", "Odlično!")
-							message();
-							showOrders();
-							$.ajax({
-								type : 'POST',
-								url :  '/send/newOrder',
-								data : {
-									"newOrder" : "Stigla je nova porudžbina!"
-								},
-								success : function(data){	
-									//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!")
-									//message();
-								},
-		
-								error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-									alert("newOrder ERROR: " + errorThrown);
-								}
-							
-							});
-						},
-		
-						error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-							alert("addOrder ERROR: " + errorThrown);
-						}
-					});
-				});
-				
-			}
+		type : 'PUT',
+		url :'/reservationController/getReservationById/'+ idReservation,
+		dataType : 'json',
+		success : function(reservation){
+
+			$.ajax({
+				type : 'POST',
+				url :  '/orderController/addOrderInReservation',
+				contentType : 'application/json',
+				dataType :'json',
+				data : JSON.stringify({
+					"waiter_id" :"1",
+					"table_id" : desk,
+					"restaurant" : reservation.idRestaurant.id,
+					"barman_state" : "kreirana",
+					"cook_state" : "kreirana",
+					"date" : reservation.date,
+					"time": reservation.time,
+					"drinks" : drinks,
+					"meals" : meals,
+					"reservation" : idReservation
+				}),
+				success : function(data){
+					
+					alert("Uspjesno dodavanje");
+					window.location.href= "index.html";
+					
+				},
+
+				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+					alert("addOrder ERROR: " + errorThrown);
+				}
+			});
+			
+			
+			
 		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("getTablesForReservation ERROR: " + errorThrown);
-		}	
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("newOrder ERROR: " + errorThrown);
+		}
+	
 	});
 	
-});
+			
+	
+}
 
 
 
