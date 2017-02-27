@@ -21,22 +21,24 @@ public class Tablee implements Serializable {
     @GeneratedValue
 	@Column(nullable = false, unique=true)
 	private Long id;
-
 	@ManyToOne
 	@JoinColumn(name="reon")
 	private Reon reon;
 	@ManyToOne
 	@JoinColumn(name="restaurant")
 	private Restaurant restaurant;
+	@Column(nullable = false)
+	private boolean exist;
 	
 	public Tablee(){
 		
 	}
 	
-	public Tablee(Reon reon, Restaurant restaurant) {
+	public Tablee(Reon reon, Restaurant restaurant, boolean exist) {
 		super();
 		this.reon = reon;
 		this.restaurant = restaurant;
+		this.exist = exist;
 	}
 
 	public Long getId() {
@@ -62,5 +64,15 @@ public class Tablee implements Serializable {
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
+
+	public boolean isExist() {
+		return exist;
+	}
+
+	public void setExist(boolean exist) {
+		this.exist = exist;
+	}
+	
+	
 
 }

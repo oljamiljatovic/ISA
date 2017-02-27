@@ -22,5 +22,9 @@ public interface DrinkRepository extends PagingAndSortingRepository<Drink, Long>
 	public ArrayList<Drink> findByRestaurant(Restaurant restaurant);
 	
 	public Drink findByName(String name);
+	
+	@Modifying
+	@Query("update Drink set exist = ? where id = ? ")
+	public void updateDrinkFlag(boolean exist, Long id);
 
 }

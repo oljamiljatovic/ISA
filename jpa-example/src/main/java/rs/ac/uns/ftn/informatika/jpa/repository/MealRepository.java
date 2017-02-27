@@ -22,6 +22,10 @@ public interface MealRepository extends PagingAndSortingRepository<Meal, Long>  
 	public ArrayList<Meal> findByRestaurant(Restaurant restaurant);
 	
 	public Meal findByName(String name);
+	
 
+	@Modifying
+	@Query("update Meal set exist = ? where id = ? ")
+	public void updateMealFlag(boolean exist, Long id);
 
 }

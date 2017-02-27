@@ -13,4 +13,5 @@ public interface MealService {
 	public void updateMeal(Meal dr);
 	public Meal addMeal(Meal dr);
 	public Meal findByName(String name);
+	public void updateMealFlag(Meal meal);
 }

@@ -74,7 +74,7 @@ public class ScheduleAndReonController {
 		this.reonService.createReon(reon);
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee table = new Tablee(reon,r);
+			Tablee table = new Tablee(reon,r,true);
 			this.tableService.createTable(table);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
@@ -145,7 +145,7 @@ public class ScheduleAndReonController {
 		}
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee tablee = new Tablee(reon,r);
+			Tablee tablee = new Tablee(reon,r,true);
 			this.tableService.createTable(tablee);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
@@ -283,7 +283,8 @@ public class ScheduleAndReonController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteSto(@RequestBody Tablee t)  throws Exception {
 		
-		this.tableService.delete(t.getId());
+		//this.tableService.delete(t.getId());
+		this.tableService.updateTableFlag(t);
 	}
 	
 	
@@ -309,7 +310,7 @@ public class ScheduleAndReonController {
 		this.reonService.update(reon);
 		
 		for(int i=0; i<number; i++){
-			Tablee tablee = new Tablee(reon,r);
+			Tablee tablee = new Tablee(reon,r,true);
 			this.tableService.createTable(tablee);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);

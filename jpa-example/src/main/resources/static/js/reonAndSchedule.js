@@ -689,7 +689,8 @@ function OdabranSto(){
 	   var data = JSON.stringify({
 		  "id" : idStola,
 		  "restaurant" : null,
-		  "reon" : null
+		  "reon" : null,
+		  "exist": false
 	   });
 	   
 	   $.ajax({

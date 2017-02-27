@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rs.ac.uns.ftn.informatika.jpa.domain.Drink;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
 import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
@@ -260,10 +261,17 @@ public class RestaurantManagerController {
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
 		User u = (User) session.getAttribute("korisnik");
-		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 		RestaurantManager rm= this.managerService.getManager(u.getEmail());
 		Restaurant restt = this.restaurantService.getRestaurant(rm.getRestaurant().getId());
-		temp = tableService.findByRestaurant(restt);
+		ArrayList<Tablee> tables = tableService.findByRestaurant(restt);
+		
+		ArrayList<Tablee> temp = new ArrayList<Tablee>();
+		for(int i=0; i<tables.size(); i++){
+			if(tables.get(i).isExist()){
+				temp.add(tables.get(i));
+			}
+		}
+		
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
 	

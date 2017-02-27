@@ -48,4 +48,10 @@ public class DrinkServiceImpl implements DrinkService {
 	public Drink findByName(String name) {
 		return this.drinkRepository.findByName(name);
 	}
+
+	@Override
+	public void updateDrinkFlag(Drink dr) {
+		this.drinkRepository.updateDrinkFlag(dr.isExist(), dr.getId());
+		
+	}
 }

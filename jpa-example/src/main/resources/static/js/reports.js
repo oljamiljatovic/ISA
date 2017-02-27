@@ -2,7 +2,6 @@ $(document).on('click','#prihodRestorana',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
-	$('#mica_mapa').empty();
 	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 		'<div class="login-page wrapper centered centered-block">'+ 
