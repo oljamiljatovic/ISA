@@ -89,11 +89,7 @@ $(document).on('click','#submitSmene', function(e){
 	var idRestorana = $('#idRest').val();
 	var idGuest = $('#idGuest').val();
 	var smene = $('#radneSmene option:selected').val();
-	
-	
-	alert("ispis id guest"+ idGuest + "id restorana"+idRestorana);
-	//alert("id restorana"+ idRestorana + " idGuest "+idGuest+ "datum"+ dateStart +" vrijeme :"+ timeStart+ " smene "+ smene);
-	
+
 	$('#listaRestorana').empty();
 	$('#datum').empty();
 	
@@ -160,7 +156,6 @@ $(document).on('click','#submitSmene', function(e){
 					url : '/waiterController/getReservedTables',
 					data : data2,
 					success : function(zauzeti){ //data su rezervisani reservedtables
-						alert("uspjesno dobijanje zauzetih"+zauzeti.length);
 						
 						for(var i = 0 ; i < zauzeti.length ; i++){
 							
@@ -206,7 +201,6 @@ function OdabranSto(){
    var idKomplet = OdabranSto.caller.arguments[0].target.name;
   
    
-  alert("ispis svega"+ idKomplet);
   
    var obj = idKomplet.split("/");
    
@@ -238,10 +232,6 @@ function OdabranSto(){
 	var obj1 = JSON.parse(guest);
 
 	
-	
-	alert("It's ok");
-	
-
 		var data2 = JSON.stringify({
 			"idGuest" : obj1,
 			"idRestaurant" : obj2,
@@ -260,7 +250,6 @@ function OdabranSto(){
    			data : data2,
    			success : function(reservation){
    			
-   			alert("Dodata rezervacija");
    			$("#dugmee").empty();
    			$("#dugmee").append('<br/><br/><input type="button"  style="height:50px;width:90px" id="'+reservation.id+'"  onclick="PotvrdiStolove()" class="btn orange" value="Potvrdi">');
 			
@@ -281,13 +270,10 @@ function OdabranSto(){
 function PotvrdiStolove(){
 	 
    var idRezervacije = PotvrdiStolove.caller.arguments[0].target.id; 
-   
-
-   alert("Id rezervacije je "+ idRezervacije);
 
    $("#content").empty();
    $("#dugmee").empty();
-  // $("#prijateljiVecera").append();
+
    
 			$.ajax({
    			type : 'PUT',
@@ -295,8 +281,6 @@ function PotvrdiStolove(){
    			dataType :'json',
    			success : function(friends){
    			
-   			alert("Vratio prijatelje");
-   		  
    		var table = document.getElementById("tabelaPrijateljiVecera");
    		$("#tabelaPrijateljiVecera").empty();
    			for(var i = 0 ; i < friends.length ; i++){
@@ -334,10 +318,6 @@ function PozoviPrijateljaNaVeceru(){
    var idPozvanogPrijatelja = PozoviPrijateljaNaVeceru.caller.arguments[0].target.id; 
    var idRezervacije = PozoviPrijateljaNaVeceru.caller.arguments[0].target.name; 
 
-   alert("Id rezervacije je "+ idRezervacije +"id pozvanog"+ idPozvanogPrijatelja);
-
-
-   
 			$.ajax({
    			type : 'POST',
    			url :  '/reservationController/sendRequestByMail/'+ idPozvanogPrijatelja,

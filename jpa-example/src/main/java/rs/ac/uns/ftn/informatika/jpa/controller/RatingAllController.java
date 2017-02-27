@@ -90,13 +90,18 @@ public class RatingAllController {
 		Restaurant restaurant = restaurantService.getRestaurant(rm.getRestaurant().getId());
 		ArrayList<RatingAll> temp = this.ratingAllService.findByRestaurant(restaurant);
 
-		int br = temp.size();
-		int suma = 0;
-		for(int i=0; i<br; i++)
-			suma = suma + temp.get(i).getRestaurantRating();
 		
-		float prosek = (float) (suma/br);
-		String str = Float.toString(prosek);
+		String str = null;
+		int br = temp.size();
+		if(br!=0){
+			int suma = 0;
+			for(int i=0; i<br; i++)
+				suma = suma + temp.get(i).getRestaurantRating();
+			
+			float prosek = (float) (suma/br);
+			str = Float.toString(prosek);
+		}else
+			str = "Nema ocene";
 		return new ResponseEntity<String>(str, HttpStatus.OK);
 	}
 }

@@ -16,4 +16,5 @@ public interface ProviderRepository extends PagingAndSortingRepository<Provider,
 	public void updateManager(String name, String surname, String contact, String address,
 			String logFirstTime, String password, Long id);
 
+
 }

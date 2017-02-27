@@ -26,6 +26,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import rs.ac.uns.ftn.informatika.jpa.domain.AssignReon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
 import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
 import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
@@ -85,22 +86,31 @@ public class ReservationController {
 		System.out.println("REZERVACIJA"+ reservation.getIdGuest().getId() + " rest"+ reservation.getIdRestaurant().getId());
 		
 		if(reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()) == null){
-			System.out.println("Dodaje");
+			
 			if(reservation.getReservedTables() == null){
-				System.out.println("null je lista");
+				
 				List<Tablee> pomocna = new ArrayList<Tablee>();
 				pomocna.add(foundTable);
 				reservation.setReservedTables(pomocna);
 			
 			}else{
-				System.out.println("Nije null je lista");
+				
 				List<Tablee> res = reservation.getReservedTables();
 				res.add(foundTable);
 				reservation.setReservedTables(res);
 			}
 			 newReservation = reservationService.createNew(reservation);
+			
+			 for(int i  = 0; i<newReservation.getReservedTables().size();i++){
+					
+					ReservedTables newReservedTable = new ReservedTables(newReservation.getIdRestaurant(),newReservation.getReservedTables().get(i),newReservation.getDate(),newReservation.getTime(),newReservation.getDuration());
+							
+					reservedTablesService.createNew(newReservedTable);
+				}
+			
+			 
 		}else {
-			System.out.println("Update");
+			
 			neww = reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()); 
 			
 			List<Tablee> res = neww.getReservedTables();
@@ -108,9 +118,14 @@ public class ReservationController {
 			neww.setReservedTables(res);
 			newReservation = reservationService.update(neww,neww.getId());
 			
+			
+			ReservedTables newReservedTable = new ReservedTables(newReservation.getIdRestaurant(),foundTable,newReservation.getDate(),newReservation.getTime(),newReservation.getDuration());
+			
+			reservedTablesService.createNew(newReservedTable);
+			
 		}
 		
-		System.out.println("Zavrsio je uspjesno");
+		
 		return new ResponseEntity<Reservation>( newReservation, HttpStatus.OK);
 	
 	}

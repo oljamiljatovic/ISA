@@ -34,20 +34,23 @@ public class Offer implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="restaurant")
 	private Restaurant restaurant;
-
+	@Column(nullable=false)
+	private boolean accepted;
 	
 	public Offer() {
 		
 	}
 
 
-	public Offer(String endDate, Long foodOrDrink, String flag, Restaurant restaurant, int amount) {
+	public Offer(String endDate, Long foodOrDrink, String flag, Restaurant restaurant, int amount,
+			boolean accepted) {
 		super();
 		this.endDate = endDate;
 		this.restaurant = restaurant;
 		this.flag = flag;
 		this.foodOrDrink = foodOrDrink;
 		this.amount = amount;
+		this.accepted = accepted;
 	}
 
 
@@ -108,5 +111,17 @@ public class Offer implements Serializable{
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+
+
+	public boolean isAccepted() {
+		return accepted;
+	}
+
+
+	public void setAccepted(boolean accepted) {
+		this.accepted = accepted;
+	}
+	
+	
 
 }

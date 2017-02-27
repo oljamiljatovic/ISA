@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
-import rs.ac.uns.ftn.informatika.jpa.repository.PurchaseOrderRepository;
 import rs.ac.uns.ftn.informatika.jpa.repository.ReservedTablesRepository;
 
 @Service
@@ -20,6 +19,13 @@ public class ReservedTablesServiceImpl implements ReservedTablesService{
 	public List<ReservedTables> findReservedTablesByDate(String date) {
 		// TODO Auto-generated method stub
 		return reservedTablesRepository.findReservedTablesByDate(date);
+	}
+
+	
+	@Override
+	public ReservedTables createNew(ReservedTables reservedTable) {
+		// TODO Auto-generated method stub
+		return reservedTablesRepository.save(reservedTable);
 	}
 
 }
