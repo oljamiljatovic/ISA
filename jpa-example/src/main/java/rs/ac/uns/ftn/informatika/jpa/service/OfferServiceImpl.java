@@ -44,4 +44,10 @@ public class OfferServiceImpl implements OfferService {
 		this.offerRepository.delete(id);
 	}
 
+	@Override
+	public void updateFlag(boolean accepted, Long id) {
+		this.offerRepository.updateFlag(accepted, id);
+		
+	}
+
 }

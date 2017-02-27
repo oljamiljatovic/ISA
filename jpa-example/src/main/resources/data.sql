@@ -64,11 +64,11 @@ insert into employee(id,name,surname,date_birth,conf_number,shoe_number,restaura
 INSERT INTO user(email,password,role,accept) VALUES('zivka','zivka','provider','true')
 insert into provider(id,name,surname,address,contact,restaurant,log_first_time) values (17,'Zivka','Milutinovic','Glavna 10','022450', 1,'false')
 
-insert into offer(id,end_date,food_or_drink,flag,restaurant,amount) values (1,'2017-03-03',1,'pice',1,10)
-insert into offer(id,end_date,food_or_drink,flag,restaurant,amount) values (2,'2017-04-04',2,'jelo',1,30)
+insert into offer(end_date,food_or_drink,flag,restaurant,amount,accepted) values ('2017-03-03',1,'pice',1,10,false)
+insert into offer(end_date,food_or_drink,flag,restaurant,amount,accepted) values ('2017-04-04',2,'jelo',1,30,false)
 
-insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(1,1,1,12,0,'10','10')
-insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price) values(2,1,1,17,0,'10','10')
+insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price,seen) values(1,1,1,12,0,'10','10',false)
+insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price,seen) values(2,1,1,17,0,'10','10',false)
 
 insert into reon(name,location,restaurant, number_table) values ('North','north part',1,8)
 insert into tablee(reon,restaurant) values (1,1)

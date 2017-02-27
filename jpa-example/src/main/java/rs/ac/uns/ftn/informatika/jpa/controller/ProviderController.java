@@ -177,14 +177,16 @@ public class ProviderController {
 		
 		if(u.getRole().equals("restaurantManager")){
 			Offer of = this.offerService.getOffer(po.getOffer().getId());
+			of.setAccepted(true);
+			this.offerService.updateFlag(true, of.getId());
 			po.setOffer(of);
 			ArrayList<PurchaseOrder> por = this.purchaseService.getPurchaseOrderByOffer(of);
+			
 			
 			for(int i=0; i<por.size(); i++){
 				this.purchaseService.updateFlag(po.getFlag(), por.get(i).getId());
 			}
 			
-			this.offerService.delete(po.getOffer().getId());
 		}else if(u.getRole().equals("provider")){
 			this.purchaseService.updatePurchaseOrder(po);
 		}
@@ -231,5 +233,17 @@ public class ProviderController {
 		Provider rm= this.providerService.getProvider(u.getEmail());
 		ArrayList<PurchaseOrder> temp = this.purchaseService.getPurchaseOrderByProvider(rm);
 		return new ResponseEntity<ArrayList<PurchaseOrder>>(temp, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/updateSeen",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PurchaseOrder> updateSeen(@RequestBody PurchaseOrder po)  throws Exception {
+		
+		this.purchaseService.updatePurchaseOrderSeen(true, po.getId());
+		
+		return new ResponseEntity<PurchaseOrder>(po, HttpStatus.OK);
 	}
 }
