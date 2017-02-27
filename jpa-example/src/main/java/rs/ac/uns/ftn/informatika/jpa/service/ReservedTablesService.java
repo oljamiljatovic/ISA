@@ -7,6 +7,8 @@ import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
 public interface ReservedTablesService {
 
 	List<ReservedTables> findReservedTablesByDate(String date);
+
+	ReservedTables createNew(ReservedTables reservedTable);
 	
  
 }
