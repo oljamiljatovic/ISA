@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,7 +18,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Provider;
@@ -26,7 +30,9 @@ import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.ProviderService;
 import rs.ac.uns.ftn.informatika.jpa.service.ReonService;
+import rs.ac.uns.ftn.informatika.jpa.service.ReservedTablesService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
+import rs.ac.uns.ftn.informatika.jpa.service.TableService;
 
 
 @Controller
@@ -43,6 +49,10 @@ public class RestaurantManagerController {
 	private ReonService reonService;
 	@Autowired
 	private ProviderService providerService;
+	@Autowired
+	private TableService tableService;
+	@Autowired
+	private ReservedTablesService reservedTablesService;
 	
 	@RequestMapping(
 			value = "/uzmiRestoranMenadzera",
@@ -237,5 +247,44 @@ public class RestaurantManagerController {
 	public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long id)  throws Exception {
 		Restaurant r= this.restaurantService.getRestaurant(id);
 		return new ResponseEntity<Restaurant>(r, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/getTablesForRestaurant",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<Tablee>> getTablesForRestaurant()  throws Exception {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		ArrayList<Tablee> temp = new ArrayList<Tablee>();
+		RestaurantManager rm= this.managerService.getManager(u.getEmail());
+		Restaurant restt = this.restaurantService.getRestaurant(rm.getRestaurant().getId());
+		temp = tableService.findByRestaurant(restt);
+		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(
+			value = "/getReservedTables",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<ReservedTables>> getReservedTables()  throws Exception {
+		
+
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		RestaurantManager rm= this.managerService.getManager(u.getEmail());
+		Restaurant restt = this.restaurantService.getRestaurant(rm.getRestaurant().getId());
+		
+		ArrayList<ReservedTables> timetables = this.reservedTablesService.findByRestaurant(restt);
+		
+		return new ResponseEntity<ArrayList<ReservedTables>>((ArrayList<ReservedTables>) timetables, HttpStatus.OK);
+	
 	}
 }
