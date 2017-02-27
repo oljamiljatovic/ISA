@@ -33,7 +33,8 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 	
 	@Override
-	public Reservation findReservationByAll(Long idGuest, Long idRestaurant,String date, String time) {
+	public Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant,String date, String time) {
+		//System.out.println("SERVICE id guest "+idGuest +"idRest "+ idRestaurant );
 		return reservationRepository.findReservationByAll(idGuest,idRestaurant,date,time);
 	
 	}

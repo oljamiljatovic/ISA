@@ -205,6 +205,9 @@ function OdabranSto(){
    var idStola = OdabranSto.caller.arguments[0].target.id; //njega dodajem
    var idKomplet = OdabranSto.caller.arguments[0].target.name;
   
+   
+  alert("ispis svega"+ idKomplet);
+  
    var obj = idKomplet.split("/");
    
  
@@ -213,24 +216,48 @@ function OdabranSto(){
    var dateStart = obj[2];
    var timeStart = obj[3];
    var trajanje = obj[4];
-   
-  // var lista =[];
+
+   alert("id " + idGuest);
+   alert("id " + idRestorana);
    alert("Odabran sto je "+ idStola + "datestar"+dateStart);
 
-   // var idStola = parseInt(idStola2);
-    
+   var restaurant = JSON.stringify({
+		"id" : idRestorana,
+		"name" : "",
+		"type" : "",
+		"address" : "",
+		"contact" : "",
+	});
+	var obj2 = JSON.parse(restaurant);
+	
+   var guest = JSON.stringify({
+		"id" : idGuest,
+		"name" : "",
+		"surname" : "",
+	});
+	var obj1 = JSON.parse(guest);
+
+	
+	
+	alert("It's ok");
+	
+
+		var data2 = JSON.stringify({
+			"idGuest" : obj1,
+			"idRestaurant" : obj2,
+			"date" : dateStart,
+			"time" : timeStart,
+			"duration" : parseInt(trajanje)
+		});
+   
+   
+   
 			$.ajax({
    			type : 'POST',
    			url :  '/reservationController/addReservation/'+ idStola,
    			contentType : 'application/json',
    			dataType :'json',
-   			data : JSON.stringify({
-   				"idGuest" : idGuest,
-   				"idRestaurant" : idRestorana,
-   				"date" : dateStart,
-   				"time" : timeStart,
-   				"duration" : parseInt(trajanje)
-   			}),
+   			data : data2,
    			success : function(reservation){
    			
    			alert("Dodata rezervacija");

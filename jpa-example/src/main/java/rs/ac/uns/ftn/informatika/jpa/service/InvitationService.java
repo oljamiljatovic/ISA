@@ -9,11 +9,11 @@ public interface InvitationService {
 
 	Invitation createNew(Invitation invitation);
 	
-	Invitation findInvitationBySenderAndRecipient(Long sender, Long friend);
+	Invitation findInvitationBySenderAndRecipient(Guest sender, Guest friend,String accept);
 	
 	Invitation update(Invitation guest, Long id);
 
-	List<Invitation> getRequests(Long id);
+	List<Invitation> getRequests(Guest guest);
 	
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Invitation;
+import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 import rs.ac.uns.ftn.informatika.jpa.repository.InvitationRepository;
 
 @Service
@@ -22,9 +23,9 @@ public class InvitationServiceImpl implements InvitationService{
 	}
 
 	@Override
-	public Invitation findInvitationBySenderAndRecipient(Long sender, Long friend) {
+	public Invitation findInvitationBySenderAndRecipient(Guest sender, Guest friend,String accept) {
 		// TODO Auto-generated method stub
-		return invitationRepository.findInvitationBySenderAndRecipient(sender, friend);
+		return invitationRepository.findInvitationBySenderAndRecipient(sender, friend,accept);
 	}
 
 	@Override
@@ -35,8 +36,8 @@ public class InvitationServiceImpl implements InvitationService{
 	
 	
 	@Override
-	public List<Invitation> getRequests(Long id){
-		return invitationRepository.findRequests(id);
+	public List<Invitation> getRequests(Guest guest){
+		return invitationRepository.findRequests(guest);
 	}
 	
 }
