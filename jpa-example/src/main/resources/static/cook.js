@@ -26,7 +26,7 @@ function showOrders(){
 		dataType :'json',
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#content").append('<p><b>Poručena jela</b></p>');
+			$("#content").append('<br/><br/><p><b>Poručena jela</b></p><br/>');
 			$("#content").append("<table id='tableOrder'>");
 		      $("#content").append("<thead>");
 		      $("#content").append("<tr>");
@@ -63,9 +63,14 @@ function showOrders(){
 					        if(order.cook_state=="preuzeo_kuvar"){
 					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
 					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
+					        	$('input[id="signalMeal"][name='+index+']').attr('disabled',false);
+					        	$('input[id="signalMeal"][name='+index+']').css('color','black');
 					        }else if(order.cook_state=="gotovo_jelo"){
 					        	$('input[id="acceptMeal"][name='+index+']').attr('disabled','disabled');
 					        	$('input[id="acceptMeal"][name='+index+']').css('color','gray');
+					        	$('input[id="signalMeal"][name='+index+']').attr('disabled','disabled');
+					        	$('input[id="signalMeal"][name='+index+']').css('color','gray');
+					        }else if(order.cook_state=="kreirana"){
 					        	$('input[id="signalMeal"][name='+index+']').attr('disabled','disabled');
 					        	$('input[id="signalMeal"][name='+index+']').css('color','gray');
 					        }
@@ -155,7 +160,7 @@ $(document).on('submit','#submitFirstLog',function(e){
 			"dateBirth" : "",
 			"confNumber" : "",
 			"shoeNumber" : "",
-			"restaurant" : "1",
+			"restaurant" : null,
 			"firstLog" : "false",
 			"password" : password,
 			"email" : "",
@@ -273,7 +278,7 @@ $(document).on('click','#updateProfile',function(e){
 								'<br/>Veličina obuće:<input type = "text" id = "shoes" value="'+employee.shoeNumber+'"  class="in-text"/>'+
 								'<br/>Nova lozinka:<br/><input type = "password" id = "newPass"  value="'+employee.password+'" class="in-text"/>'+
 								'<br/>Ponovi lozinku:<br/><input type = "password" id = "repeatPass" value="'+employee.password+'" class="in-text"/>'+
-								'<br/><input type = "submit" id = "submitUpdateProfile" value="Potvrdi" class="btn orange">'+
+								'<br/><br/><input type = "submit" id = "submitUpdateProfile" value="Potvrdi" class="btn orange">'+
 								'</form></div></div></div></div>');
 				$('#name').attr('disabled','disabled');
 				$('#surname').attr('disabled','disabled');
@@ -303,7 +308,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 		"dateBirth" : dateBirth,
 		"confNumber" : confNumber,
 		"shoeNumber" : shoeNumber,
-		"restaurant" : "1",
+		"restaurant" : null,
 		"firstLog" : "false",
 		"password" : password,
 		"email" : email,
@@ -393,6 +398,7 @@ $(document).on('click', '#acceptMeal', function(e) {
 				success : function(data){	
 					//Command: toastr["success"]("preuzeo_kuvar.", "Odlično!")
 					//message();
+					showOrders();
 				},
 
 				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)

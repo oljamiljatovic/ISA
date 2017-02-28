@@ -27,9 +27,10 @@ function showOrders(){
 		dataType :'json',
 		success : function(data){
 			console.log("Usaoooo");
+			$("#content").html(data);
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$("#content").append("</br><button id='addOrder' class='btn orange'>Dodaj porudžbinu</button>");
-			$("#content").append('<p><b>Lista porudžbina</b></p>');
+			$("#content").append('<br/><br/><p><b>Lista porudžbina</b></p><br/>');
 			$("#content").append("<table id='tableOrder'>");
 		      $("#content").append("<thead>");
 		      $("#content").append("<tr>");
@@ -155,12 +156,14 @@ $(document).ready(function() {
 			message();
 			if( $('#tableOrder').length ){
 				showOrders();
+				showOrders();
 			}
 		});
 		stompClient.subscribe("/topic/signalMeal", function(data) {
 			var mess = data.body;
 			Command: toastr["info"](mess, "Informacija!")
 			if( $('#tableOrder').length ){
+				showOrders();
 				showOrders();
 			}
 			
@@ -171,7 +174,6 @@ $(document).ready(function() {
 			message();
 			if( $('#tableOrder').length ){
 				showOrders();
-				$("#content").empty();
 				showOrders();
 			}
 		});
@@ -181,7 +183,6 @@ $(document).ready(function() {
 			message();
 			if( $('#tableOrder').length ){
 				showOrders();
-				$("#content").empty();
 				showOrders();
 			}
 		});
@@ -248,7 +249,7 @@ $(document).on('submit','#submitFirstLog',function(e){
 			"dateBirth" : "",
 			"confNumber" : "",
 			"shoeNumber" : "",
-			"restaurant" : "1",
+			"restaurant" : null,
 			"firstLog" : "false",
 			"password" : password,
 			"email" : "",
@@ -394,7 +395,7 @@ $(document).on('click','#tables',function(e){
 					$.each(reons, function(index1,reon){
 						var btnIndex = 0;
 						$.each(tables, function(index2,table){
-							if(reon.id==table.reon){
+							if(reon.id==table.reon.id){
 								var string = "#"+reon.name+btnIndex;
 								$("#"+reon.name+btnIndex).text(table.id);
 								btnIndex++;
@@ -1014,7 +1015,7 @@ $(document).on('click','#updateProfile',function(e){
 								'<br/>Veličina obuće:<input type = "text" id = "shoes" value="'+employee.shoeNumber+'"  class="in-text"/>'+
 								'<br/>Nova lozinka:<br/><input type = "password" id = "newPass"  value="'+employee.password+'" class="in-text"/>'+
 								'<br/>Ponovi lozinku:<br/><input type = "password" id = "repeatPass" value="'+employee.password+'" class="in-text"/>'+
-								'<br/><input type = "submit" id = "submitUpdateProfile" value="Potvrdi" class="btn orange">'+
+								'<br/><br/><input type = "submit" id = "submitUpdateProfile" value="Potvrdi" class="btn orange">'+
 								'</form></div></div></div></div>');
 				$('#name').attr('disabled','disabled');
 				$('#surname').attr('disabled','disabled');
@@ -1044,7 +1045,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 		"dateBirth" : dateBirth,
 		"confNumber" : confNumber,
 		"shoeNumber" : shoeNumber,
-		"restaurant" : "1",
+		"restaurant" : null,
 		"firstLog" : "false",
 		"password" : password,
 		"email" : email,
@@ -1097,7 +1098,7 @@ $(document).on('click','#myBills',function(e){
 		url : '/billController/getMyBills',
 		success : function(data){
 			var bills = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			$("#content").append('<p><b>Moji računi</b></p>');
+			$("#content").append('<br/><br/><p><b>Moji kreirani računi</b></p><br/>');
 			$("#content").append("<table id='billTable'>");
 		    $("#content").append("<thead>");
 		    $("#content").append("<tr>");
@@ -1146,7 +1147,7 @@ $(document).on('click', '#billOrders', function(e) {
 		dataType: 'json',
 		url : '/orderController/getOrder/'+order_id,
 		success : function(data){
-			$("#content").append('<p><b>Stavke računa</b></p>');
+			$("#content").append('<br/><br/><p><b>Stavke računa</b></p><br/>');
 			$("#content").append("<table>");
 		    $("#content").append("<thead>");
 		    $("#content").append("<tr>");
