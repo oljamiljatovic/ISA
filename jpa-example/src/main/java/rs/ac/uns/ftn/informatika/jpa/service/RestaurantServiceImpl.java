@@ -43,7 +43,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 	@Override
 	public void updateRestaurant(Restaurant rest) {
 		this.restaurantRepository.updateRestaurant(rest.getName(), rest.getType(), rest.getAddress(),
-				rest.getContact(), rest.getId());
+				rest.getContact(), rest.getWidth(), rest.getHeight(), rest.getId());
 	}
 	
 	

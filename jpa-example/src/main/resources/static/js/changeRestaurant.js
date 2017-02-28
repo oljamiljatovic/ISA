@@ -12,6 +12,8 @@ $(document).on('click','#restoran',function(e){
 		'Vrsta restorana:<input type = "text" id = "vrstaRestorana" class="in-text"/><br/>'+
 		'Adresa:<input type = "text" id = "adresaRestorana" class="in-text"/><br/>'+
 		'Kontakt:<input type = "text" id = "kontaktRestorana" class="in-text"/><br/>'+
+		'Geografska sirina:<input type = "text" id = "sirinaRestorana" class="in-text"/><br/>'+
+		'Geofrafska duzina:<input type = "text" id = "duzinaRestorana" class="in-text"/><br/>'+
 		'<input type = "button" id = "lokacijaRestorana" value="izaberi lokacija" >'+
 		'<input type = "submit" id = "submitIzmenaRestorana" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
@@ -26,6 +28,8 @@ $(document).on('click','#restoran',function(e){
 			$('#vrstaRestorana').val(data.type);
 			$('#adresaRestorana').val(data.address);
 			$('#kontaktRestorana').val(data.contact);
+			$('#sirinaRestorana').val(data.width);
+			$('#duzinaRestorana').val(data.height);
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -41,21 +45,35 @@ $(document).on('click','#lokacijaRestorana',function(e){
 	
 	$('#content').empty();	
 	$('#ubaci_mapu').empty();
+	
+	$.ajax({
+		type : 'GET',
+		url :  '/restaurantManagerController/uzmiRestoranMenadzera',
+		contentType : 'application/json',
+		success : function(data){
 
-	$('#content').append('<div id="mica_mapa"></div>');
-	var dok = document.getElementById('mica_mapa');
-	var uluru = {lat: 45.239630, lng: 19.840992};
-	var map = new google.maps.Map(document.getElementById('mica_mapa'), {
-        center: uluru,
-        zoom: 8
-      });
-	
-	var marker = new google.maps.Marker({
-        position: uluru,
-        map: map
-      });
-	
-    $('#ubaci_mapu').append(map);
+
+			$('#content').append('<div id="mica_mapa"></div>');
+			var dok = document.getElementById('mica_mapa');
+			//var uluru = {lat: 45.239630, lng: 19.840992};
+			var uluru = {lat: data.width, lng: data.height};
+			var map = new google.maps.Map(document.getElementById('mica_mapa'), {
+		        center: uluru,
+		        zoom: 8
+		      });
+			
+			var marker = new google.maps.Marker({
+		        position: uluru,
+		        map: map
+		      });
+			
+		    $('#ubaci_mapu').append(map);
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { 
+			alert("AJAX ERROR: " + errorThrown);
+		}
+	});
 });
 
 $(document).on('click','#submitIzmenaRestorana',function(e){
@@ -64,6 +82,8 @@ $(document).on('click','#submitIzmenaRestorana',function(e){
 	var address = $('#adresaRestorana').val();
 	var contact = $('#kontaktRestorana').val();
 	var type = $('#vrstaRestorana').val();
+	var sirina = $('#sirinaRestorana').val();
+	var duzina = $('#duzinaRestorana').val();
 	var drinks = [];
 	var meals = [];
 	if(name == ""){
@@ -78,7 +98,9 @@ $(document).on('click','#submitIzmenaRestorana',function(e){
 			"name" : name,
 			"type" : type,
 			"address" : address,
-			"contact" : contact
+			"contact" : contact,
+			"width" : sirina,
+			"height" : duzina
 		});
 		$.ajax({
 			type : 'POST',

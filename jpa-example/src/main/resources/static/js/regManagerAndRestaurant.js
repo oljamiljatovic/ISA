@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 	$.ajax({
 		type: 'GET',
@@ -120,6 +121,8 @@ $(document).on('click','#registrRest',function(e){
 			'Vrsta restorana:<input type = "text" id = "vrstaRestorana" class="in-text"/><br/>'+
 			'Adresa:<input type = "text" id = "adresaRestorana" class="in-text"/><br/>'+
 			'Kontakt:<input type = "text" id = "kontaktRestorana" class="in-text"/><br/>'+
+			'Geografska sirina:<input type = "text" id = "sirinaRestorana" class="in-text"/><br/>'+
+			'Geografska duzina:<input type = "text" id = "duzinaRestorana" class="in-text"/><br/>'+
 			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 });
@@ -130,6 +133,8 @@ $(document).on('submit','#registracijaRestorana',function(e){
 	var address = $('#adresaRestorana').val();
 	var contact = $('#kontaktRestorana').val();
 	var type = $('#vrstaRestorana').val();
+	var sirina = $('#sirinaRestorana').val();
+	var duzina = $('#duzinaRestorana').val();
 	if(name == ""){
 		toastr.error("Ime je prazno");
 	}else if(address == ""){
@@ -144,7 +149,9 @@ $(document).on('submit','#registracijaRestorana',function(e){
 			"name" : name,
 			"type" : type,
 			"address" : address,
-			"contact" : contact
+			"contact" : contact,
+			"width" : sirina,
+			"height" : duzina
 		});
 		$.ajax({
 			type : 'POST',

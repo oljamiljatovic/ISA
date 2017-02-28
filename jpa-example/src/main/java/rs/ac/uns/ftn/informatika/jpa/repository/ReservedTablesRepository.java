@@ -1,3 +1,4 @@
+
 package rs.ac.uns.ftn.informatika.jpa.repository;
 
 import java.util.ArrayList;

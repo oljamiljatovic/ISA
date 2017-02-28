@@ -35,11 +35,11 @@ INSERT INTO friends(person_id,friend_id) VALUES('5','1')
 INSERT INTO friends(person_id,friend_id) VALUES('6','1')
 
 
-insert into restaurant(id,name,type_id,address,contact) values (1,'Kod Sime','domaca jela','Glavna 20','-')
-insert into restaurant(id,name,type_id,address,contact) values (2,'Kod Zore','domaca jela','Glavna 7','-')
-insert into restaurant(id,name,type_id,address,contact) values (3,'Kod Joke','domaca jela','Glavna 8','-')
-insert into restaurant(id,name,type_id,address,contact) values (4,'Kod Pere','domaca jela','Josipova 9','-')
-insert into restaurant(id,name,type_id,address,contact) values (5,'Kod Mice','domaca jela','Jakova Milovica 16','-')
+insert into restaurant(id,name,type_id,address,contact,width,height) values (1,'Kod Sime','domaca jela','Glavna 20','-',45.239630,19.840992)
+insert into restaurant(id,name,type_id,address,contact,width,height) values (2,'Kod Zore','domaca jela','Glavna 7','-',45.239630,19.840992)
+insert into restaurant(id,name,type_id,address,contact,width,height) values (3,'Kod Joke','domaca jela','Glavna 8','-',45.239630,19.840992)
+insert into restaurant(id,name,type_id,address,contact,width,height) values (4,'Kod Pere','domaca jela','Josipova 9','-',45.239630,19.840992)
+insert into restaurant(id,name,type_id,address,contact,width,height) values (5,'Kod Mice','domaca jela','Jakova Milovica 16','-',45.239630,19.840992)
 
 INSERT INTO user(email,password,role,accept) VALUES('mmica','mica','restaurantManager','true')
 insert into restaurant_manager(id,name,surname,address,contact,restaurant) values (7,'Mica','Milut','Glavna 109', '-',1)
@@ -70,7 +70,7 @@ insert into offer(end_date,food_or_drink,flag,restaurant,amount,accepted) values
 insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price,seen) values(1,1,1,12,0,'10','10',false)
 insert into purchase_order(id,offer,restaurant,provider,flag,time_deliver,price,seen) values(2,1,1,17,0,'10','10',false)
 
-insert into reon(name,location,restaurant, number_table) values ('North','north part',1,8)
+insert into reon(name,location,restaurant, number_table) values ('North','north part',1,6)
 insert into tablee(reon,restaurant,exist) values (1,1,true)
 insert into tablee(reon,restaurant,exist) values (1,1,true)
 insert into tablee(reon,restaurant,exist) values (1,1,true)

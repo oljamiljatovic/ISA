@@ -1,3 +1,4 @@
+
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
@@ -276,6 +277,7 @@ public class ScheduleAndReonController {
 		this.assignReonService.delete(r.getId());
 	}
 	
+	
 	@RequestMapping(
 			value = "/izbrisiSto",
 			method = RequestMethod.POST,
@@ -285,6 +287,12 @@ public class ScheduleAndReonController {
 		
 		//this.tableService.delete(t.getId());
 		this.tableService.updateTableFlag(t);
+		
+		Tablee tab = this.tableService.findById(t.getId());
+		Reon reon = tab.getReon();
+		int number = reon.getNumberTable();
+		reon.setNumberTable(number-1);
+		this.reonService.update(reon);
 	}
 	
 	

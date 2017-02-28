@@ -14,6 +14,7 @@ public interface RestaurantRepository extends PagingAndSortingRepository<Restaur
 	@Override
 	public Restaurant findOne(Long id);
 	@Modifying
-	@Query("update Restaurant set name = ?,type = ?,address =?, contact=? where id = ? ")
-	public void updateRestaurant(String rest, String type, String address, String contact, Long id);
+	@Query("update Restaurant set name = ?,type = ?,address =?, contact=?, width=?, height=? where id = ? ")
+	public void updateRestaurant(String rest, String type, String address, String contact, 
+			float width, float height, Long id);
 }
