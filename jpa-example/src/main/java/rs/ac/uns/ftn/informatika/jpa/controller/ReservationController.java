@@ -81,17 +81,13 @@ public class ReservationController {
 	@RequestBody Reservation reservation ,@PathVariable Long idStola)  throws Exception {
 		
 		Tablee foundTable = tableService.findById(idStola);
-		System.out.println("nasao table"+ foundTable.getId());
+		
 		Reservation newReservation = null;
 
-		
 		Long idChange = (long) -1;
 		Reservation neww = null;
 		
-		
-		System.out.println("REZERVACIJA"+ reservation.getIdGuest().getId() + " rest"+ reservation.getIdRestaurant().getId());
-		
-		if(reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()) == null){
+		if(reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime(),reservation.getFlag()) == null){
 			
 			if(reservation.getReservedTables() == null){
 				
@@ -117,7 +113,7 @@ public class ReservationController {
 			 
 		}else {
 			
-			neww = reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime()); 
+			neww = reservationService.findReservationByAll(reservation.getIdGuest(),reservation.getIdRestaurant(),reservation.getDate(),reservation.getTime(),reservation.getFlag()); 
 			
 			List<Tablee> res = neww.getReservedTables();
 			res.add(foundTable);
@@ -297,8 +293,6 @@ public class ReservationController {
 	public ResponseEntity<List<Tablee>> getReservedTableForReservation(
 			@PathVariable Long idReservation) throws Exception {
 		
-		System.out.println("pronasao ga");
-		//List<Tablee> tables = new ArrayList<Tablee>();
 		Reservation reservation = reservationService.findOne(idReservation);
 		List<Tablee>  tables= reservation.getReservedTables();
 

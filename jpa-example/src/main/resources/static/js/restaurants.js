@@ -149,7 +149,8 @@ $(document).on('click','#submitSmene', function(e){
 			"idRestaurant" : obj2,
 			"date" : dateStart,
 			"time" : timeStart,
-			"duration" : parseInt(smene)
+			"duration" : parseInt(smene),
+			"flag" : "aktivna",
 		});
 		$.ajax({
 			type: 'POST',
@@ -265,7 +266,8 @@ function OdabranSto(){
 			"idRestaurant" : obj2,
 			"date" : dateStart,
 			"time" : timeStart,
-			"duration" : parseInt(trajanje)
+			"duration" : parseInt(trajanje),
+			"flag" : "aktivna",
 		});
    
    

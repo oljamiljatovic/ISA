@@ -11,8 +11,8 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 
 public interface ReservationRepository extends PagingAndSortingRepository<Reservation, Long>{
 
-	@Query("select r from Reservation r where r.idGuest = ?1 and r.idRestaurant = ?2 and r.date = ?3 and r.time = ?4")
-    Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant, String date, String time);
+	@Query("select r from Reservation r where r.idGuest = ?1 and r.idRestaurant = ?2 and r.date = ?3 and r.time = ?4 and r.flag = ?5")
+    Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant, String date, String time,String flag);
 	
 	ArrayList<Reservation> findByIdGuest(Guest idGuest);
 	

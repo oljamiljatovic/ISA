@@ -15,7 +15,7 @@ public interface ReservationService {
 
 	Reservation update(Reservation reservation, Long id);
 
-	Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant, String date, String time);
+	Reservation findReservationByAll(Guest idGuest, Restaurant idRestaurant, String date, String time,String flag);
 	
 	ArrayList<Reservation> findByIdGuest(Guest idGuest);
 	

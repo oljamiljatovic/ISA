@@ -41,8 +41,6 @@ public class Reservation {
 	
 	private int duration;
 	
-	
-	
 	@ManyToMany(cascade=CascadeType.ALL) 
 	@JoinTable(name="reservation_reserved_tables", joinColumns=@JoinColumn(name="reservation_id"),
 	inverseJoinColumns=@JoinColumn(name="table_id"))
@@ -54,18 +52,13 @@ public class Reservation {
 	inverseJoinColumns=@JoinColumn(name="friend_id"))
 	private List<Guest> acceptedFriends ;
 	
-	
-	@ManyToMany(cascade=CascadeType.ALL) 
-	@JoinTable(name="reservation_orders", joinColumns=@JoinColumn(name="reservation_id"),
-	inverseJoinColumns=@JoinColumn(name="order_id"))
-	private List<Order> orders ;
-	
+	private String flag;
 	
 	public Reservation(){
 		
 	}
 
-	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration) {
+	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration,String flag) {
 		super();
 		this.idGuest = idGuest;
 		this.idRestaurant = idRestaurant;
@@ -74,13 +67,13 @@ public class Reservation {
 		this.duration = duration;
 		this.reservedTables = new ArrayList<Tablee>();
 		this.acceptedFriends = new ArrayList<Guest>();
-		this.orders = new ArrayList<Order>();
+		this.flag = flag;
 	}
 	
 	
 
 	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration,
-			List<Tablee> reservedTables) {
+			List<Tablee> reservedTables,String flag) {
 		super();
 		this.idGuest = idGuest;
 		this.idRestaurant = idRestaurant;
@@ -88,20 +81,17 @@ public class Reservation {
 		this.time = time;
 		this.duration = duration;
 		this.reservedTables = reservedTables;
+		this.flag = flag;
 	}
 
 	
-	public Reservation(Guest idGuest, Restaurant idRestaurant, String date, String time, int duration,
-			List<Tablee> reservedTables, List<Guest> acceptedFriends, List<Order> orders) {
-		super();
-		this.idGuest = idGuest;
-		this.idRestaurant = idRestaurant;
-		this.date = date;
-		this.time = time;
-		this.duration = duration;
-		this.reservedTables = reservedTables;
-		this.acceptedFriends = acceptedFriends;
-		this.orders = orders;
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 
 	public Long getId() {
@@ -168,15 +158,7 @@ public class Reservation {
 		this.acceptedFriends = acceptedFriends;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
-	}
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-	
-	
 	
 	
 }

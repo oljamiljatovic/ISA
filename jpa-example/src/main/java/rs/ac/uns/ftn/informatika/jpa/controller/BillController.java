@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import rs.ac.uns.ftn.informatika.jpa.domain.Bill;
 import rs.ac.uns.ftn.informatika.jpa.domain.Order;
+import rs.ac.uns.ftn.informatika.jpa.domain.Reservation;
+import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.RestaurantManager;
@@ -23,6 +26,8 @@ import rs.ac.uns.ftn.informatika.jpa.service.BillService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmployeeService;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.OrderService;
+import rs.ac.uns.ftn.informatika.jpa.service.ReservationService;
+import rs.ac.uns.ftn.informatika.jpa.service.ReservedTablesService;
 import rs.ac.uns.ftn.informatika.jpa.service.WorkScheduleService;
 
 @Controller 
@@ -38,6 +43,12 @@ public class BillController {
 	private EmployeeService employeeService;
 	@Autowired
 	private ManagerService managerService;
+	
+	@Autowired
+	private ReservedTablesService reservedTablesService;
+	
+	@Autowired
+	private ReservationService reservationService;
 	
 	@RequestMapping(
 			value = "/getBills",
@@ -85,6 +96,22 @@ public class BillController {
 		orderForClose.setBarman_state("kraj");
 		orderForClose.setCook_state("kraj");
 		Order changedOrder = orderService.update(orderForClose, orderId);
+		
+		//dodala Olja
+		Reservation reservationToChange = changedOrder.getReservation();
+		
+		for(int i = 0; i<reservationToChange.getReservedTables().size(); i++){ //Tablee
+			
+			
+			ReservedTables temp = reservedTablesService.findReservedTablesByAll(reservationToChange.getIdRestaurant(), reservationToChange.getReservedTables().get(i), reservationToChange.getDate(), reservationToChange.getTime(), reservationToChange.getDuration());
+			
+			reservedTablesService.Delete(temp);
+		}
+		
+		
+		reservationToChange.setFlag("neaktivna");
+		reservationService.update(reservationToChange, reservationToChange.getId());
+		
 		return new ResponseEntity<Bill>(addedBill, HttpStatus.OK);
 	}
 	
