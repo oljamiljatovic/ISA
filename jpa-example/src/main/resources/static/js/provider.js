@@ -56,7 +56,7 @@ $(document).ready(function(){
 						"flag" : 0
 					});
 					
-					$.ajax({
+					/*$.ajax({
 						type: 'POST',
 						contentType : 'application/json',
 						dataType : 'json',
@@ -68,7 +68,7 @@ $(document).ready(function(){
 						error : function(XMLHttpRequest, textStatus, errorThrown) {
 							toastr.error("Admin ERROR: " + errorThrown);
 						}
-					});
+					});*/
 			
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -91,7 +91,7 @@ $(document).ready(function(){
 		url : '/providerController/uzmiPonudjaca',
 		success : function(ponudjac){
 			
-			$.ajax({
+			/*$.ajax({
 				type: 'GET',
 				contentType : 'application/json',
 				url : '/providerController/uzmiSvePorudzbenicePonudjaca',
@@ -138,7 +138,7 @@ $(document).ready(function(){
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
 					toastr.error("Admin ERROR: " + errorThrown);
 				}	
-			});
+			});*/
 			
 				if(ponudjac.logFirstTime=="true"){
 					

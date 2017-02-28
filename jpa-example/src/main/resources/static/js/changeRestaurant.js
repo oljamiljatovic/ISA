@@ -575,10 +575,10 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 				$.ajax({
 					type : 'POST',
 					url :  '/acceptOffer',
-					data :  {"acceptOffer" : id},
+					data :  {"acceptOffer" : id}/*,
 					error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
 						alert("AJAX ERROR: " + errorThrown);
-					}
+					}*/
 				});
 				
 				window.location.reload();

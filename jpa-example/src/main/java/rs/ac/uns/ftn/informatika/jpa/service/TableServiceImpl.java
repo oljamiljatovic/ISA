@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Reon;
@@ -12,7 +13,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.repository.TableRepository;
 
 @Service
-@Transactional
+@Transactional(isolation=Isolation.SERIALIZABLE)
 public class TableServiceImpl implements TableService {
 
 	@Autowired
