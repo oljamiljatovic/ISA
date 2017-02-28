@@ -207,7 +207,7 @@ $(document).ready(function() {
 										'Postavite lozinku:<br/><br/>'+
 										'Nova lozinka:<br/><input type = "password" id = "newPassword"  class="in-text"/><br/>'+
 										'Ponovite lozinku:<br/><input type = "password" id = "repeatPassword"  class="in-text"/><br/>'+
-										'<input type = "submit" value="Submit" class="btn orange">'+
+										'<br/><input type = "submit" value="Submit" class="btn orange">'+
 										'<input type="hidden" id="employeeId" value='+employee.id+'>'+
 										'</form></div></div></div></div>');
 							}
@@ -481,7 +481,7 @@ $(document).on('click', '#add', function(e) {
 							'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 								'<form method="post" id="updateForm">'+
 									'Dodavanje na postojeću porudžbinu:<br/>'+
-									'<br/>Rezervacija:<input type="text" style="width:50px" id="deskId" value="'+reservationId+'">Sto:<input type="text" id="deskId" style="width:50px" value="'+desk+'">'+
+									'<br/>Rezervacija:<input type="text" id="deskId" value="'+reservationId+'">Sto:<input type="text" id="deskId" value="'+desk+'">'+
 									'<br/>Pića:'+
 									'<select id="comboDrinks" multiple="multiple" size="5" style="width:300px"></select>'+
 									'<br/>Jela:'+
@@ -606,7 +606,7 @@ $(document).on('click', '#submitEdit', function(e) {
 							'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 								'<form method="post" id="updateForm">'+
 									'Izmjena porudžbine:<br/>'+
-									'<br/>Rezervacija:<input type="text" id="reservationId" style="width:50px" value="'+reservationId+'">Sto:<input type="text" style="width:50px" id="deskId" value="'+desk+'">'+
+									'<br/>Rezervacija:<input type="text" id="reservationId" " value="'+reservationId+'">Sto:<input type="text" id="deskId" value="'+desk+'">'+
 									'<br/>Pića:'+
 									'<select id="comboDrinks" multiple="multiple" size="5" style="width:300px"></select>'+
 									'<br/>Jela:'+
@@ -663,6 +663,22 @@ $(document).on('click', '#update', function(e) {
 			Command: toastr["success"]("Uspješno izvršena izmjena porudžbine.", "Odlično!")
 			message();
 			showOrders();
+			$.ajax({
+				type : 'POST',
+				url :  '/send/newOrder',
+				data : {
+					"newOrder" : "Izmjenjena je porudžbina "+id+"!"
+				},
+				success : function(data){	
+					//Command: toastr["success"]("Uspjela je notifikacija.", "Odlično!")
+					//message();
+				},
+
+				error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+					alert("newOrder ERROR: " + errorThrown);
+				}
+			
+			});
 			
 		},
 
@@ -830,10 +846,9 @@ $(document).on('click','#addOrder',function(e){
 				Command: toastr["info"]("Nema rezervacija za danas, ne možete unijeti porudžbinu!", "Informacija!")
 				message();
 			}else{
-			$.each(reservations, function(index,reservation){
-				//$('#comboTables').append('<option>'+table.id+'</option>');
-				allReservations.push(reservation.id);
-			});
+				$.each(reservations, function(index,reservation){
+					allReservations.push(reservation.id);
+				});
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
@@ -1078,7 +1093,7 @@ $(document).on('click','#submitUpdateProfile',function(e){
 			success : function(data){
 				Command: toastr["success"]("Uspješno su ažurirani podaci.", "Odlično!")
 				message();
-		$('#content').empty();
+				$('#content').empty();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)

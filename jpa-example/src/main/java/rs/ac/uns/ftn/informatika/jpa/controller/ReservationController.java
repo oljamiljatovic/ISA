@@ -282,7 +282,7 @@ public class ReservationController {
 		String todayDate = dateFormat.format(date).split(" ")[0];
 		Employee waiter = employeeService.findById(u.getId());
 		Restaurant rest =waiter.getRestaurant();
-		ArrayList<Reservation> reservations = reservationService.findByIdRestaurantAndDate(rest, todayDate);
+		ArrayList<Reservation> reservations = reservationService.findByIdRestaurantAndDateAndFlag(rest, todayDate,"aktivna");
 		return new ResponseEntity<ArrayList<Reservation>>(reservations, HttpStatus.OK);
 	}
 	

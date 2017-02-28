@@ -122,7 +122,7 @@ $(document).ready(function() {
 										'Postavite lozinku:<br/><br/>'+
 										'Nova lozinka:<br/><input type = "password" id = "newPassword"  class="in-text"/><br/>'+
 										'Ponovite lozinku:<br/><input type = "password" id = "repeatPassword"  class="in-text"/><br/>'+
-										'<input type = "submit" value="Submit" class="btn orange">'+
+										'<br/><input type = "submit" value="Submit" class="btn orange">'+
 										'<input type="hidden" id="employeeId" value='+employee.id+'>'+
 										'</form></div></div></div></div>');
 							}

@@ -22,5 +22,7 @@ public interface ReservationService {
 	ArrayList<Reservation> findByIdRestaurantAndDate(Restaurant idRestaurant, String date);
 	
 	ArrayList<Reservation> findByAcceptedFriends_Id(Long id);
+	
+	ArrayList<Reservation> findByIdRestaurantAndDateAndFlag(Restaurant idRestaurant, String date, String flag);
 
 }

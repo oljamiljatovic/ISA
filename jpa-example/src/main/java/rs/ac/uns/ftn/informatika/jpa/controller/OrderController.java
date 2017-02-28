@@ -270,6 +270,7 @@ public class OrderController {
 				for(int i=0;i<drinks.size();i++){
 					foundedOrder.getDrinks().add(drinks.get(i));
 				}
+				foundedOrder.setBarman_state("preuzeo_sanker");
 			}
 			ArrayList<Meal> meals = new ArrayList<Meal>();
 			if(order.getMeals()!=null && !order.getMeals().isEmpty()){
@@ -281,6 +282,7 @@ public class OrderController {
 				for(int i=0;i<meals.size();i++){
 					foundedOrder.getMeals().add(meals.get(i));
 				}
+				foundedOrder.setCook_state("preuzeo_kuvar");
 			}
 		}
 		Order changedOrder = orderService.update(foundedOrder, id);
