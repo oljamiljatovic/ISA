@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import java.util.ArrayList;
+
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 
 public interface UserService {
@@ -14,4 +16,6 @@ public interface UserService {
 	public void updateUserPassword(User dr);
 	
 	public User findOne(Long id);
+	
+	public ArrayList<User> findByEmail(String email);
 }

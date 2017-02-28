@@ -27,7 +27,7 @@ $(document).on('click','#pica',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -57,12 +57,12 @@ $(document).on('submit','#formIzbrisiPice',function(e){
 		success : function(){
 			window.location.reload();
 			
-			alert('Uspesno brisanje pica!');
+			toastr.info('Uspesno brisanje pica!');
 			
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.info("AJAX ERROR: " + errorThrown);
 		}
 	});
 });
@@ -111,9 +111,11 @@ $(document).on('submit','#submitIzmenaPica',function(e){
 	var description = $('#opisPica').val();
 	
 	if(name == ""){
-		alert("Ime je prazno");
-	}else if(price == ""){
-		alert("Cena je prazna");
+		toastr.error("Ime je prazno");
+	}else if(description == ""){
+		toastr.error("Opis je prazan");
+	}else if(price == "" || isNaN(price)){
+		toastr.error("Unesite cenu(BROJ)");
 	}else{
 
 		var restaurant = JSON.stringify({
@@ -141,12 +143,12 @@ $(document).on('submit','#submitIzmenaPica',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -180,9 +182,11 @@ $(document).on('submit','#submitDodajPice',function(e){
 	var opis = $('#opisPica').val();
 	var restoran = null;
 	if(name == ""){
-		alert("Ime je prazno");
-	}else if(price == ""){
-		alert("Cena je prazna");
+		toastr.error("Ime je prazno");
+	}else if(opis == ""){
+		toastr.error("Opis je prazan");
+	}else if(price == "" || isNaN(price)){
+		toastr.error("Unesite cenu(BROJ)");
 	}else{
 		var data2 = JSON.stringify({
 			"name" : name,
@@ -198,12 +202,12 @@ $(document).on('submit','#submitDodajPice',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -243,7 +247,7 @@ $(document).on('click','#jelovnik',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -273,12 +277,12 @@ $(document).on('submit','#formIzbrisiJelo',function(e){
 		success : function(){
 			window.location.reload();
 			
-			alert('Uspesno brisanje jela!');
+			toastr.info('Uspesno brisanje jela!');
 			
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 });
@@ -325,9 +329,11 @@ $(document).on('submit','#submitIzmenaJelo',function(e){
 	var description = $('#opisJela').val();
 	
 	if(name == ""){
-		alert("Ime je prazno");
-	}else if(price == ""){
-		alert("Cena je prazna");
+		toastr.error("Ime je prazno");
+	}else if(description == ""){
+		toastr.error("Opis je prazan");
+	}else if(price == "" || isNaN(price)){
+		toastr.error("Unesite cenu(BROJ)");
 	}else{
 		var restaurant = JSON.stringify({
 			"id" : restaurant,
@@ -356,12 +362,12 @@ $(document).on('submit','#submitIzmenaJelo',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -394,9 +400,11 @@ $(document).on('submit','#submitDodajJelo',function(e){
 	var price = $('#cenaJela').val();
 	var opis = $('#opisJela').val();
 	if(name == ""){
-		alert("Ime je prazno");
-	}else if(price == ""){
-		alert("Cena je prazna");
+		toastr.error("Ime je prazno");
+	}else if(opis == ""){
+		toastr.error("Opis je prazan");
+	}else if(price == "" || isNaN(price)){
+		toastr.error("Unesite cenu(BROJ)");
 	}else{
 		var data2 = JSON.stringify({
 			"name" : name,
@@ -412,12 +420,12 @@ $(document).on('submit','#submitDodajJelo',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}

@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,6 +41,11 @@ public class UserServiceImpl implements UserService {
 	public User findOne(Long id) {
 		
 		return this.userRepository.findOne(id);
+	}
+
+	@Override
+	public ArrayList<User> findByEmail(String email) {
+		return this.userRepository.findByEmail(email);
 	}
 	
 
