@@ -67,6 +67,13 @@ public class GuestController {
 		return new ResponseEntity<Guest>(addedGuest, HttpStatus.OK);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 	 public void sendMail(Guest guest) {
 		 
 		 SimpleMailMessage mail = new SimpleMailMessage();
@@ -187,6 +194,7 @@ public class GuestController {
 	
 	
 		Guest foundedGuest = guestService.findOne(id);
+		
 		
 		return foundedGuest;
 		
