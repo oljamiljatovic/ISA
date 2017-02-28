@@ -270,9 +270,6 @@ public class OrderController {
 				for(int i=0;i<drinks.size();i++){
 					foundedOrder.getDrinks().add(drinks.get(i));
 				}
-				//ako je bilo gotovo pice pa je dodato na porudzbinu
-				//onda vrati na preuzeo_sanker
-				foundedOrder.setBarman_state("preuzeo_sanker");
 			}
 			ArrayList<Meal> meals = new ArrayList<Meal>();
 			if(order.getMeals()!=null && !order.getMeals().isEmpty()){
@@ -284,7 +281,6 @@ public class OrderController {
 				for(int i=0;i<meals.size();i++){
 					foundedOrder.getMeals().add(meals.get(i));
 				}
-				foundedOrder.setCook_state("preuzeo_kuvar");
 			}
 		}
 		Order changedOrder = orderService.update(foundedOrder, id);
@@ -331,7 +327,7 @@ public class OrderController {
 			@RequestBody OrrderHelpClass surrogateOrder) throws Exception {	
 	
 		ArrayList<Drink> drinks = new ArrayList<Drink>();
-		if(surrogateOrder.getDrinks().size()!=0){
+		if(surrogateOrder.getDrinks()!=null && !surrogateOrder.getDrinks().isEmpty()){
 			for(int i=0;i<surrogateOrder.getDrinks().size();i++){
 				String name = surrogateOrder.getDrinks().get(i);
 				Drink drink = drinkService.findByName(name);
@@ -340,7 +336,7 @@ public class OrderController {
 			}
 		}
 		ArrayList<Meal> meals = new ArrayList<Meal>();
-		if(surrogateOrder.getMeals().size()!=0){
+		if(surrogateOrder.getMeals()!=null && !surrogateOrder.getMeals().isEmpty()){
 			for(int i=0;i<surrogateOrder.getMeals().size();i++){
 				String name = surrogateOrder.getMeals().get(i);
 				Meal meal = mealService.findByName(name);
@@ -366,8 +362,9 @@ public class OrderController {
 		order.setTimeOfOrder(datum);
 		order.setDrinks(drinks);
 		order.setMeals(meals);
-		Reservation reservation = reservationService.findOne(surrogateOrder.getReservation());
 		
+		Reservation reservation = reservationService.findOne(surrogateOrder.getReservation());
+	
 		order.setReservation(reservation);
 		//kome pripada reon u kome je sto iz rezervacije
 		/////////////desa
@@ -387,6 +384,19 @@ public class OrderController {
 		}
 		Order addedOrder = orderService.createNew(order);
 		
+
+	
+		
+		/*List<Order> orders = reservation.getOrders();
+		
+		System.out.println("Order lista"+ orders.size());
+	
+		
+		orders.add(addedOrder);
+		reservation.setOrders(orders);
+		Reservation res = reservationService.update(reservation, reservation.getId());
+		System.out.println("Res" + res.getId());*/
+
 		return new ResponseEntity<Order>(addedOrder, HttpStatus.OK);
 	}
 }

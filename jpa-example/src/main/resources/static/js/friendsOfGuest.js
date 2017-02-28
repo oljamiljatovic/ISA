@@ -22,7 +22,7 @@ window.onload = function() {
 		    				"password" : data.password
 		    			}),
 						success : function(friends){
-							alert("Usao kod prijatelja");
+							
 							var table = document.getElementById("tabelaPrijatelji");
 							$('#tabelaPrijatelji').empty();
 							for(var i = 0 ; i < friends.length ; i++){
@@ -179,6 +179,25 @@ document.getElementById('trazi').onchange = function() {
     
 };
 
+$(document).on('click','#restorani',function(e){
+	window.location.href= "restaurants.html";
+	
+});
+
+$(document).on('click','#prijatelji',function(e){
+	window.location.href= "friendsOfGuest.html";
+	
+});
+
+$(document).on('click','#mojNalog',function(e){
+	window.location.href= "userProfile.html";
+	
+});
+
+$(document).on('click','#istorija',function(e){
+	window.location.href= "history.html";
+	
+});
 
 
 ///////////////IZBRISI PRIJATELJA/////////////////////
@@ -332,8 +351,6 @@ function PrekiniZahtjev(){
 function Prihvati(){
 	
     var idFriend = Prihvati.caller.arguments[0].target.id; //njega dodajem
-  	alert("Kod prihvatanja"+ idFriend);
-  	
   	 var substr = idFriend.split("/");
      
      var sender =  substr[0];
@@ -413,12 +430,12 @@ function Prihvati(){
 										url :'/guestController/findById/'+ item.sender.id,
 										dataType : 'json',
 										success : function(guest){
-											alert("nasao onog sto je poslao zahtjev");
+											
 											cell1.innerHTML = guest.name;
 											cell2.innerHTML = guest.surname;
 										},
 									error : function(XMLHttpRequest, textStatus, errorThrown) {
-										alert("GRESKA kod findById");
+										
 										alert("AJAX ERROR: " + errorThrown);
 									}
 									
@@ -456,7 +473,7 @@ function Prihvati(){
 function Odbij(){
 	 
     var idFriend = Odbij.caller.arguments[0].target.id; //njega dodajem
-  	alert("Kod prihvatanja"+ idFriend);
+  	
   	
   	 var substr = idFriend.split("/");
      

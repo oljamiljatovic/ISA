@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.ReservedTables;
 import rs.ac.uns.ftn.informatika.jpa.domain.Restaurant;
+import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.repository.ReservedTablesRepository;
 
 @Service
@@ -34,6 +35,19 @@ public class ReservedTablesServiceImpl implements ReservedTablesService{
 	@Override
 	public ArrayList<ReservedTables> findByRestaurant(Restaurant rest) {
 		return this.reservedTablesRepository.findByIdRestaurant(rest);
+	}
+	
+	@Override
+	public void Delete(ReservedTables entity) {
+		reservedTablesRepository.delete(entity);;
+	}
+
+
+	@Override
+	public ReservedTables findReservedTablesByAll(Restaurant idRestaurant, Tablee idTable, String date, String time,
+			int duration) {
+		
+		return reservedTablesRepository.findReservedTablesByAll(idRestaurant, idTable, date, time, duration);
 	}
 
 }

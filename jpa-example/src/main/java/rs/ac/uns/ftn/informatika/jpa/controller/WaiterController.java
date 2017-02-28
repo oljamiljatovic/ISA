@@ -240,7 +240,7 @@ public class WaiterController {
 		ArrayList<Tablee> temp = new ArrayList<Tablee>();
 	
 		temp = tableService.findByRestaurant(reservation.getIdRestaurant());
-		System.out.println("Pronasao je stolove "+temp.size() );
+		
 		return new ResponseEntity<ArrayList<Tablee>>(temp, HttpStatus.OK);
 	}
 	/*

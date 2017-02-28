@@ -90,7 +90,14 @@ public class MealAndDrinkController {
 			drinks = this.drinkService.getDrinksByRestaurant(providerr.getRestaurant());
 		}
 		
-		return new ResponseEntity<ArrayList<Drink>>(drinks, HttpStatus.OK);
+		ArrayList<Drink> temp = new ArrayList<Drink>();
+		for(int i=0; i<drinks.size(); i++){
+			if(drinks.get(i).isExist()){
+				temp.add(drinks.get(i));
+			}
+		}
+		
+		return new ResponseEntity<ArrayList<Drink>>(temp, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -99,9 +106,7 @@ public class MealAndDrinkController {
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteDrink(@RequestBody Drink drink)  throws Exception {
-		
-		Drink dr = this.drinkService.getDrink(drink.getId());
-		this.drinkService.deleteDrink(dr);
+		this.drinkService.updateDrinkFlag(drink);
 	}
 	
 	@RequestMapping(
@@ -164,7 +169,14 @@ public class MealAndDrinkController {
 			providerr = this.providerService.getProvider(u.getEmail());
 			meals = this.mealService.getMealsByRestaurant(providerr.getRestaurant());
 		}
-		return new ResponseEntity<ArrayList<Meal>>(meals, HttpStatus.OK);
+		
+		ArrayList<Meal> temp = new ArrayList<Meal>();
+		for(int i=0; i<meals.size(); i++){
+			if(meals.get(i).isExist()){
+				temp.add(meals.get(i));
+			}
+		}
+		return new ResponseEntity<ArrayList<Meal>>(temp, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -173,9 +185,7 @@ public class MealAndDrinkController {
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteMeal(@RequestBody Meal meal)  throws Exception {
-		
-		Meal m = this.mealService.getMeal(meal.getId());
-		this.mealService.deleteMeal(m);
+		this.mealService.updateMealFlag(meal);
 	}
 	
 	@RequestMapping(

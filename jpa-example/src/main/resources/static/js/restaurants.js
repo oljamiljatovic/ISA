@@ -6,37 +6,71 @@ window.onload = function() {
 		url :'/registerController/uzmiRestorane',
 		success : function(data){
 
-			//var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			//$.each(list, function(index,restoran){
-				//$('#restoranMenadzera').append('<option value = "' +restoran.id +'" >' + restoran.name + '</option>');
-			
-				
-				var table = document.getElementById("listaRestorana");
+			var table = document.getElementById("listaRestorana");
 				$('#listaRestorana').empty();
 				for(var i = 0 ; i < data.length ; i++){
 					
 					 var item = data[i];
-					// var row = table.insertRow(i);
+					 $('#listaRestorana').append('<img src="rest1.jpg" alt="description here"  height="200" width="200" id = "'+data[i].id+'" onclick="OpenPicture()"/>'+
+						 	'<input type = "button" onclick="OtvoriRestoran()" id ="'+data[i].id+'" value="'+data[i].name+'"> ' +
+						 	'<input type = "button" onclick="PronadjiRestoran()" id ="'+data[i].id+'" value="'+data[i].address+'">');
+					 if(i%3 == 2){
+							$("#listaRestorana").append("<br/><br/><br/><br/>");
+						}
 					 
-					 
-					 $('#listaRestorana').append('<td align="center" valign="center">' +
-					 		'<img src="rest1.jpg" alt="description here"  height="200" width="200"/>' +
-					 		'<br />' +
-					 		'<input type = "button" onclick="OtvoriRestoran()" id ="'+data[i].id+'" value="'+data[i].name+'"> ' +
-					 		'<br /><br />'+
-					 		'<input type = "button" onclick="PronadjiRestoran()" id ="'+data[i].id+'" value="'+data[i].address+'"> '+
-					 		'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' + 
-					 		'</td>')
-					
-				}
-				
+				}	
+		},
+	error : function(XMLHttpRequest, textStatus, errorThrown) {
+		alert("Problem sa pronalazenjem id-ja");
+	}	
+	});//kraj ajax poziva za id
+ 
+};
+
+
+
+
+
+function OpenPicture(){
+	
+	var idGuest = -1;
+	var idRestorana = OpenPicture.caller.arguments[0].target.id;
+	
+	$.ajax({
+		type : 'GET',
+		dataType : 'json',
+		url :'/userController/isValidate',
+		success : function(data){
+			
+			idGuest = data.id;
+		
+		  	$('#listaRestorana').empty();
+		  	  	
+			$('#datum').empty();
+			$('#datum').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
+				'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
+					'<form method="post" id="registracijaSmena">Odaberite datum:<br/><br/>'+
+					'Pocetni datum:<input type = "date" id = "dateStart" class="in-text"/><br/<br/><br/>'+
+					'Vrijeme:<input type = "time" id = "timeStart" class="in-text"/><br/<br/><br/>'+
+					'<input type="hidden" id="idRest" value='+idRestorana+'>'+
+					'<input type="hidden" id="idGuest" value='+idGuest+'>'+
+					'Duzina boravka:<select id="radneSmene"><option value="1">1</option>'+
+					'<option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>'+
+					'<br/><br/><input type = "submit" id = "submitSmene" value="Submit" class="btn orange">'+
+					'</form></div></div></div></div>');
+			
+		
 			
 		},
 	error : function(XMLHttpRequest, textStatus, errorThrown) {
 		alert("Problem sa pronalazenjem id-ja");
 	}	
 	});//kraj ajax poziva za id
-};
+	
+
+
+}
+
 
 function OtvoriRestoran(){
 	
@@ -65,9 +99,7 @@ function OtvoriRestoran(){
 					'<option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>'+
 					'<br/><br/><input type = "submit" id = "submitSmene" value="Submit" class="btn orange">'+
 					'</form></div></div></div></div>');
-			
-		
-			
+				
 		},
 	error : function(XMLHttpRequest, textStatus, errorThrown) {
 		alert("Problem sa pronalazenjem id-ja");
@@ -117,7 +149,8 @@ $(document).on('click','#submitSmene', function(e){
 			"idRestaurant" : obj2,
 			"date" : dateStart,
 			"time" : timeStart,
-			"duration" : parseInt(smene)
+			"duration" : parseInt(smene),
+			"flag" : "aktivna",
 		});
 		$.ajax({
 			type: 'POST',
@@ -126,7 +159,7 @@ $(document).on('click','#submitSmene', function(e){
 			url : '/waiterController/getTablesForReservation',
 			data : data2,
 			success : function(tables){
-				//alert("datestart"+dateStart);
+				
 				$("#content").empty();
 				$("#content").append("<br/>");
 				$("#content").append("<br/>")
@@ -134,7 +167,7 @@ $(document).on('click','#submitSmene', function(e){
 				var  x= numberTable/5;
 				var iter = 0;
 				var iterNum = parseInt(x, 10);
-				//alert("idGuest" + idGuest);
+				
 				for(var j= 0; j<tables.length; j++){
 					
 					$("#content").append('<input type = "button" name= "'+idGuest+"/"+idRestorana+"/"+dateStart+"/"+timeStart+"/"+smene+'" class="btn green" style="height:50px;width:90px"  onclick="OdabranSto()"'+ 
@@ -211,10 +244,6 @@ function OdabranSto(){
    var timeStart = obj[3];
    var trajanje = obj[4];
 
-   alert("id " + idGuest);
-   alert("id " + idRestorana);
-   alert("Odabran sto je "+ idStola + "datestar"+dateStart);
-
    var restaurant = JSON.stringify({
 		"id" : idRestorana,
 		"name" : "",
@@ -237,9 +266,9 @@ function OdabranSto(){
 			"idRestaurant" : obj2,
 			"date" : dateStart,
 			"time" : timeStart,
-			"duration" : parseInt(trajanje)
+			"duration" : parseInt(trajanje),
+			"flag" : "aktivna",
 		});
-   
    
    
 			$.ajax({
@@ -251,6 +280,12 @@ function OdabranSto(){
    			success : function(reservation){
    			
    			$("#dugmee").empty();
+   			
+   			document.getElementById(idStola).disabled="true";
+			document.getElementById(idStola).value="Zauzet";
+			document.getElementById(idStola).className="btn red";
+   			
+   			
    			$("#dugmee").append('<br/><br/><input type="button"  style="height:50px;width:90px" id="'+reservation.id+'"  onclick="PotvrdiStolove()" class="btn orange" value="Potvrdi">');
 			
    			},
@@ -308,7 +343,7 @@ function PotvrdiStolove(){
    			var row1cell1 = row1.insertCell(0);
 			 var row1cell2 = row1.insertCell(1);
 			 row1cell1.innerHTML =  '<input type = "button" name="'+idRezervacije+'" class="btn green" onclick="OdabirNarudzbineSendera()" id ="Nastavi" value="Nastavi"></td> ';;
-			 row1cell2.innerHTML =  '<input type = "button"  class="btn green" onclick="OdustaniOdPozivaPrijatelja()" value="Odustani"></td> ';
+			 row1cell2.innerHTML =  '<input type = "button" name="'+idRezervacije+'" class="btn green" onclick="OdustaniOdPozivaPrijatelja()" value="Odustani"></td> ';
 			 
    			
    			},
@@ -336,10 +371,10 @@ function PozoviPrijateljaNaVeceru(){
    			data: idRezervacije,
    			success : function(friend){
    			
-   			alert("Vratio prijatelje");
+   			alert("Poslao zahtjev!");
    			var table = document.getElementById(friend.id).className="btn red";
    			var table = document.getElementById(friend.id).value="Poslat";
-   			var table = document.getElementById(friend.id).disabled="false";
+   			var table = document.getElementById(friend.id).disabled="true";
    			
    		
    			},
@@ -354,8 +389,8 @@ function PozoviPrijateljaNaVeceru(){
 
 
 function OdustaniOdPozivaPrijatelja(){
-	 
-	window.location.href= "narudzbinaSendera.html";
+	var idRezervacije = OdustaniOdPozivaPrijatelja.caller.arguments[0].target.name;
+	window.location.href= "narudzbinaSendera.html?idReservation="+idRezervacije;
 		
 }
 
@@ -370,4 +405,22 @@ function OdabirNarudzbineSendera(){
 
 
 
+$(document).on('click','#restorani',function(e){
+	window.location.href= "restaurants.html";
+	
+});
 
+$(document).on('click','#prijatelji',function(e){
+	window.location.href= "friendsOfGuest.html";
+	
+});
+
+$(document).on('click','#mojNalog',function(e){
+	window.location.href= "userProfile.html";
+	
+});
+
+$(document).on('click','#istorija',function(e){
+	window.location.href= "history.html";
+	
+});

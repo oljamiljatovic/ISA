@@ -1,3 +1,4 @@
+
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class ScheduleAndReonController {
 		this.reonService.createReon(reon);
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee table = new Tablee(reon,r);
+			Tablee table = new Tablee(reon,r,true);
 			this.tableService.createTable(table);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
@@ -145,7 +146,7 @@ public class ScheduleAndReonController {
 		}
 		
 		for(int i=0; i<reon.getNumberTable(); i++){
-			Tablee tablee = new Tablee(reon,r);
+			Tablee tablee = new Tablee(reon,r,true);
 			this.tableService.createTable(tablee);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);
@@ -276,6 +277,7 @@ public class ScheduleAndReonController {
 		this.assignReonService.delete(r.getId());
 	}
 	
+	
 	@RequestMapping(
 			value = "/izbrisiSto",
 			method = RequestMethod.POST,
@@ -283,7 +285,14 @@ public class ScheduleAndReonController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteSto(@RequestBody Tablee t)  throws Exception {
 		
-		this.tableService.delete(t.getId());
+		//this.tableService.delete(t.getId());
+		this.tableService.updateTableFlag(t);
+		
+		Tablee tab = this.tableService.findById(t.getId());
+		Reon reon = tab.getReon();
+		int number = reon.getNumberTable();
+		reon.setNumberTable(number-1);
+		this.reonService.update(reon);
 	}
 	
 	
@@ -309,7 +318,7 @@ public class ScheduleAndReonController {
 		this.reonService.update(reon);
 		
 		for(int i=0; i<number; i++){
-			Tablee tablee = new Tablee(reon,r);
+			Tablee tablee = new Tablee(reon,r,true);
 			this.tableService.createTable(tablee);
 		}
 		return new ResponseEntity<Reon>(reon, HttpStatus.OK);

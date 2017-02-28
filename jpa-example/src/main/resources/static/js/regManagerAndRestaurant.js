@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 	$.ajax({
 		type: 'GET',
@@ -8,7 +9,7 @@ $(document).ready(function(){
 				$('#registrMenadzSis').empty();
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -40,7 +41,7 @@ $(document).on('click','#registrMenadz',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -77,15 +78,17 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 	});
 	
 	if(name == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(surname == ""){
-		alert("Prezime je prazno");
+		toastr.error("Prezime je prazno");
 	}else if(address == ""){
-		alert("Adresa je prazna");
+		toastr.error("Adresa je prazna");
 	}else if(email == ""){
-		alert("Email je prazan");
+		toastr.error("Email je prazan");
 	}else if(contact == ""){
-		alert("Kontakt je prazan");
+		toastr.error("Kontakt je prazan");
+	}else if(password == ""){
+		toastr.error("Lozinka je prazna");
 	}else{
 		$.ajax({
 			type : 'POST',
@@ -94,12 +97,12 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 			dataType : 'json',
 			data : dataa,
 			success : function(data){
-				alert(data.id);
 				window.location.reload();
+				toastr.info('Dodat je menadzer restorana');
 			},
 
-			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+			error : function(XMLHttpRequest, textStatus, errorThrown) { 
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -118,6 +121,8 @@ $(document).on('click','#registrRest',function(e){
 			'Vrsta restorana:<input type = "text" id = "vrstaRestorana" class="in-text"/><br/>'+
 			'Adresa:<input type = "text" id = "adresaRestorana" class="in-text"/><br/>'+
 			'Kontakt:<input type = "text" id = "kontaktRestorana" class="in-text"/><br/>'+
+			'Geografska sirina:<input type = "text" id = "sirinaRestorana" class="in-text"/><br/>'+
+			'Geografska duzina:<input type = "text" id = "duzinaRestorana" class="in-text"/><br/>'+
 			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 });
@@ -128,19 +133,25 @@ $(document).on('submit','#registracijaRestorana',function(e){
 	var address = $('#adresaRestorana').val();
 	var contact = $('#kontaktRestorana').val();
 	var type = $('#vrstaRestorana').val();
+	var sirina = $('#sirinaRestorana').val();
+	var duzina = $('#duzinaRestorana').val();
 	if(name == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(address == ""){
-		alert("Adresa je prazna");
+		toastr.error("Adresa je prazna");
 	}else if(contact == ""){
-		alert("Kontakt je prazno");
+		toastr.error("Kontakt je prazno");
+	}else if(type == ""){
+		toastr.error("Tip je prazan");
 	}else{
 		
 		var data2 = JSON.stringify({
 			"name" : name,
 			"type" : type,
 			"address" : address,
-			"contact" : contact
+			"contact" : contact,
+			"width" : sirina,
+			"height" : duzina
 		});
 		$.ajax({
 			type : 'POST',
@@ -149,12 +160,12 @@ $(document).on('submit','#registracijaRestorana',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
 				window.location.reload();
+				toastr.info('Uspesno dodavanje restorana!');
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -200,15 +211,17 @@ $(document).on('submit','#registracijaMenadzeraSistema',function(e){
 	});
 	
 	if(name == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(surname == ""){
-		alert("Prezime je prazno");
+		toastr.error("Prezime je prazno");
 	}else if(address == ""){
-		alert("Adresa je prazna");
+		toastr.error("Adresa je prazna");
 	}else if(email == ""){
-		alert("Email je prazan");
+		toastr.error("Email je prazan");
 	}else if(contact == ""){
-		alert("Kontakt je prazan");
+		toastr.error("Kontakt je prazan");
+	}else if(password == ""){
+		toastr.error("Lozinka je prazna");
 	}else{
 		$.ajax({
 			type : 'POST',
@@ -217,11 +230,11 @@ $(document).on('submit','#registracijaMenadzeraSistema',function(e){
 			dataType : 'json',
 			data : dataa,
 			success : function(data){
-				alert(data.id);
 				window.location.reload();
+				toastr.info('Uspesno dodavanje menadzera sistema');
 			},
 
-			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			error : function(XMLHttpRequest, textStatus, errorThrown) { 
 				alert("AJAX ERROR: " + errorThrown);
 			}
 		});
@@ -241,7 +254,7 @@ $(document).on('click', '#dugmeOdjava', function(e) {
 			window.location.href= "index.html";
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("billOrders: " + errorThrown);
+			toastr.error( errorThrown);
 		}	
 	});
 });

@@ -35,16 +35,22 @@ public class Restaurant implements Serializable{
 	private String address;
 	@Column(nullable=true)
 	private String contact;
+	@Column(nullable=true)
+	private float width;
+	@Column(nullable=true)
+	private float height;
 	
 	public Restaurant(){
 		
 	}
 	
-	public Restaurant(String name, String type, String address, String contact){
+	public Restaurant(String name, String type, String address, String contact, float width, float height){
 		this.name = name;
 		this.type = type;
 		this.address = address;
 		this.contact = contact;
+		this.width = width;
+		this.height = height;
 	}
 
 
@@ -89,6 +95,22 @@ public class Restaurant implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
 	}
 	
 }

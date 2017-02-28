@@ -46,7 +46,8 @@ $(document).on('submit','#formIzbrisiPice',function(e){
 		"name" : name,
 		"price" : price,
 		"restaurant" : restaurant,
-		"description" : description
+		"description" : description,
+		"exist" : false
 	});
 	$.ajax({
 		type : 'POST',
@@ -130,7 +131,8 @@ $(document).on('submit','#submitIzmenaPica',function(e){
 			"name" : name,
 			"price" : price,
 			"restaurant" : obj,
-			"description" : description
+			"description" : description,
+			"exist" : true
 		});
 		$.ajax({
 			type : 'POST',
@@ -186,7 +188,8 @@ $(document).on('submit','#submitDodajPice',function(e){
 			"name" : name,
 			"price" : price,
 			"restaurant" : restoran,
-			"description" : opis
+			"description" : opis,
+			"exist" : true
 		});
 		$.ajax({
 			type : 'POST',
@@ -259,7 +262,8 @@ $(document).on('submit','#formIzbrisiJelo',function(e){
 		"name" : name,
 		"price" : price,
 		"restaurant" : restaurant,
-		"description" : description
+		"description" : description,
+		"exist" : false
 	});
 	$.ajax({
 		type : 'POST',
@@ -340,7 +344,8 @@ $(document).on('submit','#submitIzmenaJelo',function(e){
 			"name" : name,
 			"price" : price,
 			"restaurant" : obj,
-			"description" : description
+			"description" : description,
+			"exist" : true
 		});
 		
 		//var data = JSON.parse(data2)
@@ -397,7 +402,8 @@ $(document).on('submit','#submitDodajJelo',function(e){
 			"name" : name,
 			"price" : price,
 			"restaurant" : null,
-			"description" : opis
+			"description" : opis,
+			"exist" : true
 		});
 		$.ajax({
 			type : 'POST',

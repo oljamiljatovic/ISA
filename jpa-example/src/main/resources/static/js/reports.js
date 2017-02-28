@@ -2,7 +2,6 @@ $(document).on('click','#prihodRestorana',function(e){
 	e.preventDefault();
 	
 	$('#content').empty();
-	$('#mica_mapa').empty();
 	$('#ubaci_mapu').empty();
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 		'<div class="login-page wrapper centered centered-block">'+ 
@@ -360,3 +359,135 @@ $(document).on('click','#ocenaRestoran',function(e){
 		}	
 	});
 });
+
+
+$(document).on('click','#ocenaJela',function(e){
+	e.preventDefault();
+	
+	$('#content').empty();
+	$('#ubaci_mapu').empty();
+	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
+		'<div class="login-page wrapper centered centered-block">'+ 
+		'<div class = "form-group"><form method="post" id="ocenaObrok">'+
+		'Ocena jela<br/><br/>'+
+		'Izaberi jelo:<select id="food"> </select><br/><br/><br/>'+
+		'Ocena:<input type = "text" id = "ocenaJelo" class="in-text" readonly="true" /><br/>'+
+		'<input type = "submit" value="Submit" class="btn orange">'+
+		'</form></div></div></div></div>');
+	
+	
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/mealAndDrinkController/uzmiObroke',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,jelo){
+				$('#food').append('<option value = "'+jelo.id+'" >'+jelo.name + '</option>');
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});
+
+
+$(document).on('submit','#ocenaObrok',function(e){
+	e.preventDefault();
+	
+
+	var id = $('#food option:selected').val();
+	var data = JSON.stringify({
+		"id" : id,
+		"name" : "",
+		"description" : "",
+		"price" : 0,
+		"restaurant" : null,
+		"exist" : true
+	});
+	
+	$.ajax({
+		type: 'POST',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: data,
+		url : '/ratingAllController/takeMarksForMeal',
+		success : function(data){
+			$('#ocenaJelo').val(data);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});
+
+
+
+$(document).on('click','#ocenaKonobara',function(e){
+	e.preventDefault();
+	
+	$('#content').empty();
+	$('#ubaci_mapu').empty();
+	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
+		'<div class="login-page wrapper centered centered-block">'+ 
+		'<div class = "form-group"><form method="post" id="submitOcenaKonobar">'+
+		'Ocena jela<br/><br/>'+
+		'Izaberi jelo:<select id="waiter"> </select><br/><br/><br/>'+
+		'Ocena:<input type = "text" id = "ocenaKonobar" class="in-text" readonly="true" /><br/>'+
+		'<input type = "submit" value="Submit" class="btn orange">'+
+		'</form></div></div></div></div>');
+	
+	
+	$.ajax({
+		type: 'GET',
+		dataType: 'json',
+		url : '/getWaitersOfRestaurant',
+		success : function(data){
+			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			$.each(list, function(index,waiter){
+				$('#waiter').append('<option value = "'+waiter.id+'" >'+waiter.name + '</option>');
+			});
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});
+
+
+$(document).on('submit','#submitOcenaKonobar',function(e){
+	e.preventDefault();
+	
+
+	var id = $('#waiter option:selected').val();
+	var data = JSON.stringify({
+		"id" : id,
+		"role" : "",
+		"name" : "",
+		"surname" : "",
+		"dateBirth" : "",
+		"confNumber" : "",
+		"shoeNumber" : "",
+		"restaurant" : null,
+		"email" : "",
+		"accept" : "",
+		"password" : "",
+		"firstLog" : "true"
+	});
+	
+	$.ajax({
+		type: 'POST',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: data,
+		url : '/ratingAllController/takeMarksForService',
+		success : function(data){
+			$('#ocenaKonobar').val(data);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Admin ERROR: " + errorThrown);
+		}	
+	});
+});
+

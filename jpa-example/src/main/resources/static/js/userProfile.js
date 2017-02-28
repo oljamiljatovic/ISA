@@ -109,9 +109,6 @@ window.onload = function() {
             			}),
             			success : function(data){
             				
-            				alert("Uspjesno izvrsena promjena");
-            				
-            			
             			},
 
             			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -173,3 +170,25 @@ window.onload = function() {
     
     
 };
+
+
+
+$(document).on('click','#restorani',function(e){
+	window.location.href= "restaurants.html";
+	
+});
+
+$(document).on('click','#prijatelji',function(e){
+	window.location.href= "friendsOfGuest.html";
+	
+});
+
+$(document).on('click','#mojNalog',function(e){
+	window.location.href= "userProfile.html";
+	
+});
+
+$(document).on('click','#istorija',function(e){
+	window.location.href= "history.html";
+	
+});

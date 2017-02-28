@@ -74,12 +74,25 @@ public class ProviderController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Offer>> uzmiSvePonude()  throws Exception {
 		
-		ArrayList<Offer> offers = this.offerService.getOffers();
+		ArrayList<Offer> po = this.offerService.getOffers();
+		ArrayList<Offer> temp = new ArrayList<Offer>();
 		
-		return new ResponseEntity<ArrayList<Offer>>(offers, HttpStatus.OK);
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date todayDate = dateFormatter.parse(dateFormatter.format(new Date()));
+		
+		for(int i=0; i<po.size(); i++){
+			Offer offer = this.offerService.getOffer(po.get(i).getId());
+			String datum = offer.getEndDate();
+			
+			Date compare = dateFormatter.parse(datum);
+			if(compare.after(todayDate))
+				temp.add(po.get(i));	
+		}
+		
+		return new ResponseEntity<ArrayList<Offer>>(temp, HttpStatus.OK);
 	}
 	@RequestMapping(
-			value = "/uzmiSveAktuelnePonude",
+			value = "/uzmiSveAktuelnePonudeRestorana",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Offer>> uzmiSveAktuelnePonude()  throws Exception {
@@ -92,9 +105,21 @@ public class ProviderController {
 		if(u.getRole().equals("restaurantManager")){
 			rm= this.managerService.getManager(u.getEmail());
 		}
-		ArrayList<Offer> offers = this.offerService.getOffersByRestaurant(rm.getRestaurant());
+		ArrayList<Offer> po = this.offerService.getOffersByRestaurant(rm.getRestaurant());
+		ArrayList<Offer> temp = new ArrayList<Offer>();
 		
-		return new ResponseEntity<ArrayList<Offer>>(offers, HttpStatus.OK);
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date todayDate = dateFormatter.parse(dateFormatter.format(new Date()));
+		
+		for(int i=0; i<po.size(); i++){
+			Offer offer = this.offerService.getOffer(po.get(i).getId());
+			String datum = offer.getEndDate();
+			
+			Date compare = dateFormatter.parse(datum);
+			if(compare.after(todayDate))
+				temp.add(po.get(i));	
+		}
+		return new ResponseEntity<ArrayList<Offer>>(temp, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -105,7 +130,6 @@ public class ProviderController {
 	public ResponseEntity<Offer> uzmiPonudu(@RequestBody Offer offer)  throws Exception {
 		
 		Offer offerr = this.offerService.getOffer(offer.getId());
-		
 		return new ResponseEntity<Offer>(offerr, HttpStatus.OK);
 	}
 	
@@ -126,9 +150,7 @@ public class ProviderController {
 		po.setOffer(of);
 		po.setProvider(provider);
 		po.setRestaurant(provider.getRestaurant());
-		
 		this.purchaseService.addPurchaseOrder(po);
-		
 		return new ResponseEntity<PurchaseOrder>(po, HttpStatus.OK);
 	}
 	
@@ -150,7 +172,6 @@ public class ProviderController {
 		po.setProvider(provider);
 		po.setRestaurant(provider.getRestaurant());
 		PurchaseOrder purch = this.purchaseService.getPurchaseOrderByOfferAndProvider(po);
-		
 		return new ResponseEntity<PurchaseOrder>(purch, HttpStatus.OK);
 	}
 	
@@ -160,8 +181,7 @@ public class ProviderController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PurchaseOrder> izmeniPorudzbenicu(@RequestBody PurchaseOrder po)  throws Exception {
-		
-
+	
 		ServletRequestAttributes attr = (ServletRequestAttributes) 
 			    RequestContextHolder.currentRequestAttributes();
 		HttpSession session= attr.getRequest().getSession(true);
@@ -181,8 +201,6 @@ public class ProviderController {
 			this.offerService.updateFlag(true, of.getId());
 			po.setOffer(of);
 			ArrayList<PurchaseOrder> por = this.purchaseService.getPurchaseOrderByOffer(of);
-			
-			
 			for(int i=0; i<por.size(); i++){
 				this.purchaseService.updateFlag(po.getFlag(), por.get(i).getId());
 			}
@@ -213,10 +231,8 @@ public class ProviderController {
 			
 			Date compare = dateFormatter.parse(datum);
 			if(compare.after(todayDate))
-				temp.add(po.get(i));
-				
+				temp.add(po.get(i));	
 		}
-		
 		return new ResponseEntity<ArrayList<PurchaseOrder>>(temp, HttpStatus.OK);
 	}
 	
@@ -243,7 +259,6 @@ public class ProviderController {
 	public ResponseEntity<PurchaseOrder> updateSeen(@RequestBody PurchaseOrder po)  throws Exception {
 		
 		this.purchaseService.updatePurchaseOrderSeen(true, po.getId());
-		
 		return new ResponseEntity<PurchaseOrder>(po, HttpStatus.OK);
 	}
 }

@@ -56,4 +56,10 @@ public class TableServiceImpl implements TableService {
 	public Tablee findById(Long id) {
 		return tableRepository.findOne(id);
 	}
+
+
+	@Override
+	public void updateTableFlag(Tablee table) {
+		this.tableRepository.updateTableFlag(table.isExist(), table.getId());
+	}
 }

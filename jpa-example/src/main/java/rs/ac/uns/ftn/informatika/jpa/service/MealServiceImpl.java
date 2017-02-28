@@ -47,6 +47,12 @@ public class MealServiceImpl implements MealService {
 	public Meal findByName(String name) {
 		return this.mealRepository.findByName(name);
 	}
+
+	@Override
+	public void updateMealFlag(Meal meal) {
+		this.mealRepository.updateMealFlag(meal.isExist(), meal.getId());
+		
+	}
 	
 
 }
