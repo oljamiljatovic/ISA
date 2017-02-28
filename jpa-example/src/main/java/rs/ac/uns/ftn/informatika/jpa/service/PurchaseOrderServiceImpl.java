@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.Offer;
@@ -14,7 +15,7 @@ import rs.ac.uns.ftn.informatika.jpa.repository.PurchaseOrderRepository;
 
 
 @Service
-@Transactional
+@Transactional(isolation=Isolation.SERIALIZABLE)
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
 	@Autowired

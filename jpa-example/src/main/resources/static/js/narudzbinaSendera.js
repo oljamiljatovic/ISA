@@ -110,7 +110,7 @@ function KreirajPorudzbinu(){
 	var listOfDrinkss = [];
 	var timeOfOrder = new Date().getTime();
 
-	alert("rese id "+ idReservation +" desk" +desk + "drinks" + drinks.length+ "meals"+ meals.length);
+	//alert("rese id "+ idReservation +" desk" +desk + "drinks" + drinks.length+ "meals"+ meals.length);
 
 	$.ajax({
 		type : 'PUT',

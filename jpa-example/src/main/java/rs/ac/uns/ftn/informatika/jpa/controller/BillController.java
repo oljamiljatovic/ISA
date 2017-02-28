@@ -99,17 +99,38 @@ public class BillController {
 		
 		//dodala Olja
 		Reservation reservationToChange = changedOrder.getReservation();
+		System.out.println("restaurant "+reservationToChange.getIdRestaurant());
+		System.out.println("reservisani sto 0"+reservationToChange.getReservedTables().get(0));
+		System.out.println("date "+reservationToChange.getDate());
+		System.out.println("time "+reservationToChange.getTime());
+		System.out.println("duration "+reservationToChange.getDuration());
 		
 		for(int i = 0; i<reservationToChange.getReservedTables().size(); i++){ //Tablee
 			
 			
-			ReservedTables temp = reservedTablesService.findReservedTablesByAll(reservationToChange.getIdRestaurant(), reservationToChange.getReservedTables().get(i), reservationToChange.getDate(), reservationToChange.getTime(), reservationToChange.getDuration());
+			ReservedTables temp = reservedTablesService.findReservedTablesByAll(reservationToChange.getIdRestaurant(),
+					reservationToChange.getReservedTables().get(i), reservationToChange.getDate(), reservationToChange.getTime(), reservationToChange.getDuration());
+			if(temp!=null){
+				reservedTablesService.Delete(temp);
+				System.out.println("sto za brisanje "+temp.getId());
+			}
 			
-			reservedTablesService.Delete(temp);
 		}
 		
-		
-		reservationToChange.setFlag("neaktivna");
+		ArrayList<Order> orders = orderService.findByReservation(reservationToChange);
+		System.out.println("orders size "+orders.size());
+		boolean kraj = true;
+		for(int i=0;i<orders.size();i++){
+			Order order = orders.get(i);
+			if(!order.getBarman_state().equals("kraj") && !order.getBarman_state().equals("kraj")){
+				kraj = false;
+				System.out.println("nije krajjj");
+				break;
+			}
+		}
+		if(kraj){
+			reservationToChange.setFlag("neaktivna");
+		}
 		reservationService.update(reservationToChange, reservationToChange.getId());
 		
 		return new ResponseEntity<Bill>(addedBill, HttpStatus.OK);

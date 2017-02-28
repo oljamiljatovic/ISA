@@ -17,6 +17,8 @@ public interface ReservationRepository extends PagingAndSortingRepository<Reserv
 	ArrayList<Reservation> findByIdGuest(Guest idGuest);
 	
 	ArrayList<Reservation> findByIdRestaurantAndDate(Restaurant idRestaurant, String date);
+	
+	ArrayList<Reservation> findByIdRestaurantAndDateAndFlag(Restaurant idRestaurant, String date, String flag);
    
 	ArrayList<Reservation> findByAcceptedFriends_Id(Long id);
 }

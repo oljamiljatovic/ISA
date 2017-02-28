@@ -22,6 +22,7 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.SystemManager;
 import rs.ac.uns.ftn.informatika.jpa.service.ManagerService;
 import rs.ac.uns.ftn.informatika.jpa.service.RestaurantService;
 import rs.ac.uns.ftn.informatika.jpa.service.SystemManagerService;
+import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 
 @Controller
 @RequestMapping("/registerController")
@@ -33,6 +34,9 @@ public class SystemManagerController {
 	private RestaurantService restaurantService;
 	@Autowired
 	private SystemManagerService smService;
+	@Autowired
+	private UserService userService;
+	
 	
 	@RequestMapping(
 			value = "/registerManager",
@@ -41,9 +45,13 @@ public class SystemManagerController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RestaurantManager> addManager(@RequestBody RestaurantManager manag)  
 			throws Exception {
-		Restaurant rest = this.restaurantService.getRestaurant(manag.getRestaurant().getId());
-		manag.setRestaurant(rest);
-		this.managerService.addManager(manag);
+		ArrayList<User> users = this.userService.findByEmail(manag.getEmail());
+		if(users.size()==0){
+			Restaurant rest = this.restaurantService.getRestaurant(manag.getRestaurant().getId());
+			manag.setRestaurant(rest);
+			this.managerService.addManager(manag);
+		}else
+			manag = null;
 		return new ResponseEntity<RestaurantManager>(manag, HttpStatus.OK);
 	}
 	
@@ -54,7 +62,12 @@ public class SystemManagerController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SystemManager> addManagerSis(@RequestBody SystemManager manag)  
 			throws Exception {
-		this.smService.addManager(manag);
+
+		ArrayList<User> users = this.userService.findByEmail(manag.getEmail());
+		if(users.size()==0){
+			this.smService.addManager(manag);
+		}else
+			manag = null;
 		return new ResponseEntity<SystemManager>(manag, HttpStatus.OK);
 	}
 	

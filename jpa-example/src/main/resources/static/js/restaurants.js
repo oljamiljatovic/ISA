@@ -28,7 +28,43 @@ window.onload = function() {
 };
 
 
+function PronadjiRestoran(){
 
+	var idRestorana = PronadjiRestoran.caller.arguments[0].target.id;
+	
+	$.ajax({
+		type : 'GET',
+		url :  '/restaurantManagerController/getRestaurant/'+idRestorana,
+		contentType : 'application/json',
+		dataType :'json',
+		success : function(data){
+
+			$('#listaRestorana').empty();
+			$('#datum').empty();
+			$('#dugmici').empty();
+			$('#content').empty();
+			$('#content').append('<div id="mica_mapa"></div>');
+			var dok = document.getElementById('mica_mapa');
+			//var uluru = {lat: 45.239630, lng: 19.840992};
+			var uluru = {lat: data.width, lng: data.height};
+			var map = new google.maps.Map(document.getElementById('mica_mapa'), {
+		        center: uluru,
+		        zoom: 8
+		      });
+			
+			var marker = new google.maps.Marker({
+		        position: uluru,
+		        map: map
+		      });
+			
+		    $('#ubaci_mapu').append(map);
+		},
+
+		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+			alert("Reservations restaurant ERROR: " + errorThrown);
+		}
+	});
+}
 
 
 function OpenPicture(){

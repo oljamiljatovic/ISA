@@ -1,6 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.repository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +18,5 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>{
 	@Query("update User set password = ? where id = ? ")
 	public void updateUser(String password, Long id);
    
-    
+    public ArrayList<User> findByEmail(String email);
 }

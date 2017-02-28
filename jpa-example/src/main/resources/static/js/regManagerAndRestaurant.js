@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 	$.ajax({
 		type: 'GET',
@@ -20,14 +19,14 @@ $(document).on('click','#registrMenadz',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap">'+
 			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 				'<form method="post" id="registracijaMenadzera">'+
-					'Podaci o menadzeru:<br/><br/>'+
+					'Podaci o menadzeru restorana:<br/><br/>'+
 					'Ime:<input type = "text" id = "imeMenadzera" class="in-text"/><br/>'+
 					'Prezime:<input type = "text" id = "prezimeMenadzera" class="in-text"/><br/>'+
 					'Adresa:<input type = "text" id = "adresaMenadzera" class="in-text"/><br/>'+
 					'Email:<input type = "text" id = "emailMenadzera" class="in-text"/><br/>'+
 					'Kontakt:<input type = "text" id = "kontaktMenadzera" class="in-text"/><br/>'+
-					'Lozinka:<input type = "password" id = "lozinkaMenadzera" class="in-text"/><br/>'+
-					'Izaberi restoran:<select id="restoranMenadzera"> </select><br/>'+
+					'Lozinka:<input type = "password" id = "lozinkaMenadzera" class="in-pass"/><br/>'+
+					'Izaberi restoran:&nbsp&nbsp&nbsp<select id="restoranMenadzera"> </select><br/><br/>'+
 					'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
 					'</form></div></div></div>');
 	$.ajax({
@@ -97,8 +96,13 @@ $(document).on('submit','#registracijaMenadzera',function(e){
 			dataType : 'json',
 			data : dataa,
 			success : function(data){
+				if(data!=null)
+					toastr.info('Dodat je menadzer restorana');
+				else
+					toastr.info('Postoji korisik sa istim korisnickim imenom');
+				
+
 				window.location.reload();
-				toastr.info('Dodat je menadzer restorana');
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -122,7 +126,7 @@ $(document).on('click','#registrRest',function(e){
 			'Adresa:<input type = "text" id = "adresaRestorana" class="in-text"/><br/>'+
 			'Kontakt:<input type = "text" id = "kontaktRestorana" class="in-text"/><br/>'+
 			'Geografska sirina:<input type = "text" id = "sirinaRestorana" class="in-text"/><br/>'+
-			'Geografska duzina:<input type = "text" id = "duzinaRestorana" class="in-text"/><br/>'+
+			'Geografska duzina:<input type = "text" id = "duzinaRestorana" class="in-text"/><br/><br/>'+
 			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 });
@@ -143,6 +147,10 @@ $(document).on('submit','#registracijaRestorana',function(e){
 		toastr.error("Kontakt je prazno");
 	}else if(type == ""){
 		toastr.error("Tip je prazan");
+	}else if(sirina == "" || isNaN(sirina)){
+		toastr.error("Unesite geografski sirinu, koja mora biti broj");
+	}else if(duzina == "" || isNaN(duzina)){
+		toastr.error("Unesite geografski duzinu, koja mora biti broj");
 	}else{
 		
 		var data2 = JSON.stringify({
@@ -178,13 +186,13 @@ $(document).on('click','#registrMenadzSis',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap">'+
 			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 				'<form method="post" id="registracijaMenadzeraSistema">'+
-					'Podaci o menadzeru:<br/><br/>'+
+					'Podaci o menadzeru sistema:<br/><br/>'+
 					'Ime:<input type = "text" id = "imeMenadzera" class="in-text"/><br/>'+
 					'Prezime:<input type = "text" id = "prezimeMenadzera" class="in-text"/><br/>'+
 					'Adresa:<input type = "text" id = "adresaMenadzera" class="in-text"/><br/>'+
 					'Email:<input type = "text" id = "emailMenadzera" class="in-text"/><br/>'+
 					'Kontakt:<input type = "text" id = "kontaktMenadzera" class="in-text"/><br/>'+
-					'Lozinka:<input type = "password" id = "lozinkaMenadzera" class="in-text"/><br/>'+
+					'Lozinka:<input type = "password" id = "lozinkaMenadzera" class="in-pass"/><br/><br/>'+
 					'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
 					'</form></div></div></div>');
 });
@@ -231,7 +239,10 @@ $(document).on('submit','#registracijaMenadzeraSistema',function(e){
 			data : dataa,
 			success : function(data){
 				window.location.reload();
-				toastr.info('Uspesno dodavanje menadzera sistema');
+				if(data!=null)
+					toastr.info('Uspesno dodavanje menadzera sistema');
+				else
+					toastr.error('Greska kod dodavanja');
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { 

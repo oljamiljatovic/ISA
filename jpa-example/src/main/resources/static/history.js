@@ -30,7 +30,7 @@ function showHistory(){
 		dataType :'json',
 		success : function(data){
 			  var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-			  $("#content").append('<p><b>Moje posjete</b></p>');
+			  $("#content").append('<br/><br/><p><b>Moje posjete</b></p><br/>');
 			  $("#content").append("<table id='reservation'>");
 		      $("#content").append("<thead>");
 		      $("#content").append("<tr>");

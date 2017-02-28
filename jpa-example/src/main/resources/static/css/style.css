@@ -2239,7 +2239,7 @@ footer {
     width: 322px;
     margin: 20px auto 20px auto;
     padding: 10px;
-    background: #e86830;
+    background:  #1f1424;
     overflow: hidden;
     padding: 15px;
     -webkit-border-radius: 5px;
@@ -2247,7 +2247,7 @@ footer {
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
-    border: solid 10px #ef7845; }
+    border: solid 10px #281f32; }
     .centered-content-wrap .centered-block ul li {
       margin-bottom: 15px; }
       .centered-content-wrap .centered-block ul li .link {
