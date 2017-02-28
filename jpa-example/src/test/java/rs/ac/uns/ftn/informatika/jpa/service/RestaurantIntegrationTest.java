@@ -23,7 +23,7 @@ public class RestaurantIntegrationTest {
 	@Test
 	public void findsFirstPageOfCities() {
 
-		this.repo.delete((long) 2);
+		//this.repo.delete((long) 2);
 		int x = ((ArrayList<Restaurant>)this.repo.findAll()).size();
 		assertThat(x).isEqualTo(4);
 	}
