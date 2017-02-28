@@ -133,6 +133,11 @@ insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1
 insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,5,'2017-02-27','02:00',2)
 insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,3,'2017-02-27','02:00',2)
 insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,4,'2017-02-27','02:00',2)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,3,'2017-02-27','02:00',2)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,4,'2017-02-27','02:00',2)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,7,'2017-02-28','05:00',3)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,15,'2017-02-28','18:00',4)
+insert into reserved_tables(id_restaurant,id_table,date,time,duration) values (1,16,'2017-02-28','18:00',4)
 
 
 
@@ -149,6 +154,20 @@ insert into reservation_reserved_tables(reservation_id,table_id) values (2,3)
 insert into reservation_reserved_tables(reservation_id,table_id) values (2,4)
 insert into accepted_friends(reservation_id,friend_id) values (2,3)
 insert into accepted_friends(reservation_id,friend_id) values (2,5)
+
+
+insert into reservation(id_guest,id_restaurant,date,time,duration,flag) values (1,1,'2017-02-28','05:00',3,'aktivna')
+insert into reservation_reserved_tables(reservation_id,table_id) values (3,7)
+insert into accepted_friends(reservation_id,friend_id) values (3,3)
+insert into accepted_friends(reservation_id,friend_id) values (3,5)
+
+
+
+insert into reservation(id_guest,id_restaurant,date,time,duration,flag) values (1,1,'2017-02-28','18:00',4,'aktivna')
+insert into reservation_reserved_tables(reservation_id,table_id) values (4,15)
+insert into reservation_reserved_tables(reservation_id,table_id) values (4,16)
+insert into accepted_friends(reservation_id,friend_id) values (4,3)
+
 
 
 -- narudzbine
