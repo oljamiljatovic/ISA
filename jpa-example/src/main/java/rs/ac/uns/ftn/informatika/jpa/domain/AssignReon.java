@@ -77,16 +77,5 @@ public class AssignReon implements Serializable{
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-	
-	/*public AssignReon(Long waiter_id, String waiter_name, Long reon_id, String reon_name, Long restaurant) {
-		super();
-		this.waiter_id = waiter_id;
-		this.waiter_name = waiter_name;
-		this.reon_id = reon_id;
-		this.reon_name = reon_name;
-		this.restaurant = restaurant;
-	}*/
-
-	
 
 }
