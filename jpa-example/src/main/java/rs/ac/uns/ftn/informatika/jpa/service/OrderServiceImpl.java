@@ -15,7 +15,6 @@ import rs.ac.uns.ftn.informatika.jpa.domain.users.Employee;
 import rs.ac.uns.ftn.informatika.jpa.repository.OrderRepository;
 
 @Service
-@Transactional(isolation=Isolation.SERIALIZABLE)
 public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private OrderRepository orderRepository;
@@ -25,9 +24,13 @@ public class OrderServiceImpl implements OrderService{
 		
 		return this.orderRepository.findAll();
 	}
+	
+	@Transactional(isolation=Isolation.SERIALIZABLE)
 	public Order createNew(Order order) {
 		return orderRepository.save(order);
 	}
+	
+	@Transactional(isolation=Isolation.SERIALIZABLE)
 	public Order update(Order order, Long id) {
 		order.setId(id);
 		return orderRepository.save(order);

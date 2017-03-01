@@ -11,4 +11,6 @@ public interface BillService {
 	Bill addNew(Bill bill);
 	
 	public ArrayList<Bill> findByWaiter(Employee waiter);
+	
+	public Bill findById(Long id);
 }
