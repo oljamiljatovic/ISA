@@ -460,8 +460,9 @@ public class RestaurantIntegrationTest {
 		HttpSession session= attr.getRequest().getSession(true); 
 		session.setAttribute("korisnik", u);
 		RestaurantManager rm= this.managerService.getManager(u.getEmail());
-		Restaurant	r = restaurantService.getRestaurant(rm.getRestaurant().getId());
+		Restaurant	r = rm.getRestaurant();
 		Employee empl = new Employee("desa", "todic", "1994-05-05", "waiter", "M", "41", r, "desa", "true", "toda");
+		empl.setFirstLog("false");
 		this.employeeService.addEmployee(empl);
 		
 		int y = ((ArrayList<Employee>)this.employeeRepository.findAll()).size();
