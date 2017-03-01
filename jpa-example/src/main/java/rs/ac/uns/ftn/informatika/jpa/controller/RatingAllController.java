@@ -219,4 +219,40 @@ public class RatingAllController {
 			str = "0";
 		return new ResponseEntity<String>(str, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(
+			value = "/takeMarksForGuestFriends",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> takeMarksForGuestFriends(@RequestBody Guest g)  throws Exception {
+		
+		Guest guest = this.guestService.findOne(g.getId());
+		ArrayList<Guest> friends = (ArrayList<Guest>) guest.getFriends();
+		friends.add(guest);
+
+		String str = null;
+		int br = friends.size();
+		int m = 0;
+		int suma = 0;
+		if(br!=0){
+			
+			for(int i=0; i<br; i++){
+				ArrayList<RatingAll> temp = this.ratingAllService.findByGuest(friends.get(i));
+				
+				for(int j=0; j<temp.size(); j++){
+					suma = suma + temp.get(j).getRestaurantRating();
+					m++;
+				}
+			}
+				
+			
+			float prosek = (float) (suma/m);
+			str = Float.toString(prosek);
+		}else
+			str = "0";
+		
+		return new ResponseEntity<String>(str, HttpStatus.OK);
+	}
 }

@@ -33,7 +33,7 @@ $(document).on('click','#restoran',function(e){
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 	
@@ -118,7 +118,7 @@ $(document).on('click','#submitIzmenaRestorana',function(e){
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -211,7 +211,7 @@ $(document).on('submit','#izmenaMenadzera',function(e){
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -226,17 +226,17 @@ $(document).on('click','#dodajRadnika',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 			'<div class="login-page wrapper centered centered-block"> <div class = "form-group">'+
 				'<form method="post" id="registracijaMenadzera">'+
-					'Podaci o radniku:<br/><br/>Vrsta:'+
+					'Podaci o radniku:<br/><br/>Vrsta:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+
 					'<select id="vrstaRadnika"><option value="saladCook">salad - cook</option>'+
 					'<option value="cook">cooked meals  - cook</option><option value="grilledCook">grilled dish - cook</option>'+
 				'<option value="waiter">waiter</option><option value="barman">barman</option></select>'+
-					'<br/>Ime:<input type = "text" id = "imeRadnika" class="in-text"/>'+
+					'<br/><br/>Ime:<input type = "text" id = "imeRadnika" class="in-text"/>'+
 					'<br/>Prezime:<input type = "text" id = "prezimeRadnika" class="in-text"/>'+
 					'<br/>Email:<input type = "text" id = "emailRadnika" class="in-text"/>'+
-					'<br/>Datum rodjenja:<input type = "date" id = "rodjenjeRadnika" class="in-text"/>'+
-					'<br/>Konfekcijski broj:'+
+					'<br/>Datum rodjenja:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type = "date" id = "rodjenjeRadnika" class="in-text"/>'+
+					'<br/><br/>Konfekcijski broj:'+
 					'<input type = "text" id = "konfekcijskiRadnik" class="in-text"/>'+
-					'<br/>Velicina obuca:<input type = "text" id = "obucaRadnik" class="in-text"/>'+
+					'<br/>Velicina obuca:<input type = "text" id = "obucaRadnik" class="in-text"/><br/>'+
 					'<br/><input type = "submit" id = "submitNewEmployee" value="Submit" class="btn orange">'+
 					'</form></div></div></div></div>');
 });
@@ -258,6 +258,8 @@ $(document).on('click','#submitNewEmployee',function(e){
 		toastr.error("Ime je prazno");
 	}else if(surname == ""){
 		toastr.error("Prezime je prazno");
+	}else if(email == ""){
+		toastr.error("Email je prazan");
 	}else if(date == ""){
 		toastr.error("Datum rodjenja je prazan");
 	}else if(type ==""){
@@ -292,7 +294,7 @@ $(document).on('click','#submitNewEmployee',function(e){
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -313,7 +315,7 @@ $(document).on('click','#dodajPonudjaca',function(e){
 					'Adresa:<input type = "text" id = "adresaPonudjaca" class="in-text"/><br/>'+
 					'Email:<input type = "text" id = "emailPonudjaca" class="in-text"/><br/>'+
 					'Kontakt:<input type = "text" id = "kontaktPonudjaca" class="in-text"/><br/>'+
-					'Lozinka:<input type = "password" id = "lozinkaPonudjaca" class="in-text"/><br/>'+
+					'Lozinka:<input type = "password" id = "lozinkaPonudjaca" class="in-pass"/><br/><br/>'+
 					'<input type = "submit" id = "submitNewProvider" value="Submit" class="btn orange">'+
 					'</form></div></div></div>');
 });
@@ -352,6 +354,8 @@ $(document).on('click','#submitNewProvider',function(e){
 		toastr.error("Email je prazan");
 	}else if(contact == ""){
 		toastr.error("Kontakt je prazan");
+	}else if(password == ""){
+		toastr.error("Lozinka je prazna");
 	}else{
 		$.ajax({
 			type : 'POST',
@@ -380,9 +384,9 @@ $(document).on('click','#dodajPonudu',function(e){
 		'<div class="login-page wrapper centered centered-block">'+
 		'<div class = "form-group"><form method="post" id="submitDodajPonudu">'+
 		'Podaci o ponudi:<br/><br/>'+
-		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/><br/>'+
-		'Izaberi namirnicu ili pice:<select id="foodAndDrink"> </select><br/><br/><br/>'+
-		'Potrebna kolicina:<input type = "text" id = "kolicina" class="in-text"/><br/>'+
+		'Zavrsetak ponude:&nbsp&nbsp&nbsp&nbsp<input type = "date" id = "krajPonude" class="in-text"/><br/><br/>'+
+		'Izaberi namirnicu ili pice:&nbsp&nbsp&nbsp&nbsp<select id="foodAndDrink"> </select><br/><br/>'+
+		'Potrebna kolicina:<input type = "text" id = "kolicina" class="in-text"/><br/><br/>'+
 			'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
 			'</form></div></div></div></div>');
 	
@@ -432,29 +436,35 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 	var restaurant = "";
 	var amount = $('#kolicina').val();
 	var datum = $('#krajPonude').val();
-	var data2 = JSON.stringify({
-		"endDate" : datum,
-		"foodOrDrink" : foodAndDrink,
-		"flag" : flag,
-		"restaurant" : null,
-		"amount" : amount,
-		"accepted" : false
-	});
-	$.ajax({
-		type : 'POST',
-		url :  '/mealAndDrinkController/addOffer',
-		contentType : 'application/json',
-		dataType : 'json',
-		data : data2,
-		success : function(data){
-			toastr.info(data.id);
-			window.location.reload();
-		},
-
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
-		}
-	});
+	if(datum == ""){
+		toastr.error("Izaberite datum!");
+	}else if(amount == "" || isNaN(amount)){
+		toastr.error("Unesite kolicinu! (BROJ)");
+	}else{
+		var data2 = JSON.stringify({
+			"endDate" : datum,
+			"foodOrDrink" : foodAndDrink,
+			"flag" : flag,
+			"restaurant" : null,
+			"amount" : amount,
+			"accepted" : false
+		});
+		$.ajax({
+			type : 'POST',
+			url :  '/mealAndDrinkController/addOffer',
+			contentType : 'application/json',
+			dataType : 'json',
+			data : data2,
+			success : function(data){
+				toastr.info(data.id);
+				window.location.reload();
+			},
+	
+			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
+				toastr.error("AJAX ERROR: " + errorThrown);
+			}
+		});
+	}
 });
 
 
@@ -464,7 +474,7 @@ $(document).on('click','#aktuelnePonude',function(e){
 	$('#mica_mapa').empty();
 	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>NAMIRNICA/PICE</th><th>FLAG</th><th>KOLICINA</th>'+
-			'<th>KRAJNJI ROK</th></tr></table>');
+			'<th>KRAJNJI ROK</th><th></th></tr></table>');
 	
 	$.ajax({
 		type: 'GET',
@@ -498,7 +508,7 @@ $(document).on('submit','#formVidiPonude',function(e){
 	$('#content').empty();
 	$('#mica_mapa').empty();
 	$('#ubaci_mapu').empty();
-	$('#content').append('<table id="tabelaPrikaz"><tr><th>CENA DOSTAVE</th><th>VREME DOSTAVE</th><th>ID PONUDJACA</th>/tr></table>');
+	$('#content').append('<table id="tabelaPrikaz"><tr><th>CENA DOSTAVE</th><th>VREME DOSTAVE</th><th>ID PONUDJACA</th><th></th></tr></table>');
 	var id = $(this).find("input[type=hidden]").val();
 	var data = JSON.stringify({
 		"id" : id,
@@ -576,7 +586,7 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				
 				$.ajax({
 					type : 'POST',

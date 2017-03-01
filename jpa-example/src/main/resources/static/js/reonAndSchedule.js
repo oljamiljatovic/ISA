@@ -7,11 +7,11 @@ $(document).on('click','#definisiRaspored',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
 			'<form method="post" id="registracijaSmena">Raspored radnika:<br/><br/>'+
-			'Ime i sifra radnika:<select id="radnikSifra"></select><br/><br/>'+
-			'Pocetni datum:<input type = "date" id = "dateStart" class="in-text"/><br/<br/><br/>'+
-			'Krajnji datum:<input type = "date" id = "dateEnd" class="in-text"/><br/<br/><br/>'+
+			'Ime i sifra radnika:&nbsp&nbsp&nbsp<select id="radnikSifra"></select><br/><br/>'+
+			'Pocetni datum:&nbsp&nbsp&nbsp<input type = "date" id = "dateStart" class="in-text"/><br/<br/><br/>'+
+			'Krajnji datum:&nbsp&nbsp&nbsp<input type = "date" id = "dateEnd" class="in-text"/><br/<br/><br/>'+
 			'<input type="hidden" id="workerId">'+
-			'Smene:<select id="radneSmene"><option value="prva">prva</option>'+
+			'Smene:&nbsp&nbsp&nbsp<select id="radneSmene"><option value="prva">prva</option>'+
 			'<option value="druga">druga</option><option value="treca">treca</option></select>'+
 			'<br/><br/><input type = "submit" id = "submitSmene" value="Submit" class="btn orange">'+
 			'</form></div></div></div></div>');
@@ -27,7 +27,7 @@ $(document).on('click','#definisiRaspored',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -41,13 +41,13 @@ $(document).on('click','#submitSmene', function(e){
 	var dateEnd = $('#dateEnd').val();
 	var smene = $('#radneSmene option:selected').val();
 	if(id == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(dateStart == ""){
-		alert("Pocetni datum je prazan");
+		toastr.error("Pocetni datum je prazan");
 	}else if(dateEnd == ""){
-		alert("Datum rodjenja je prazan");
+		toastr.error("Datum rodjenja je prazan");
 	}else if(smene ==""){
-		alert("Smena je prazna");
+		toastr.error("Smena je prazna");
 	}else{
 		var worker = JSON.stringify({
 			"id" : id,
@@ -79,12 +79,11 @@ $(document).on('click','#submitSmene', function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -97,7 +96,7 @@ $(document).on('click','#pregledRasporeda',function(e){
 	$('#mica_mapa').empty();
 	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID RADNIKA</th><th>NAZIV RADNIKA</th>'+
-		'<th>POCETAK ZADUZENJA</th><th>KRAJ ZADUZENJA</th><th>SMENA</th></tr></table>');
+		'<th>POCETAK ZADUZENJA</th><th>KRAJ ZADUZENJA</th><th>SMENA</th><th></th><th></th></tr></table>');
 	
 	$.ajax({
 		type: 'GET',
@@ -122,7 +121,7 @@ $(document).on('click','#pregledRasporeda',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -153,12 +152,12 @@ $(document).on('submit','#formIzbrisiSmenu',function(e){
 		success : function(){
 			window.location.reload();
 			
-			alert('Uspesno brisanje pica!');
+			toastr.error('Uspesno brisanje pica!');
 			
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 });
@@ -179,10 +178,10 @@ $(document).on('submit','#formIzmeniSmenu',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
 			'<form method="post" id="registracijaSmena">Raspored radnika:<br/><br/>'+
-			'Ime i sifra radnika:<select id="radnikSifra"></select><br/><br/>'+
-			'Pocetni datum:<input type = "date" id = "dateStart" class="in-text"/><br/<br/><br/>'+
-			'Krajnji datum:<input type = "date" id = "dateEnd" class="in-text"/><br/<br/><br/>'+
-			'Smene:<select id="radneSmene"><option value="prva">prva</option>'+
+			'Ime i sifra radnika:&nbsp&nbsp&nbsp<select id="radnikSifra"></select><br/><br/>'+
+			'Pocetni datum:&nbsp&nbsp&nbsp<input type = "date" id = "dateStart" class="in-text"/><br/<br/><br/>'+
+			'Krajnji datum:&nbsp&nbsp&nbsp<input type = "date" id = "dateEnd" class="in-text"/><br/<br/><br/>'+
+			'Smene:&nbsp&nbsp&nbsp<select id="radneSmene"><option value="prva">prva</option>'+
 			'<option value="druga">druga</option><option value="treca">treca</option></select>'+
 			'<input type="hidden" id="idSched" value='+id+'>'+
 			'<br/><br/><input type = "submit" id = "submitSmeneIzmena" value="Submit" class="btn orange">'+
@@ -205,13 +204,13 @@ $(document).on('click','#submitSmeneIzmena', function(e){
 	var dateEnd = $('#dateEnd').val();
 	var smene = $('#radneSmene option:selected').val();
 	if(id == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(dateStart == ""){
-		alert("Pocetni datum je prazan");
+		toastr.error("Pocetni datum je prazan");
 	}else if(dateEnd == ""){
-		alert("Datum rodjenja je prazan");
+		toastr.error("Datum rodjenja je prazan");
 	}else if(smene ==""){
-		alert("Smena je prazna");
+		toastr.error("Smena je prazna");
 	}else{
 		var data2 = JSON.stringify({
 			"id" : id,
@@ -228,12 +227,11 @@ $(document).on('click','#submitSmeneIzmena', function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -251,8 +249,8 @@ $(document).on('click','#dodeliReon',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" id="first">'+
 		'<div class="login-page wrapper centered centered-block"><div class = "form-group">'+
 			'<form method="post" id="dodelaREONA">Dodela reona:<br/><br/>'+
-			'Ime konobara:<select id="konobarSifra"></select><br/><br/>'+
-			'Reon restorana:<select id="reonOznaka"></select><br/><br/>'+
+			'Ime konobara:&nbsp&nbsp&nbsp<select id="konobarSifra"></select><br/><br/>'+
+			'Reon restorana:&nbsp&nbsp&nbsp<select id="reonOznaka"></select><br/><br/>'+
 			'<input type = "submit" id = "submitDodelaReona" value="Submit" class="btn orange">'+
 			'</form></div></div></div></div>');
 	
@@ -279,12 +277,12 @@ $(document).on('click','#dodeliReon',function(e){
 					});
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Admin ERROR: " + errorThrown);
+					toastr.error("Admin ERROR: " + errorThrown);
 				}	
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -295,9 +293,9 @@ $(document).on('click','#submitDodelaReona', function(e){
 	var konobar = $('#konobarSifra option:selected').val();
 	var reon = $('#reonOznaka option:selected').val();
 	if(konobar == ""){
-		alert("Izaberite konobara!");
+		toastr.error("Izaberite konobara!");
 	}else if(reon == ""){
-		alert("Izaberite reon!");
+		toastr.error("Izaberite reon!");
 	}else{
 		var waiter = JSON.stringify({
 			"id" : konobar,
@@ -335,12 +333,11 @@ $(document).on('click','#submitDodelaReona', function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -355,7 +352,7 @@ $(document).on('click','#pregledDodeleReon',function(e){
 	$('#mica_mapa').empty();
 	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID KONOBARA</th><th>REON KONOBARA</th>'+
-		'<th>DODELJENI REON</th></tr></table>');
+		'<th>DODELJENI REON</th><th>NAZIV REONA</th><th></th></tr></table>');
 	
 	$.ajax({
 		type: 'GET',
@@ -372,7 +369,7 @@ $(document).on('click','#pregledDodeleReon',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -400,12 +397,12 @@ $(document).on('submit','#formIzbrisiDodelu',function(e){
 		success : function(){
 			window.location.reload();
 			
-			alert('Uspesno brisanje dodele reona!');
+			toastr.error('Uspesno brisanje dodele reona!');
 			
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 });
@@ -495,7 +492,7 @@ $(document).on('click','#pregledKonfiguracijeRasporeda',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -582,12 +579,11 @@ $(document).on('click','#submitDodajStolove', function(e){
 			dataType : 'json',
 			data : data1,
 			success : function(data){
-				alert(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 });
@@ -671,12 +667,12 @@ $(document).on('click','#grafickiPrikazRasporeda',function(e){
 					}
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("AssignReon ERROR: " + errorThrown);
+					toastr.error("AssignReon ERROR: " + errorThrown);
 				}	
 			});	
 
 		},error : function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 	
@@ -699,11 +695,10 @@ function OdabranSto(){
 			contentType : 'application/json',
 	   		data : data,
 	   		success : function(){
-	   			alert('Izbrisan sto!');
 	   			window.location.reload();
 	   		},
 	   		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-	   				alert("AJAX ERROR: " + errorThrown);
+	   			toastr.error("AJAX ERROR: " + errorThrown);
 	   			}
 	   		
 	   		});

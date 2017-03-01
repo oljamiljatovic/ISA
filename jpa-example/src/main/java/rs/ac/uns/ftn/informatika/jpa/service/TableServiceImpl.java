@@ -13,7 +13,6 @@ import rs.ac.uns.ftn.informatika.jpa.domain.Tablee;
 import rs.ac.uns.ftn.informatika.jpa.repository.TableRepository;
 
 @Service
-@Transactional(isolation=Isolation.SERIALIZABLE)
 public class TableServiceImpl implements TableService {
 
 	@Autowired
@@ -59,6 +58,7 @@ public class TableServiceImpl implements TableService {
 	}
 
 
+	@Transactional(isolation=Isolation.SERIALIZABLE)
 	@Override
 	public void updateTableFlag(Tablee table) {
 		this.tableRepository.updateTableFlag(table.isExist(), table.getId());
