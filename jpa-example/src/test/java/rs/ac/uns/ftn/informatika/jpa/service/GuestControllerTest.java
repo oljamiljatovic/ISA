@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.jpa.service;
 import static com.jayway.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
@@ -15,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
-import com.jayway.restassured.response.ResponseBodyExtractionOptions;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
 

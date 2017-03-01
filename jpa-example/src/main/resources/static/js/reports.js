@@ -7,10 +7,10 @@ $(document).on('click','#prihodRestorana',function(e){
 		'<div class="login-page wrapper centered centered-block">'+ 
 		'<div class = "form-group"><form method="post" id="prihodiRest">'+
 		'Prihodi restorana:<br/><br/>'+
-		'Pocetni datum:<input type = "date" id = "startDate" class="in-text"/><br/>'+
-		'Krajnji datum:<input type = "date" id = "endDate" class="in-text"/><br/>'+
-		'<br><br><br>------  Izvestaj: ----------'+
-		'Prihod:<input type = "text" id = "ukupniPrihod" class="in-text" readonly="true"/><br/>'+
+		'Pocetni datum:&nbsp&nbsp&nbsp<input type = "date" id = "startDate" class="in-text"/><br/><br/>'+
+		'Krajnji datum:&nbsp&nbsp&nbsp<input type = "date" id = "endDate" class="in-text"/><br/>'+
+		'<br/><br/>Izvestaj: <br/><br/>'+
+		'<input type = "text" id = "ukupniPrihod" class="in-text" readonly="true"/><br/>'+
 		'<input type = "submit" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 	
@@ -24,8 +24,13 @@ $(document).on('submit','#prihodiRest',function(e){
 	var str3 = $('#endDate').val();
 	var date3 = new Date(str3);
 	
-	if(date1>date3){
-		alert('Prvi datum mora biti manji od drugog!');
+	if(str1==""){
+		toastr.error("Izaberite prvi datum!");
+	}else if(str3==""){
+		toastr.error("Izaberite drugi datum!");
+	}
+	else if(date1>date3){
+		toastr.error('Prvi datum mora biti manji od drugog!');
 	}else{
 	
 		$.ajax({
@@ -45,9 +50,8 @@ $(document).on('submit','#prihodiRest',function(e){
 				
 				$('#ukupniPrihod').val(suma);
 			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("Da li je ovdje problem");
-				alert("AJAX ERROR: " + errorThrown);
+			error : function(XMLHttpRequest, textStatus, errorThrown) { 
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -65,11 +69,11 @@ $(document).on('click','#prihodKonobara',function(e){
 		'<div class="login-page wrapper centered centered-block">'+ 
 		'<div class = "form-group"><form method="post" id="prihodiKonob">'+
 		'Prihodi konobara:<br/><br/>'+
-		'Pocetni datum:<input type = "date" id = "startDate" class="in-text"/><br/>'+
-		'Krajnji datum:<input type = "date" id = "endDate" class="in-text"/><br/>'+
-		'Izaberi konobara:<select id="izborKonobara"></select><br/>'+
-		'<br><br><br>------  Izvestaj: ----------'+
-		'Prihod:<input type = "text" id = "ukupniPrihod" class="in-text" readonly="true"/><br/>'+
+		'Pocetni datum:&nbsp&nbsp&nbsp<input type = "date" id = "startDate" class="in-text"/><br/><br/>'+
+		'Krajnji datum:&nbsp&nbsp&nbsp<input type = "date" id = "endDate" class="in-text"/><br/><br/>'+
+		'Izaberi konobara:&nbsp&nbsp&nbsp<select id="izborKonobara"></select><br/>'+
+		'<br/><br/>Izvestaj: <br/><br/>'+
+		'<input type = "text" id = "ukupniPrihod" class="in-text" readonly="true"/><br/>'+
 		'<input type = "submit" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
 	
@@ -84,7 +88,7 @@ $(document).on('click','#prihodKonobara',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -113,8 +117,12 @@ $(document).on('submit','#prihodiKonob',function(e){
 		"firstLog" : "true"
 	});
 	
-	if(date1>date3){
-		alert('Prvi datum mora biti manji od drugog!');
+	if(str1==""){
+		toastr.error("Izaberite prvi datum!");
+	}else if(str3==""){
+		toastr.error("Izaberite drugi datum!");
+	}else if(date1>date3){
+		toastr.error('Prvi datum mora biti manji od drugog!');
 	}else{
 	
 		$.ajax({
@@ -138,7 +146,7 @@ $(document).on('submit','#prihodiKonob',function(e){
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) { 
 				
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -240,7 +248,7 @@ $(document).on('click','#grafikaPosecenosti',function(e){
 			
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 	
@@ -325,7 +333,7 @@ $(document).on('click','#grafikaPosecenostiDan',function(e){
 			
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 	
@@ -355,7 +363,7 @@ $(document).on('click','#ocenaRestoran',function(e){
 			$('#ocenaRest').val(data);
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -370,7 +378,7 @@ $(document).on('click','#ocenaJela',function(e){
 		'<div class="login-page wrapper centered centered-block">'+ 
 		'<div class = "form-group"><form method="post" id="ocenaObrok">'+
 		'Ocena jela<br/><br/>'+
-		'Izaberi jelo:<select id="food"> </select><br/><br/><br/>'+
+		'Izaberi jelo:&nbsp&nbsp&nbsp<select id="food"> </select><br/><br/><br/>'+
 		'Ocena:<input type = "text" id = "ocenaJelo" class="in-text" readonly="true" /><br/>'+
 		'<input type = "submit" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
@@ -387,7 +395,7 @@ $(document).on('click','#ocenaJela',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -417,7 +425,7 @@ $(document).on('submit','#ocenaObrok',function(e){
 			$('#ocenaJelo').val(data);
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -432,8 +440,8 @@ $(document).on('click','#ocenaKonobara',function(e){
 	$('#content').append('<div id="wraper"><div class="centered-content-wrap" >'+
 		'<div class="login-page wrapper centered centered-block">'+ 
 		'<div class = "form-group"><form method="post" id="submitOcenaKonobar">'+
-		'Ocena jela<br/><br/>'+
-		'Izaberi jelo:<select id="waiter"> </select><br/><br/><br/>'+
+		'Ocena konobara<br/><br/>'+
+		'Izaberi jelo:&nbsp&nbsp&nbsp<select id="waiter"> </select><br/><br/><br/>'+
 		'Ocena:<input type = "text" id = "ocenaKonobar" class="in-text" readonly="true" /><br/>'+
 		'<input type = "submit" value="Submit" class="btn orange">'+
 		'</form></div></div></div></div>');
@@ -450,7 +458,7 @@ $(document).on('click','#ocenaKonobara',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -486,7 +494,7 @@ $(document).on('submit','#submitOcenaKonobar',function(e){
 			$('#ocenaKonobar').val(data);
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });

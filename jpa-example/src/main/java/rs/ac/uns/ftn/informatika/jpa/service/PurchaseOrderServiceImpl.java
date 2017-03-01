@@ -15,7 +15,6 @@ import rs.ac.uns.ftn.informatika.jpa.repository.PurchaseOrderRepository;
 
 
 @Service
-@Transactional(isolation=Isolation.SERIALIZABLE)
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
 	@Autowired
@@ -52,6 +51,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		return this.purchaseOrderRepository.findByRestaurant(id);
 	}
 
+
+	@Transactional(isolation=Isolation.SERIALIZABLE)
 	@Override
 	public void updateFlag(Long flag, Long id) {
 		this.purchaseOrderRepository.updateFlag(flag, id);
