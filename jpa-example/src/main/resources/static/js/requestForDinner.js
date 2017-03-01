@@ -264,8 +264,13 @@ function KreirajPorudzbinu(){
 	var listOfDrinkss = [];
 	var timeOfOrder = new Date().getTime();
 
-	alert("rese id "+ idReservation +" desk" +desk + "drinks" + drinks.length+ "meals"+ meals.length);
-
+	
+	if(drinks == null && meals == null){
+		//toastr.error("You have to ");
+		alert("You have to choose drink or meal");
+	
+	}else{
+		
 	$.ajax({
 		type : 'PUT',
 		url :'/reservationController/getReservationById/'+ idReservation,
@@ -311,7 +316,7 @@ function KreirajPorudzbinu(){
 	
 	});
 	
-			
+	}	//else	
 	
 }
 

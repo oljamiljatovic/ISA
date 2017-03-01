@@ -39,6 +39,7 @@ public class InvitationController {
 	public  @ResponseBody Invitation sendRequest(
 			@PathVariable Long id, @PathVariable Long idFriend) throws Exception {
 	
+		
 		Guest sender = guestService.findOne(id);
 		Guest friend = guestService.findOne(idFriend);
 		Invitation invitation = new Invitation(sender,friend,"false");

@@ -3,6 +3,8 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rs.ac.uns.ftn.informatika.jpa.domain.User;
 import rs.ac.uns.ftn.informatika.jpa.domain.users.Guest;
@@ -231,13 +235,19 @@ public class GuestController {
 		ArrayList<Guest> listOfGuests = new ArrayList<Guest>();
 		
 		if(search.contains(" ")){
-		String[] array = search.split(" "); 
+			String[] array = search.split(" "); 
 		
-		String name = array[0];
-		String surname = array[1];
+			String name = array[0];
+			String surname = array[1];
 		
-		listOfGuests = (ArrayList<Guest>) guestService.findGuestsByNameAndSurname(name, surname);
+			listOfGuests = (ArrayList<Guest>) guestService.findGuestsByNameAndSurname(name, surname);
 		
+			if(listOfGuests.size() == 0){
+				listOfGuests = (ArrayList<Guest>) guestService.findGuestsByNameAndSurname(surname, name);
+			}
+		
+		
+		//nasao sve goste sa imenom
 		}else{
 			ArrayList<Guest> listBySurname= (ArrayList<Guest>) guestService.findGuestsBySurname(search);
 			ArrayList<Guest> listByName= (ArrayList<Guest>) guestService.findGuestsByName(search);
@@ -254,7 +264,40 @@ public class GuestController {
 			
 		}
 		
-	
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) 
+			    RequestContextHolder.currentRequestAttributes();
+		
+		HttpSession session= attr.getRequest().getSession(true);
+		User u = (User) session.getAttribute("korisnik");
+		
+		System.out.println("Korisnik u sesijiiiii "+u.getEmail());
+		
+		for(int i = 0; i<listOfGuests.size(); i++){
+			System.out.println("Ispis"+ listOfGuests.get(i).getEmail());
+			if(listOfGuests.get(i).getEmail().equals(u.getEmail())){
+				System.out.println("usao u mene");
+				listOfGuests.remove(i);
+			}
+		}
+		
+		Guest guest = guestService.findOne(u.getId());
+		System.out.print("oD GOSTA"+guest.getId());
+		
+		//for(int i = 0; i<listOfGuests.size(); i++){
+			for(int i = 0; i<guest.getFriends().size(); i++){
+				/*if(listOfGuests.get(i).getId().equals(guest.getFriends().get(j).getId())){
+					System.out.println("Nasao da vec ima u prijateljima"+listOfGuests.get(i).getId());
+					listOfGuests.remove(guest.getFriends().get(j));
+				}*/
+				if(listOfGuests.contains(guest.getFriends().get(i))){
+					System.out.println("Nasao da vec ima u prijateljima");
+					listOfGuests.remove(guest.getFriends().get(i));
+				}
+			}
+		//}
+		
+		System.out.println("Kraj metode");
 		return listOfGuests;
 		
 		

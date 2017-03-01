@@ -170,7 +170,7 @@ function Informacije(){
 		url :'/ratingAllController/takeMarksForGuest/'+id,
 		success : function(data){
 			
-			alert("Ocjena"+ data);
+			alert("Prosjecna ocjena :"+ data);
 		  	
 				
 		},
@@ -193,6 +193,15 @@ $(document).on('click','#submitSmene', function(e){
 	var idGuest = $('#idGuest').val();
 	var smene = $('#radneSmene option:selected').val();
 
+if(dateStart == ""){
+	alert("You have to choose date ");
+
+}else if(timeStart == ""){
+	alert("You have to choose time ");
+	
+}else if(smene == ""){
+	alert("You have to choose duration ");
+}else{
 	$('#listaRestorana').empty();
 	$('#datum').empty();
 	
@@ -252,7 +261,6 @@ $(document).on('click','#submitSmene', function(e){
 				
 			
 				
-/////////////////////////////////////////////				
 				$.ajax({
 					type: 'POST',
 					contentType : 'application/json',
@@ -277,21 +285,14 @@ $(document).on('click','#submitSmene', function(e){
 					}	
 				});	
 				
-				
-				
-				
-				
-				
-	//////////////////////			
-				
-				
+		
 				
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				alert("Tables ERROR: " + errorThrown);
 			}	
 		});
-		
+}
 	
 });
 

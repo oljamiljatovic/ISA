@@ -49,7 +49,7 @@ window.onload = function() {
 					
 					});	//kraj ajax za prijatelje
 					
-					alert("DATA JE"+ data.id);
+				
 					
 					$.ajax({ //ajax poziv za zahtjeve
 						type : 'POST',
@@ -57,7 +57,7 @@ window.onload = function() {
 						dataType : 'json',
 						success : function(requests){
 						//if(requests.accept.equals("false")){
-							//alert("Usao u ispis zahtjeva");
+							
 							var table = document.getElementById("zahtjevi");
 							$('#zahtjevi').empty();
 							for(var i = 0 ; i < requests.length ; i++){
@@ -78,7 +78,7 @@ window.onload = function() {
 										url :'/guestController/findById/'+ item.sender.id,
 										dataType : 'json',
 										success : function(guest){
-											alert("nasao onog sto je poslao zahtjev");
+									
 											cell1.innerHTML = guest.name;
 											cell2.innerHTML = guest.surname;
 										},
