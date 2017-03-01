@@ -10,27 +10,19 @@ window.onload = function() {
 				$('#listaRestorana').empty();
 				for(var i = 0 ; i < data.length ; i++){
 					
-				 	/*$.ajax({
-						type : 'GET',
-						dataType : 'json',
-						url :'/ratingAllController/takeMarksForGuest/'+data[i].id,
-						success : function(data2){
-*/
-							 var item = data[i];
-							 $('#listaRestorana').append('<img src="rest1.jpg" alt="description here"  height="200" width="200" id = "'+data[i].id+'" onclick="OpenPicture()"/>'+
-								 	'<input type = "button" onclick="OtvoriRestoran()" id ="'+data[i].id+'" value="'+data[i].name+'"> ' +
-								 	'<input type = "button" onclick="PronadjiRestoran()" id ="'+data[i].id+'" value="'+data[i].address+'">');
-								 	//'<input type = "button"  id ="'+data[i].id+'" value=Prosjecna ocjena :"'+data2+'">');
+					var item = data[i];
+					
+							 $('#listaRestorana').append('<img src="rest1.jpg" alt="description here"  height="200" width="200" id = "'+item.id+'" onclick="OpenPicture()"/>'+
+								 	'<input type = "button" onclick="OtvoriRestoran()" id ="'+item.id+'" value="'+item.name+'"> ' +
+								 	'<input type = "button" onclick="PronadjiRestoran()" id ="'+item.id+'" value="'+item.address+'">'+
+							' <input type = "button" onclick="Informacije()" id ="'+item.id+'"  value="Informacije">');
+							 
+						
+							 
 							 if(i%2 == 1){
 									$("#listaRestorana").append("<br/><br/><br/><br/>");
 								}
-					/*	},
-					error : function(XMLHttpRequest, textStatus, errorThrown) {
-						alert("Problem sa pronalazenjem id-ja");
-					}	
-					});//kraj ajax poziva za id
-					
-					*/
+				
 					
 					
 					
@@ -164,6 +156,31 @@ function OtvoriRestoran(){
 
 }
 
+
+function Informacije(){
+	
+	var idGuest = -1;
+	var id = Informacije.caller.arguments[0].target.id;
+	
+	
+	
+	$.ajax({
+		type : 'GET',
+		dataType : 'json',
+		url :'/ratingAllController/takeMarksForGuest/'+id,
+		success : function(data){
+			
+			alert("Ocjena"+ data);
+		  	
+				
+		},
+	error : function(XMLHttpRequest, textStatus, errorThrown) {
+		alert("Problem sa pronalazenjem id-ja");
+	}	
+	});//kraj ajax poziva za id
+	
+
+}
 
 $(document).on('click','#submitSmene', function(e){
 
