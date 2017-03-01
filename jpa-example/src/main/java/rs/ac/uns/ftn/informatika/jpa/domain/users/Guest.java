@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.informatika.jpa.domain.users;
 
 import static javax.persistence.InheritanceType.JOINED;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -71,6 +72,19 @@ public class Guest extends User {
 	public Guest(String name, String surname) {
 		super();
 		this.name = name;
+		this.surname = surname;
+		this.friendOf = new ArrayList<Guest>();
+		this.friends = new ArrayList<Guest>();
+	}
+
+
+
+	public Guest(String email, String password, String role, String accept, String name, String surname) {
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.accept = accept;
+		this.name= name;
 		this.surname = surname;
 	}
 

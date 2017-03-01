@@ -473,7 +473,7 @@ $(document).on('click','#pregledKonfiguracijeRasporeda',function(e){
 	$('#ubaci_mapu').empty();
 	$('#content').append('<table id="tabelaPrikaz"><tr><th>ID REONA</th><th>NAZIV REONA</th>'+
 		'<th>LOKACIJA REONA</th><th>BROJ STOLOVA</th>'+
-		'<th><input type="button" value="Vidi prikaz" id="grafickiPrikazRasporeda"><th/></tr></table>');
+		'<th><input type="submit"  value="Vidi prikaz" id="grafickiPrikazRasporeda"><th/></tr></table>');
 	
 	$.ajax({
 		type: 'GET',
@@ -606,7 +606,7 @@ $(document).on('click','#grafickiPrikazRasporeda',function(e){
 			$("#content").empty();
 			$("#content").append("<br/>");
 			$("#content").append("<br/>");
-			$('#content').append('Kliknite na sto koji zelite izbrisati');
+			$('#content').append('<label style="color:white;font-size:20px">Kliknite na sto koji zelite izbrisati</label>');
 			$('#content').append('<br/>');
 			$('#content').append('<br/>');
 			var numberTable = tables.length;
@@ -665,7 +665,7 @@ $(document).on('click','#grafickiPrikazRasporeda',function(e){
 						 var idStola = zauzeti[i].idTable.id;
 						
 						document.getElementById(idStola).disabled="true";
-						document.getElementById(idStola).value="Broj "+idStola+" je zauzet";
+						document.getElementById(idStola).value="Broj "+idStola+" - ZAUZET";
 						
 					
 					}

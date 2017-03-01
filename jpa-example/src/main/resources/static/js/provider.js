@@ -146,8 +146,8 @@ $(document).ready(function(){
 							'<div class="login-page wrapper centered centered-block">'+ 
 							'<div class = "form-group"><form id="submitIzmeniLozinku" method="post">'+
 							'Postavite lozinku:<br/><br/>'+
-							'Lozinka:<input type = "text" id = "novaLozinka"  class="in-text"/><br/>'+
-							'Ponovite lozinku:<input type = "text" id = "ponovljenaLozinka"  class="in-text"/><br/>'+
+							'Lozinka:<input type = "password" id = "novaLozinka"  class="in-pass"/><br/>'+
+							'Ponovite lozinku:<input type = "password" id = "ponovljenaLozinka"  class="in-pass"/><br/>'+
 							'<input type = "submit" value="Submit" class="btn orange">'+
 							'<input type="hidden" id="providerId" value='+ponudjac.id+'>'+
 							'<input type="hidden" id="providerName" value='+ponudjac.name+'>'+
@@ -188,11 +188,9 @@ $(document).on('submit','#submitIzmeniLozinku',function(e){
 		toastr.error("Morate uneti lozinku!");
 	}else if(checkPassword == ""){
 		toastr.error("Morate ponoviti lozinku!");
+	}else if(password!=checkPassword){
+		toastr.error("Niste potvrdili lozinku!");
 	}else{
-		if(password!=checkPassword){
-			toastr.error("Niste potvrdili lozinku!");
-			window.location.reload();
-		}
 		
 		var data2 = JSON.stringify({
 			"id" : id,
@@ -242,8 +240,8 @@ $(document).on('click','#ponudjacIzmenaLozinke',function(e){
 					'<div class="login-page wrapper centered centered-block">'+ 
 					'<div class = "form-group"><form id="submitIzmeniLozinku" method="post">'+
 					'Postavite lozinku:<br/><br/>'+
-					'Lozinka:<input type = "text" id = "novaLozinka"  class="in-text"/><br/>'+
-					'Ponovite lozinku:<input type = "text" id = "ponovljenaLozinka"  class="in-text"/><br/>'+
+					'Lozinka:<input type = "password" id = "novaLozinka"  class="in-pass"/><br/>'+
+					'Ponovite lozinku:<input type = "password" id = "ponovljenaLozinka"  class="in-pass"/><br/>'+
 					'<input type = "submit" value="Submit" class="btn orange">'+
 					'<input type="hidden" id="providerId" value='+ponudjac.id+'>'+
 					'<input type="hidden" id="providerName" value='+ponudjac.name+'>'+
@@ -368,7 +366,7 @@ $(document).on('click','#aktivnePonude',function(e){
 				if(ponuda.accepted==false)
 			    {
 			   
-				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td>'+
+				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td><td>'+
 						+ponuda.amount+'</td><td>'+ponuda.endDate+'</td><td>'+ponuda.restaurant.name+'</td>'+
 						'<td><form id="formVidiPonudu" method="get" action="">'+
 							'<input type="submit" value="Vidi ponudu/porudzbinu">' +
@@ -424,13 +422,13 @@ $(document).on('submit','#formVidiPonudu',function(e){
 		'Podaci o ponudi:<br/><br/>'+
 		'Namirnica/pice: <input type = "text" id = "foodDrinkPonude" class="in-text"/ readonly="true"><br/>'+
 		'Flag pica/namirnice: <input type = "text" id = "flagPonude" class="in-text"/ readonly="true"><br/>'+
-		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/>'+
+		'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/><br/>'+
 		'Potrebna kolicina:<input type = "text" id = "kolicinaPonude" class="in-text"/ readonly="true"><br/>'+
 		
-		'------------------------------------------------------------------------------------:<br/><br/>'+
+		'--------------------------------------------------------------------------------------<br/><br/>'+
 
 		'Cena porudzbine:<input type = "text" id = "cenaPorudzbenice" class="in-text"/><br/>'+
-		'Broj dana dostave:<input type = "text" id = "daniPorudzbenice" class="in-text"/><br/>'+
+		'Broj dana dostave:<input type = "text" id = "daniPorudzbenice" class="in-text"/><br/><br/>'+
 			'<input type = "submit" id = "submit" value="Dodaj porudzbenicu" class="btn orange">'+
 			'<input type="hidden" id="porudzbenicaId"><input type="hidden" id="porudzbenicaOffer">' +
 			'<input type="hidden" id="porudzbenicaRestoran">'+
@@ -443,12 +441,12 @@ $(document).on('submit','#formVidiPonudu',function(e){
 						'Podaci o ponudi:<br/><br/>'+
 						'Namirnica/pice: <input type = "text" id = "foodDrinkPonude" class="in-text"/ readonly="true"><br/>'+
 						'Flag pica/namirnice: <input type = "text" id = "flagPonude" class="in-text"/ readonly="true"><br/>'+
-						'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/>'+
+						'Datum zavrsetka ponude:<input type = "date" id = "krajPonude" class="in-text"/ readonly="true"><br/><br/>'+
 						'Potrebna kolicina:<input type = "text" id = "kolicinaPonude" class="in-text"/ readonly="true"><br/>'+
-						'------------------------------------------------------------------------------------:<br/><br/>'+
+						'--------------------------------------------------------------------------------------<br/><br/>'+
 
 						'Cena porudzbine:<input type = "text" id = "cenaPorudzbenice" class="in-text"/><br/>'+
-						'Broj dana dostave:<input type = "text" id = "daniPorudzbenice" class="in-text"/><br/>'+
+						'Broj dana dostave:<input type = "text" id = "daniPorudzbenice" class="in-text"/><br/><br/>'+
 							'<input type = "submit" id = "submit" value="Izmeni porudzbenicu" class="btn orange">'+
 							'<input type="hidden" id="porudzbenicaId"><input type="hidden" id="porudzbenicaOffer">' +
 							'<input type="hidden" id="porudzbenicaRestoran">'+
@@ -503,10 +501,10 @@ $(document).on('submit','#submitDodajPorudzbenicu',function(e){
 	var days = $('#daniPorudzbenice').val();
 	var price = $('#cenaPorudzbenice').val();
 	
-	if(days == ""){
-		toastr.error("Morate uneti broj dana potrebnih!");
-	}else if(price == ""){
-		toastr.error("Morate uneti cenu!");
+	if(days == "" || isNaN(days)){
+		toastr.error("Morate uneti BROJ potrebnih dana za dostavu!");
+	}else if(price == "" || isNaN(price)){
+		toastr.error("Morate uneti cenu! (BROJ)");
 	}else{
 		
 		var offer = JSON.stringify({
@@ -557,10 +555,10 @@ $(document).on('submit','#submitIzmeniPorudzbenicu',function(e){
 	var days = $('#daniPorudzbenice').val();
 	var price = $('#cenaPorudzbenice').val();
 	
-	if(days == ""){
-		toastr.error("Morate uneti broj potrebnih dana!");
-	}else if(price == ""){
-		toastr.error("Morate uneti cenu!");
+	if(days == "" || isNaN(days)){
+		toastr.error("Morate uneti BROJ potrebnih dana za dostavu!");
+	}else if(price == "" || isNaN(price)){
+		toastr.error("Morate uneti cenu! (BROJ)");
 	}else{
 		
 		var data2 = JSON.stringify({

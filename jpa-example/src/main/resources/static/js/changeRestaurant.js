@@ -14,8 +14,8 @@ $(document).on('click','#restoran',function(e){
 		'Kontakt:<input type = "text" id = "kontaktRestorana" class="in-text"/><br/>'+
 		'Geografska sirina:<input type = "text" id = "sirinaRestorana" class="in-text"/><br/>'+
 		'Geofrafska duzina:<input type = "text" id = "duzinaRestorana" class="in-text"/><br/>'+
-		'<input type = "button" id = "lokacijaRestorana" value="izaberi lokacija" >'+
-		'<input type = "submit" id = "submitIzmenaRestorana" value="Submit" class="btn orange">'+
+		'<input type = "submit" id = "lokacijaRestorana" value="Vidi lokaciju" class="btn orange"><br/><br/>'+
+		'<input type = "submit" id = "submitIzmenaRestorana" value="Potvrdi" class="btn orange">'+
 		'</form></div></div></div></div>');
 	
 	$.ajax({
@@ -71,7 +71,7 @@ $(document).on('click','#lokacijaRestorana',function(e){
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("AJAX ERROR: " + errorThrown);
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 });
@@ -84,14 +84,18 @@ $(document).on('click','#submitIzmenaRestorana',function(e){
 	var type = $('#vrstaRestorana').val();
 	var sirina = $('#sirinaRestorana').val();
 	var duzina = $('#duzinaRestorana').val();
-	var drinks = [];
-	var meals = [];
 	if(name == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(address == ""){
-		alert("Adresa je prazna");
+		toastr.error("Adresa je prazna");
 	}else if(contact == ""){
-		alert("Kontakt je prazno");
+		toastr.error("Kontakt je prazan");
+	}else if(type == ""){
+		toastr.error("Tip restorana je prazan");
+	}else if(sirina == "" || isNaN(sirina)){
+		toastr.error("Unesite geografsku sirinu (BROJ)");
+	}else if(duzina == "" || isNaN(duzina)){
+		toastr.error("Unesite geografsku duzinu (BROJ)");
 	}else{
 		
 		var data2 = JSON.stringify({
@@ -109,7 +113,7 @@ $(document).on('click','#submitIzmenaRestorana',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
@@ -134,7 +138,7 @@ $(document).on('click','#izmeniPodatke',function(e){
 				'Ime:<input type = "text" id = "imeMenadzera" class="in-text"/><br/>'+
 				'Prezime:<input type = "text" id = "prezimeMenadzera" class="in-text"/><br/>'+
 				'Adresa:<input type = "text" id = "adresaMenadzera" class="in-text"/><br/>'+
-				'Email:<input type = "text" id = "emailMenadzera" class="in-text"/><br/>'+
+				'Email:<input type = "text" id = "emailMenadzera" class="in-text" readonly="true"/><br/>'+
 				'Kontakt:<input type = "text" id = "kontaktMenadzera" class="in-text"/><br/>'+
 				'Lozinka:<input type = "text" id = "lozinkaMenadzera" class="in-text"/><br/>'+
 				'<input type = "submit" id = "submit" value="Submit" class="btn orange">'+
@@ -154,9 +158,8 @@ $(document).on('click','#izmeniPodatke',function(e){
 			$('#lozinkaMenadzera').val(data.password);
 		},
 
-		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-			alert("Da li je ovdje problem");
-			alert("AJAX ERROR: " + errorThrown);
+		error : function(XMLHttpRequest, textStatus, errorThrown) { 
+			toastr.error("AJAX ERROR: " + errorThrown);
 		}
 	});
 	
@@ -173,11 +176,15 @@ $(document).on('submit','#izmenaMenadzera',function(e){
 	var password = $('#lozinkaMenadzera').val();
 	
 	if(name == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
+	}else if(surname == ""){
+		toastr.error("Prezime je prazno");
 	}else if(address == ""){
-		alert("Adresa je prazna");
+		toastr.error("Adresa je prazna");
 	}else if(contact == ""){
-		alert("Kontakt je prazno");
+		toastr.error("Kontakt je prazan");
+	}else if(password == ""){
+		toastr.error("Lozinka je prazna");
 	}else{
 		
 		var dataa = JSON.stringify({
@@ -199,7 +206,7 @@ $(document).on('submit','#izmenaMenadzera',function(e){
 			dataType : 'json',
 			data : dataa,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
@@ -248,17 +255,17 @@ $(document).on('click','#submitNewEmployee',function(e){
 	var accept = "false";
 	var password = "111";
 	if(name == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(surname == ""){
-		alert("Prezime je prazno");
+		toastr.error("Prezime je prazno");
 	}else if(date == ""){
-		alert("Datum rodjenja je prazan");
+		toastr.error("Datum rodjenja je prazan");
 	}else if(type ==""){
-		alert("Vrsta je prazna");
+		toastr.error("Vrsta je prazna");
 	}else if(konfekc ==""){
-		alert("Konfekcijski broj je prazan");
+		toastr.error("Konfekcijski broj je prazan");
 	}else if(obuca ==""){
-		alert("Informacije o obuci su prazne");
+		toastr.error("Informacije o obuci su prazne");
 	}else{
 		var data2 = JSON.stringify({
 			"role" : type,
@@ -280,7 +287,7 @@ $(document).on('click','#submitNewEmployee',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
@@ -336,15 +343,15 @@ $(document).on('click','#submitNewProvider',function(e){
 	});
 	
 	if(name == ""){
-		alert("Ime je prazno");
+		toastr.error("Ime je prazno");
 	}else if(surname == ""){
-		alert("Prezime je prazno");
+		toastr.error("Prezime je prazno");
 	}else if(address == ""){
-		alert("Adresa je prazna");
+		toastr.error("Adresa je prazna");
 	}else if(email == ""){
-		alert("Email je prazan");
+		toastr.error("Email je prazan");
 	}else if(contact == ""){
-		alert("Kontakt je prazan");
+		toastr.error("Kontakt je prazan");
 	}else{
 		$.ajax({
 			type : 'POST',
@@ -353,12 +360,12 @@ $(document).on('click','#submitNewProvider',function(e){
 			dataType : 'json',
 			data : dataa,
 			success : function(data){
-				alert(data.id);
+				toastr.info(data.id);
 				window.location.reload();
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 	}
@@ -393,7 +400,7 @@ $(document).on('click','#dodajPonudu',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -410,7 +417,7 @@ $(document).on('click','#dodajPonudu',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 });
@@ -440,7 +447,7 @@ $(document).on('submit','#submitDodajPonudu',function(e){
 		dataType : 'json',
 		data : data2,
 		success : function(data){
-			alert(data.id);
+			toastr.info(data.id);
 			window.location.reload();
 		},
 
@@ -466,8 +473,7 @@ $(document).on('click','#aktuelnePonude',function(e){
 		success : function(data){
 			var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 			$.each(list, function(index,ponuda){
-				//var date1 = new Date();
-				//var date2 = new Date(ponuda.endDate);
+				
 				if( ponuda.accepted==false)
 			    {
 				$('#tabelaPrikaz').append('<tr><td>'+ponuda.foodOrDrink+'</td><td>'+ponuda.flag+'</td><td>'
@@ -479,7 +485,7 @@ $(document).on('click','#aktuelnePonude',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -527,7 +533,7 @@ $(document).on('submit','#formVidiPonude',function(e){
 			});
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Admin ERROR: " + errorThrown);
+			toastr.error("Admin ERROR: " + errorThrown);
 		}	
 	});
 	
@@ -585,7 +591,7 @@ $(document).on('submit','#formPrihvatiPonudu',function(e){
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
-				alert("AJAX ERROR: " + errorThrown);
+				toastr.error("AJAX ERROR: " + errorThrown);
 			}
 		});
 });
@@ -602,7 +608,7 @@ $(document).on('click', '#dugmeOdjava', function(e) {
 			window.location.href= "index.html";
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("billOrders: " + errorThrown);
+			toastr.error( errorThrown);
 		}	
 	});
 });
