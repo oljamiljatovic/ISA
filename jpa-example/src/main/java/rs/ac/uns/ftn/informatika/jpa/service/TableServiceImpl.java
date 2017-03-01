@@ -58,7 +58,7 @@ public class TableServiceImpl implements TableService {
 	}
 
 
-	@Transactional(isolation=Isolation.SERIALIZABLE)
+	
 	@Override
 	public void updateTableFlag(Tablee table) {
 		this.tableRepository.updateTableFlag(table.isExist(), table.getId());

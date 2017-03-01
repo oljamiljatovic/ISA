@@ -221,29 +221,40 @@ public class RatingAllController {
 	}
 	
 	
-	@RequestMapping(
-			value = "/takeMarksForGuestFriends",
-			method = RequestMethod.POST,
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> takeMarksForGuestFriends(@RequestBody Guest g)  throws Exception {
+/*	@RequestMapping(
+			value = "/takeMarksForGuestFriends/{id}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> takeMarksForGuestFriends(@PathVariable Long id)  throws Exception {
+		System.out.println("Usao u controller");
+		System.out.println("ID"+id);
+		Guest guest = this.guestService.findOne(id);
+		System.out.println("guest"+guest.getId());
 		
-		Guest guest = this.guestService.findOne(g.getId());
-		ArrayList<Guest> friends = (ArrayList<Guest>) guest.getFriends();
+		List<Guest> friends = guest.getFriends();
+		
 		friends.add(guest);
-
-		String str = null;
+		System.out.println("Friends"+ friends.size());
+		String str = "";
 		int br = friends.size();
+		System.out.println("Friend size"+ br);
 		int m = 0;
 		int suma = 0;
 		if(br!=0){
 			
 			for(int i=0; i<br; i++){
+				System.out.println("Evo ovdje"+this.ratingAllService.findByGuest(friends.get(i)));
+				if((this.ratingAllService.findByGuest(friends.get(i))) == null){
+					str = "0";
+				}else{
+					System.out.println("Usao u else");
 				ArrayList<RatingAll> temp = this.ratingAllService.findByGuest(friends.get(i));
-				
 				for(int j=0; j<temp.size(); j++){
+					System.out.println("problemcic"+temp.get(j).getRestaurantRating());
 					suma = suma + temp.get(j).getRestaurantRating();
+					
 					m++;
+				}
 				}
 			}
 				
@@ -254,5 +265,5 @@ public class RatingAllController {
 			str = "0";
 		
 		return new ResponseEntity<String>(str, HttpStatus.OK);
-	}
+	}*/
 }

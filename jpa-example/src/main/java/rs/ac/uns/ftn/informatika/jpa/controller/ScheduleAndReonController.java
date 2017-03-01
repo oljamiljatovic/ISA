@@ -285,16 +285,20 @@ public class ScheduleAndReonController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteSto(@RequestBody Tablee t)  throws Exception {
 		
-		//this.tableService.delete(t.getId());
-		this.tableService.updateTableFlag(t);
-		
-		Tablee tab = this.tableService.findById(t.getId());
-		Reon reon = tab.getReon();
-		int number = reon.getNumberTable();
-		reon.setNumberTable(number-1);
-		this.reonService.update(reon);
+		try{
+			//this.tableService.delete(t.getId());
+			this.tableService.updateTableFlag(t);
+			
+			Tablee tab = this.tableService.findById(t.getId());
+			Reon reon = tab.getReon();
+			int number = reon.getNumberTable();
+			reon.setNumberTable(number-1);
+			this.reonService.update(reon);
+		}catch(Exception e){
+			System.out.println("Vec je rezervisan");
+		}
 	}
-	
+
 	
 	@RequestMapping(
 			value = "/addTables",

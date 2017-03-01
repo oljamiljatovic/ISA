@@ -163,21 +163,24 @@ function Informacije(){
 	var id = Informacije.caller.arguments[0].target.id;
 	
 	
-	
-	$.ajax({
-		type : 'GET',
-		dataType : 'json',
-		url :'/ratingAllController/takeMarksForGuest/'+id,
-		success : function(data){
+			$.ajax({
+				type : 'GET',
+				dataType : 'json',
+				url :'/ratingAllController/takeMarksForGuest/'+id,
+				success : function(data){
+					
+					alert("Prosjecna ocjena je "+ data);
+				  	
+						
+				},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("Problem sa pronalazenjem id-ja");
+			}	
+			});//kraj ajax poziva za id
 			
-			alert("Prosjecna ocjena :"+ data);
-		  	
-				
-		},
-	error : function(XMLHttpRequest, textStatus, errorThrown) {
-		alert("Problem sa pronalazenjem id-ja");
-	}	
-	});//kraj ajax poziva za id
+	
+	
+	
 	
 
 }
@@ -296,7 +299,21 @@ if(dateStart == ""){
 	
 });
 
-
+$(document).on('click', '#logout', function(e) {
+	e.preventDefault();
+	$("#content").empty();
+	$.ajax({
+		type: 'GET',
+		dataType: 'text',
+		url : '/userController/logout',
+		success : function(data){
+			window.location.href= "index.html";
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("billOrders: " + errorThrown);
+		}	
+	});
+});
 
 
 

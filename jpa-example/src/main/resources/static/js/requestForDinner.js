@@ -10,7 +10,7 @@ window.onload = function() {
 	var idGuest = pairGuest.split("=")[1];
 	var idReservation = pairReservation.split("=")[1];
 
-	alert("idguest"+ idGuest);
+	
 	$.ajax({ //ajax poziv za dobijanje rezervacije
 		type : 'PUT',
 		url :'/reservationController/getReservationById/'+ idReservation,
@@ -98,18 +98,15 @@ function PrihvatiPozivZaVeceru(){
     var idGuest = PrihvatiPozivZaVeceru.caller.arguments[0].target.id; //njega dodajem
     var idReservation = PrihvatiPozivZaVeceru.caller.arguments[0].target.name; //njega dodajem
 
-   // alert("Kod prihvatanja"+ idGuest + "reservation" + idReservation);
-  	
-  	
-     
-			$.ajax({
+    $.ajax({
     			type : 'POST',
     			url :  '/reservationController/addFriendToReservation/'+ idGuest,
     			contentType : 'application/json',
     			dataType :'json',
     			data : idReservation,
     			success : function(reservation){
-    			alert("prihvatio ");
+    			
+    			
     				$('#tabelaOdgovorNaPoziv').empty();
     				$('#tabelaOdabir').empty();
     				
@@ -158,7 +155,7 @@ function PrihvatiPorudzbinu(){
 	 
     var idGuest = PrihvatiPorudzbinu.caller.arguments[0].target.id; //njega dodajem
     var idReservation = PrihvatiPorudzbinu.caller.arguments[0].target.name; //njega dodajem
-    alert("id rezervacije"+ idReservation)
+   
     
     var desk = -1;
     
@@ -167,10 +164,10 @@ function PrihvatiPorudzbinu(){
 	url :  '/reservationController/getReservedTableForReservation/'+ idReservation,
 	dataType :'json',
 	success : function(tables){
-		alert(tables.length);
+		
 		
 		desk = tables[0].id;
-		alert("Sto"+ desk);	
+		
 	},
 
 	error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -192,9 +189,9 @@ function PrihvatiPorudzbinu(){
 				success : function(data){
 					
 					var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-					//$("#tableAddOrder").append('<tr><td>Pića: &nbsp; </td><td><select id="comboDrinks" multiple="multiple" size="5" style="width:170px;">');
+					
 					$.each(list, function(index,pice){
-						//$('#comboDrinks').append('<option>'+pice.name+'</option>');
+						
 						allDrinks.push(pice.name);
 					
 					});
@@ -205,9 +202,8 @@ function PrihvatiPorudzbinu(){
 						success : function(data){
 							
 							var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
-							//$("#tableAddOrder").append('<tr><td>Jela: &nbsp;</td><td><select id="comboMeals" multiple="multiple" size="5" style="width:170px;">');
+							
 							$.each(list, function(index,obrok){
-								//$('#comboMeals').append('<option>'+obrok.name+'</option>');
 								allMeals.push(obrok.name);
 								
 							});
@@ -255,9 +251,8 @@ function PrihvatiPorudzbinu(){
 function KreirajPorudzbinu(){
 	
 	
-	 var idReservation = KreirajPorudzbinu.caller.arguments[0].target.name;
+	var idReservation = KreirajPorudzbinu.caller.arguments[0].target.name;
 	
-	//var reservationId = $('#comboReservations').val();
 	var desk = $('#desk').val();
 	var drinks = $('#comboDrinks').val();
 	var meals = $('#comboMeals').val();
@@ -266,8 +261,7 @@ function KreirajPorudzbinu(){
 
 	
 	if(drinks == null && meals == null){
-		//toastr.error("You have to ");
-		alert("You have to choose drink or meal");
+		toastr.error("You have to choose drink or meal");
 	
 	}else{
 		

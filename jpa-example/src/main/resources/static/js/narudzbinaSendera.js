@@ -4,9 +4,6 @@ window.onload = function() {
 	var idReservation = query.split("=")[1];
 	
 	
-	 //var idGuest = PrihvatiPorudzbinu.caller.arguments[0].target.id; //njega dodajem
-	   // var idReservation = PrihvatiPorudzbinu.caller.arguments[0].target.name; //njega dodajem
-	    alert("id rezervacije"+ idReservation)
 	    
 	    var desk = -1;
 	    
@@ -15,10 +12,9 @@ window.onload = function() {
 		url :  '/reservationController/getReservedTableForReservation/'+ idReservation,
 		dataType :'json',
 		success : function(tables){
-			alert(tables.length);
 			
 			desk = tables[0].id;
-			alert("Sto"+ desk);	
+			
 		},
 
 		error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
@@ -110,8 +106,6 @@ function KreirajPorudzbinu(){
 	var listOfDrinkss = [];
 	var timeOfOrder = new Date().getTime();
 
-	//alert("rese id "+ idReservation +" desk" +desk + "drinks" + drinks.length+ "meals"+ meals.length);
-
 	$.ajax({
 		type : 'PUT',
 		url :'/reservationController/getReservationById/'+ idReservation,
@@ -137,7 +131,6 @@ function KreirajPorudzbinu(){
 				}),
 				success : function(data){
 					
-					alert("Uspjesno dodavanje porudzbine za konobara "+data.waiter.email);
 					window.location.href= "userProfile.html";
 					
 				},

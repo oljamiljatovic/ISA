@@ -16,7 +16,7 @@ window.onload = function() {
     	}
     	else{
     		if(password != repeatPassword ){
-    			alert("Molimo Vas ponovite password");
+    			toastr.error("Molimo Vas ponovite password");
     			
     		}else{
     		

@@ -182,3 +182,19 @@ $(document).on('click','#ratingSubmit',function(e){
 	});
 
 });
+
+$(document).on('click', '#logout', function(e) {
+	e.preventDefault();
+	$("#content").empty();
+	$.ajax({
+		type: 'GET',
+		dataType: 'text',
+		url : '/userController/logout',
+		success : function(data){
+			window.location.href= "index.html";
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("billOrders: " + errorThrown);
+		}	
+	});
+});

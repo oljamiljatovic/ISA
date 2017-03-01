@@ -206,11 +206,15 @@ public class ProviderController {
 			}
 			
 		}else if(u.getRole().equals("provider")){
-			this.purchaseService.updatePurchaseOrder(po);
+			try{
+				this.purchaseService.updatePurchaseOrder(po);
+			}catch(Exception e){
+				po = null;
+			}
 		}
 		return new ResponseEntity<PurchaseOrder>(po, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(
 			value = "/uzmiSvePorudzbeniceAktuelnePonude",
 			method = RequestMethod.POST,

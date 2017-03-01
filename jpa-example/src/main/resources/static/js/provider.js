@@ -578,8 +578,12 @@ $(document).on('submit','#submitIzmeniPorudzbenicu',function(e){
 			dataType : 'json',
 			data : data2,
 			success : function(data){
-				window.location.reload();
-				toastr.info('Izmenjena porudzbenica!');
+				if(data==null){
+					alert('Vec je prihvacena necija ponuda!!!');
+				}else{
+					window.location.reload();
+					toastr.info('Izmenjena porudzbenica!');
+				}
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) { //(XHR,STATUS, ERROR)
