@@ -191,4 +191,32 @@ public class RatingAllController {
 			str = "0";
 		return new ResponseEntity<String>(str, HttpStatus.OK);
 	}
+	
+	
+	
+	
+	@RequestMapping(
+			value = "/takeMarksForGuest/{id}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> takeMarksForGuest(@PathVariable Long id)  throws Exception {
+		
+		
+		Restaurant restaurant = restaurantService.getRestaurant(id);
+		ArrayList<RatingAll> temp = this.ratingAllService.findByRestaurant(restaurant);
+
+		
+		String str = null;
+		int br = temp.size();
+		if(br!=0){
+			int suma = 0;
+			for(int i=0; i<br; i++)
+				suma = suma + temp.get(i).getRestaurantRating();
+			
+			float prosek = (float) (suma/br);
+			str = Float.toString(prosek);
+		}else
+			str = "0";
+		return new ResponseEntity<String>(str, HttpStatus.OK);
+	}
 }

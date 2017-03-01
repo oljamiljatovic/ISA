@@ -10,13 +10,31 @@ window.onload = function() {
 				$('#listaRestorana').empty();
 				for(var i = 0 ; i < data.length ; i++){
 					
-					 var item = data[i];
-					 $('#listaRestorana').append('<img src="rest1.jpg" alt="description here"  height="200" width="200" id = "'+data[i].id+'" onclick="OpenPicture()"/>'+
-						 	'<input type = "button" onclick="OtvoriRestoran()" id ="'+data[i].id+'" value="'+data[i].name+'"> ' +
-						 	'<input type = "button" onclick="PronadjiRestoran()" id ="'+data[i].id+'" value="'+data[i].address+'">');
-					 if(i%3 == 2){
-							$("#listaRestorana").append("<br/><br/><br/><br/>");
-						}
+				 	/*$.ajax({
+						type : 'GET',
+						dataType : 'json',
+						url :'/ratingAllController/takeMarksForGuest/'+data[i].id,
+						success : function(data2){
+*/
+							 var item = data[i];
+							 $('#listaRestorana').append('<img src="rest1.jpg" alt="description here"  height="200" width="200" id = "'+data[i].id+'" onclick="OpenPicture()"/>'+
+								 	'<input type = "button" onclick="OtvoriRestoran()" id ="'+data[i].id+'" value="'+data[i].name+'"> ' +
+								 	'<input type = "button" onclick="PronadjiRestoran()" id ="'+data[i].id+'" value="'+data[i].address+'">');
+								 	//'<input type = "button"  id ="'+data[i].id+'" value=Prosjecna ocjena :"'+data2+'">');
+							 if(i%2 == 1){
+									$("#listaRestorana").append("<br/><br/><br/><br/>");
+								}
+					/*	},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+						alert("Problem sa pronalazenjem id-ja");
+					}	
+					});//kraj ajax poziva za id
+					
+					*/
+					
+					
+					
+					
 					 
 				}	
 		},
