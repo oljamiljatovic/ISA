@@ -302,5 +302,8 @@ public class OrderIntegrationTest {
 		Long guestId = 3L;
 		ArrayList<Reservation> reservations = reservationService.findByAcceptedFriends_Id(guestId);
 		Reservation reservation = reservations.get(0);
+		ArrayList<Order> orders = orderService.findByReservation(reservation);
+		int sizeOfOrders = orders.size();
+		assertThat(sizeOfOrders).isGreaterThan(0);
 	}
 }
